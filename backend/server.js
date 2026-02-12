@@ -8,21 +8,24 @@ const mongoose = require("mongoose");
 const app = express();
 const authRoutes = require("./src/routes/authRoutes");
 const authMiddleware = require("./src/middleware/authMiddleware");
-const groupRoutes = require("./src/routes/groupRoutes")
+const groupRoutes = require("./src/routes/groupRoutes");
+const expenseRoutes = require("./src/routes/expenseRoutes");
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
-app.use("/protected", authMiddleware, (req,res)=>{
+app.use("/protected", authMiddleware, (req, res) => {
   res.json({
     message: "Authentication Successful!",
-    user: req.user
-  })
-})
-app.use("/api/groups",groupRoutes);
+    user: req.user,
+  });
+});
+app.use("/api/groups", groupRoutes);
+app.use("/api/expense", expenseRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected Successfully");
 

@@ -1,5 +1,6 @@
 const Expense = require("../models/Expense");
 const Group = require("../models/Group");
+const balanceService = require("../services/balanceService");
 
 exports.createExpense = async (req, res) => {
   try {
@@ -17,27 +18,30 @@ exports.createExpense = async (req, res) => {
     let computedSplits = [];
 
     if (splitType === "equal") {
-      const size = splits.length;
-      const base = totalAmount / size;
+      if (!splits || splits.length === 0) {
+        return res.status(400).json({ message: "Participants required" });
+      }
+      const participants = splits.length;
+      const share = totalAmount / participants;
 
-      splits.forEach((userId, index) => {
+      splits.forEach((userId) => {
         computedSplits.push({
           user: userId.user,
-          amount: base,
+          amount: share,
         });
       });
 
-      console.log(computedSplits);
+      // console.log(computedSplits);
     } else if (splitType == "exact") {
-      computedSplits = splits.map((s) => ({
-        user: s.user,
-        amount: Math.round(s.amount),
-      }));
-
-      const totalSplit = computedSplits.reduce((acc, s) => acc + s.amount, 0);
-
-      if (totalSplit != totalAmount)
-        return res.status(400).json({ message: `Split amount doesnt match` });
+      const totalSplit = splits.reduce((acc, s) => acc + s.amount, 0);
+      // console.log("Total Amount:", totalAmount);
+      // console.log("Total Split:", totalSplit);
+      if (totalSplit !== totalAmount) {
+        return res.status(400).json({
+          message: "Split amount doesnt match",
+        });
+      }
+      computedSplits = splits;
     } else {
       return res.status(400).json({ message: "Invalid split type" });
     }
@@ -55,6 +59,11 @@ exports.createExpense = async (req, res) => {
       paidBy: payerId,
       amount: totalAmount,
       splitType,
+      splits: computedSplits,
+    });
+    await balanceService.updateBalance({
+      groupId,
+      paidBy: payerId,
       splits: computedSplits,
     });
     res.status(201).json({

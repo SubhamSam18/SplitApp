@@ -10,6 +10,7 @@ const authRoutes = require("./src/routes/authRoutes");
 const authMiddleware = require("./src/middleware/authMiddleware");
 const groupRoutes = require("./src/routes/groupRoutes");
 const expenseRoutes = require("./src/routes/expenseRoutes");
+const balanceRoutes = require("./src/routes/balanceRoutes");
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
@@ -21,6 +22,7 @@ app.use("/protected", authMiddleware, (req, res) => {
 });
 app.use("/api/groups", groupRoutes);
 app.use("/api/expense", expenseRoutes);
+app.use("/api/balances", balanceRoutes);
 
 const PORT = process.env.PORT || 5000;
 

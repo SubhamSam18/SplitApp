@@ -6,11 +6,19 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
-const authRoutes = require("./src/routes/authRoutes")
-
+const authRoutes = require("./src/routes/authRoutes");
+const authMiddleware = require("./src/middleware/authMiddleware");
+const groupRoutes = require("./src/routes/groupRoutes")
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/protected", authMiddleware, (req,res)=>{
+  res.json({
+    message: "Authentication Successful!",
+    user: req.user
+  })
+})
+app.use("/api/groups",groupRoutes);
 
 const PORT = process.env.PORT || 5000;
 

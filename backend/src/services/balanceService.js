@@ -54,3 +54,33 @@ exports.updateBalance = async ({ groupId, paidBy, splits }) => {
     }
   }
 };
+
+exports.reverseBalance = async ({ groupId, paidBy, splits }) => {
+  for (const split of splits) {
+    if (split.user.toString() === paidBy.toString()) {
+      continue;
+    }
+    const debtor = split.user;
+    const creditor = paidBy;
+    const amountToReverse = split.amount;
+
+    let balance = await Balance.findOne({
+      groupId,
+      debtor,
+      creditor,
+    });
+
+    if (!balance) {
+      throw new Error("Balance inconsistency detected!");
+    }
+
+    if (balance.amount > amountToReverse) {
+      balance.amount -= amountToReverse;
+      await balance.save();
+    } else if (balance.amount === amountToReverse) {
+      await balance.deleteOne();
+    } else {
+      throw new Error("Balance data invalid");
+    }
+  }
+};

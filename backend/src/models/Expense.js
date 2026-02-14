@@ -33,6 +33,21 @@ const groupExpense = new mongoose.Schema(
         },
       },
     ],
+    status: {
+      type: String,
+      enum: ["Active", "Cancelled", "Deleted"],
+      default: "Active",
+    },
+    updatedFrom: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Expense",
+      default: null,
+    },
+    expenseDate: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
   },
   { timestamps: true },
 );

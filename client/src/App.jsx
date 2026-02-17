@@ -1,19 +1,23 @@
 import { Routes, Route } from "react-router-dom";
 import Authentication from "./pages/Authentication";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./designs/DashboardLayout";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<h1>Home</h1>} />
       <Route path="/auth" element={<Authentication />} />
       <Route
-        path="/dashboard"
+        path="/"
         element={
           <ProtectedRoute>
-            <h1>Dashboard</h1>
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="/groups" element={<div>Groups</div>} />
+        <Route path="/analytics" element={<div>Analytics Page</div>} />
+        <Route path="/friends" element={<div>Friends Page</div>} />
+      </Route>
     </Routes>
   );
 }

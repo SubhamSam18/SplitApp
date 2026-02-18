@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import { Outlet } from "react-router-dom";
 function DashboardLayout({ children }) {
   return (
-    <div className="main">
+    <div className="main-layout" style={{ display: "flex" }}>
       <Navbar />
       <div className="dashboard-content">
         <Outlet />

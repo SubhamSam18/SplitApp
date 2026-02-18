@@ -1,0 +1,128 @@
+.homeContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2f7, #e3e9f3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mainCard {
+  width: 620px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.mainCard:hover {
+  transform: translateY(-4px);
+}
+
+.totalSection {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.totalSection p {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.totalSection h2 {
+  font-size: 32px;
+  margin: 0;
+  color: #1f2937;
+}
+
+.splitSection {
+  display: flex;
+  gap: 15px;
+}
+
+.moneyBox {
+  flex: 1;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.moneyBox p {
+  margin: 0;
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.moneyBox h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.receive {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.receive:hover {
+  background: #d1fae5;
+}
+
+.pay {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.pay:hover {
+  background: #fee2e2;
+}
+
+.groups {
+  margin-top: 25px;
+}
+
+.groups p {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.groupsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.groupBox {
+  width: 120px;
+  height: 120px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.groupBox:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.groupLogo {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.groupName {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}

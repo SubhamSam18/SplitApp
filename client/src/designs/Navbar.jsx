@@ -9,7 +9,7 @@ function Navbar() {
   const navItems = [
     {
       name: "Home",
-      path: "/",
+      path: "/home",
       src: <IoHome />,
     },
     {
@@ -29,7 +29,7 @@ function Navbar() {
     },
   ];
   return (
-    <div className="main">
+    <div className="main-div">
       <div className="navbar">
         <div className="nav-links">
           {navItems.map((items) => (

@@ -19,6 +19,7 @@ exports.createGroup = async (req, res) => {
 };
 
 exports.getUserGroup = async (req, res) => {
+  // console.log(req.user);
   try {
     const groups = await Group.find({
       members: req.user.userId,

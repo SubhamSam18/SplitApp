@@ -1,4 +1,5 @@
 import "./homeDesign.css";
+import { MdOutlineGroupAdd } from "react-icons/md";
 function HomeDesign({ youOwe, youAreOwed, groups }) {
   return (
     <div className="homeContainer">
@@ -25,6 +26,12 @@ function HomeDesign({ youOwe, youAreOwed, groups }) {
         <div className="groups">
           <p>Your Groups</p>
           <div className="groupsGrid">
+            <div className="groupBox">
+              <div className="groupLogo">
+                <MdOutlineGroupAdd />
+              </div>
+              <div className="groupName">Create Group</div>
+            </div>
             {groups.length === 0 ? (
               <p>No groups found</p>
             ) : (

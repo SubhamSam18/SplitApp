@@ -9,7 +9,7 @@ function Navbar() {
   const navItems = [
     {
       name: "Home",
-      path: "/home",
+      path: "/",
       src: <IoHome />,
     },
     {

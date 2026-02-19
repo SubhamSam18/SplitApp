@@ -24,7 +24,7 @@ function Authentication() {
       );
       //   console.log(response.data);
       alert("Login successful");
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.log(err);
       alert("Login failed");

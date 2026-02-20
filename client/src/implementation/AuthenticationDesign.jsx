@@ -1,4 +1,4 @@
-import "./auth.css";
+import "../designs/auth.css";
 
 function AuthenticationDesign({
   chkRef,
@@ -24,6 +24,7 @@ function AuthenticationDesign({
           <label htmlFor="chk">Sign Up</label>
 
           <input
+            className="AuthName"
             type="text"
             placeholder="Name"
             value={signupName}
@@ -31,6 +32,7 @@ function AuthenticationDesign({
           />
 
           <input
+            className="AuthEmail"
             type="email"
             placeholder="Email"
             value={signupEmail}
@@ -38,19 +40,23 @@ function AuthenticationDesign({
           />
 
           <input
+            className="AuthPassword"
             type="password"
             placeholder="Password"
             value={signupPassword}
             onChange={(e) => setSignupPassword(e.target.value)}
           />
 
-          <button onClick={handleSignup}>Sign Up</button>
+          <button className="AuthButton" onClick={handleSignup}>
+            Sign Up
+          </button>
         </div>
 
         <div className="login">
           <label htmlFor="chk">Login</label>
 
           <input
+            className="AuthEmail"
             type="email"
             placeholder="Email"
             value={email}
@@ -58,13 +64,16 @@ function AuthenticationDesign({
           />
 
           <input
+            className="AuthPassword"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button onClick={handleLogin}>Login</button>
+          <button className="AuthButton" onClick={handleLogin}>
+            Login
+          </button>
         </div>
       </div>
     </div>

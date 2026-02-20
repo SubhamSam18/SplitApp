@@ -1,24 +1,25 @@
-import "./homeDesign.css";
+import "../designs/homeDesign.css";
+import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
-function HomeDesign({ youOwe, youAreOwed, groups }) {
+function HomeDesign({ youOwed, youAreOwed, groups }) {
   return (
     <div className="homeContainer">
       <div className="mainCard">
         <div className="summary">
           <div className="totalSection">
             <p>Total Balance</p>
-            <h2>₹{youOwe - youAreOwed}</h2>
+            <h2>₹{youAreOwed - youOwed}</h2>
           </div>
 
           <div className="splitSection">
             <div className="moneyBox receive">
-              <p>You’ll Receive</p>
-              <h3>₹{youOwe}</h3>
+              <p>You'll Receive</p>
+              <h3>₹{youAreOwed}</h3>
             </div>
 
             <div className="moneyBox pay">
-              <p>You’ll Pay</p>
-              <h3>₹{youAreOwed}</h3>
+              <p>You'll Pay</p>
+              <h3>₹{youOwed}</h3>
             </div>
           </div>
         </div>
@@ -26,12 +27,12 @@ function HomeDesign({ youOwe, youAreOwed, groups }) {
         <div className="groups">
           <p>Your Groups</p>
           <div className="groupsGrid">
-            <div className="groupBox">
+            <Link to="/groups" className="createGroupBox">
               <div className="groupLogo">
                 <MdOutlineGroupAdd />
               </div>
               <div className="groupName">Create Group</div>
-            </div>
+            </Link>
             {groups.length === 0 ? (
               <p>No groups found</p>
             ) : (

@@ -15,6 +15,7 @@ const groupRoutes = require("./src/routes/groupRoutes");
 const expenseRoutes = require("./src/routes/expenseRoutes");
 const balanceRoutes = require("./src/routes/balanceRoutes");
 const settlementRoutes = require("./src/routes/settlementRoutes");
+const summaryRoutes = require("./src/routes/summaryRoutes");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +36,7 @@ app.use("/api/groups", groupRoutes);
 app.use("/api/expense", expenseRoutes);
 app.use("/api/balances", balanceRoutes);
 app.use("/api/settle", settlementRoutes);
+app.use("/api/summary", summaryRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AuthenticationDesign from "../designs/AuthenticationDesign";
+import AuthenticationDesign from "../implementation/AuthenticationDesign";
 
 function Authentication() {
   const [signupName, setSignupName] = useState("");

@@ -39,7 +39,7 @@ label {
   transition: 0.5s ease-in-out;
 }
 
-input {
+.AuthEmail, .AuthName, .AuthPassword {
   width: 60%;
   height: 10px;
   margin: 20px auto;
@@ -52,7 +52,7 @@ input {
   background: #e0dede;
 }
 
-button {
+.AuthButton {
   width: 60%;
   height: 40px;
   margin: 30px auto 0 auto;

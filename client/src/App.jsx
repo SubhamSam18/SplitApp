@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Authentication from "./pages/Authentication";
 import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardLayout from "./designs/DashboardLayout";
+import DashboardLayout from "./implementation/DashboardLayout";
 import Home from "./pages/Home";
+import Group from "./pages/Group"
 function App() {
   return (
     <Routes>
@@ -16,7 +17,7 @@ function App() {
         }
       >
         <Route path="/" element={<Home />} />
-        <Route path="/groups" element={<div>Groups</div>} />
+        <Route path="/groups" element={<Group />} />
         <Route path="/analytics" element={<div>Analytics Page</div>} />
         <Route path="/friends" element={<div>Friends Page</div>} />
       </Route>

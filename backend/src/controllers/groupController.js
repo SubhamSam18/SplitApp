@@ -2,14 +2,30 @@ const Group = require("../models/Group");
 const Expense = require("../models/Expense");
 const Balance = require("../models/Balance");
 const Settlement = require("../models/Settlement");
+const User = require("../models/User");
 
 exports.createGroup = async (req, res) => {
   try {
     const { name, members } = req.body;
+    if (!name.trim()) {
+      return res.status(400).json({ message: "Group name required" });
+    }
+    const users = await User.find({
+      email: { $in: members },
+    });
+    const foundEmails = users.map((u) => u.email);
+    const notFound = members.filter((email) => !foundEmails.includes(email));
+    if (notFound.length > 0) {
+      return res.status(400).json({
+        message: "Some users do not exist",
+        invalidEmails: notFound,
+      });
+    }
+    const memberIds = users.map((u) => u._id);
     const group = await Group.create({
       name,
       createdBy: req.user.userId,
-      members: [req.user.userId, ...members],
+      members: memberIds,
     });
     console.log("Group: " + group);
     res.status(201).json({ message: "Group Created" });

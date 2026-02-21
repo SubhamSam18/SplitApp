@@ -21,14 +21,15 @@ exports.createGroup = async (req, res) => {
         invalidEmails: notFound,
       });
     }
+
     const memberIds = users.map((u) => u._id);
+    const uniqueMembers = [...new Set([req.user.userId, ...memberIds])];
     const group = await Group.create({
       name,
       createdBy: req.user.userId,
-      members: memberIds,
+      members: uniqueMembers,
     });
-    console.log("Group: " + group);
-    res.status(201).json({ message: "Group Created" });
+    res.status(201).json(group);
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
   }

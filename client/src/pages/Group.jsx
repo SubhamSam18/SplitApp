@@ -29,7 +29,11 @@ function Groups() {
       setMembers([]);
       setIsOpen(false);
     } catch (err) {
-      console.error(err);
+      if (err.response?.data?.invalidEmails) {
+        alert("User not found:\n" + err.response.data.invalidEmails.join(", "));
+      } else {
+        alert("Something went wrong");
+      }
     }
   };
 
@@ -39,7 +43,7 @@ function Groups() {
         const yourGroups = await axios.get("http://localhost:5000/api/groups", {
           withCredentials: true,
         });
-        console.log(yourGroups.data);
+        // console.log(yourGroups.data);
         setGroups(yourGroups.data);
       } catch (err) {
         console.log(err);

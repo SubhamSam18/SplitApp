@@ -1,0 +1,74 @@
+.friendsPage {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7f9fc;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.userContainer {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 14px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+
+.user {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  flex: 1;
+}
+
+.balanceBox {
+  min-width: 90px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  user-select: none;
+}
+
+
+.balanceBox.positive {
+  background-color: #d4f5d4;
+  color: #237423;
+}
+
+
+.balanceBox.negative {
+  background-color: #fcdede;  
+  color: #b32d2d;            
+}
+
+
+.balanceBox.neutral {
+  background-color: #eee;
+  color: #555;
+}
+
+.settleUp {
+  background: #007bff;
+  min-width: 90px;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.settleUp:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}

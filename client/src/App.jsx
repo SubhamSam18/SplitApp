@@ -3,7 +3,8 @@ import Authentication from "./pages/Authentication";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./implementation/DashboardLayout";
 import Home from "./pages/Home";
-import Group from "./pages/Group"
+import Group from "./pages/Group";
+import Friends from "./pages/Friends";
 function App() {
   return (
     <Routes>
@@ -19,7 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/groups" element={<Group />} />
         <Route path="/analytics" element={<div>Analytics Page</div>} />
-        <Route path="/friends" element={<div>Friends Page</div>} />
+        <Route path="/friends" element={<Friends />} />
       </Route>
     </Routes>
   );

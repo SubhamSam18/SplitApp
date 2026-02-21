@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
@@ -16,6 +16,7 @@ const expenseRoutes = require("./src/routes/expenseRoutes");
 const balanceRoutes = require("./src/routes/balanceRoutes");
 const settlementRoutes = require("./src/routes/settlementRoutes");
 const summaryRoutes = require("./src/routes/summaryRoutes");
+const friendsRoutes = require("./src/routes/friendsRoutes");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -37,6 +38,7 @@ app.use("/api/expense", expenseRoutes);
 app.use("/api/balances", balanceRoutes);
 app.use("/api/settle", settlementRoutes);
 app.use("/api/summary", summaryRoutes);
+app.use("/api/friends", friendsRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -89,7 +89,7 @@ exports.groupSummary = async (req, res) => {
 
     const expenses = await Expense.find({
       group: groupId,
-      status: "Active",
+      status: "active",
     });
 
     const totalExpense = expenses.reduce((acc, exp) => acc + exp.amount, 0);
@@ -137,14 +137,14 @@ exports.groupActivity = async (req, res) => {
 
     const expenses = await Expense.find({
       group: groupId,
-      status: "Active",
+      status: "active",
     })
       .populate("paidBy", "name email")
       .sort({ expenseDate: -1 });
 
     const settlements = await Settlement.find({
       group: groupId,
-      status: "Active",
+      status: "active",
     })
       .populate("from", "name email")
       .populate("to", "name email")

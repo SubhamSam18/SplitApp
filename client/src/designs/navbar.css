@@ -37,6 +37,12 @@ body{
 .nav-links a:hover svg {
   color: black;
 }
+.nav-link.active {
+  background-color: white;
+}
+.nav-link.active svg {
+  color: black;
+}
 .dashboard-content{
   flex:1;
 }

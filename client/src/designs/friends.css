@@ -72,3 +72,126 @@
   background: #0056b3;
   transform: translateY(-1px);
 }
+
+.ConfirmationPopup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  /* backdrop-filter: blur(4px); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.popupBox {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  animation: scaleIn 0.2s ease forwards;
+  background-color: #e3e1e8;
+}
+
+.popupBox p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.popupButton {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.popupButton button {
+  padding: 12px 30px;
+  border-radius: 30px; /* rounded pill shape */
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(45deg, #69599b, #16044b); /* gradient */
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease-in-out;
+  text-align: center;
+}
+
+/* Hover effect */
+.popupButton button:hover {
+  background: linear-gradient(45deg, #16044b, #69599b); /* reverse gradient */
+  transform: translateY(-4px); /* lift effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* stronger shadow on hover */
+}
+
+.popupButton button:last-child {
+  background: linear-gradient(45deg, #fffcfc, #71707022); /* subtle neutral gradient */
+  color: #333;
+}
+
+.popupButton button:last-child:hover {
+  background: linear-gradient(45deg, #71707022, #fffcfc);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* subtle shadow */
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.amountBox {
+  display: inline-block;
+  padding: 12px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* semi-transparent border */
+  background: rgba(255, 255, 255, 0.1); /* translucent background */
+  border-radius: 15px;
+  height: 35px;
+  width: 140px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px); /* Glass effect */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* soft shadow */
+}
+
+.amountBox input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff; /* White text */
+  transition: all 0.3s ease;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Hover effect on the input box */
+.amountBox:hover {
+  border-color: #092c5c;
+  box-shadow: 0 4px 20px rgba(29, 91, 180, 0.3); /* brighter shadow */
+}
+
+.amountBox:focus-within {
+  border-color: #3e297f; /* green border */
+  box-shadow: 0 0 10px rgba(71, 52, 151, 0.6); /* focus glow */
+}
+
+.amountBox input:focus {
+  color: #3e297f; /* green text on focus */
+  font-size: 22px;
+}

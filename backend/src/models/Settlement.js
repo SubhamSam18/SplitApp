@@ -5,6 +5,11 @@ const settlementSchema = new mongoose.Schema(
     group: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Group",
+      required: false,
+    },
+    type: {
+      type: String,
+      enum: ["Group", "Full"],
       required: true,
     },
     from: {
@@ -28,8 +33,8 @@ const settlementSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Reversed"],
-      default: "Active",
+      enum: ["active", "reversed"],
+      default: "active",
     },
     expense: {
       type: mongoose.Schema.Types.ObjectId,

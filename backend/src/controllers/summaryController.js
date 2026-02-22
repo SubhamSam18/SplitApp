@@ -4,7 +4,7 @@ exports.getSummary = async (req, res) => {
     const currentUserId = req.user.userId;
 
     const allExpense = await Expense.find({
-      status: "Active",
+      status: "active",
       $or: [{ paidBy: currentUserId }, { "splits.user": currentUserId }],
     });
 

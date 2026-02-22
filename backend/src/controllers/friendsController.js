@@ -4,9 +4,11 @@ const User = require("../models/User");
 exports.getFriends = async (req, res) => {
   const currentUserId = req.user.userId;
   try {
-    const friends = await User.find();
+    const friends = await User.find({
+      _id: { $ne: currentUserId },
+    });
     const allExpense = await Expense.find({
-      status: "Active",
+      status: "active",
       $or: [{ paidBy: currentUserId }, { "splits.user": currentUserId }],
     });
 

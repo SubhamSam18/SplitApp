@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../designs/navbar.css";
 import { IoHome } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
@@ -33,9 +33,15 @@ function Navbar() {
       <div className="navbar">
         <div className="nav-links">
           {navItems.map((items) => (
-            <Link key={items.name} to={items.path}>
+            <NavLink
+              key={items.name}
+              to={items.path}
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+            >
               {items.src}
-            </Link>
+            </NavLink>
           ))}
         </div>
       </div>

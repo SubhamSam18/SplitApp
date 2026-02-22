@@ -35,8 +35,8 @@ const groupExpense = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["Active", "Cancelled", "Deleted"],
-      default: "Active",
+      enum: ["active", "cancelled", "deleted"],
+      default: "active",
     },
     updatedFrom: {
       type: mongoose.Schema.Types.ObjectId,

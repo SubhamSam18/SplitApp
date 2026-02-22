@@ -4,6 +4,40 @@ import "../designs/friends.css";
 
 function Friends() {
   const [Friends, setFriends] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editableBalance, setEditableBalance] = useState("");
+
+  const handleSelectClick = (user) => {
+    setSelectedUser(user);
+    setShowConfirm(true);
+    setEditableBalance(user.balance);
+  };
+
+  const confirmSettle = async () => {
+    // console.log("Settled with:", selectedUser.name);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/settle/friend",
+        { to: selectedUser._id },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log("Error while Settelling");
+    }
+
+    setShowConfirm(false);
+    setSelectedUser(null);
+  };
+
+  const cancelSettle = () => {
+    setShowConfirm(false);
+    setSelectedUser(null);
+  };
+
   useEffect(() => {
     const getFriends = async () => {
       try {
@@ -36,10 +70,41 @@ function Friends() {
             >
               ₹{user.balance}
             </div>
-            <button className="settleUp">Settle Up</button>
+            <button
+              className="settleUp"
+              onClick={() => handleSelectClick(user)}
+            >
+              Settle Up
+            </button>
           </div>
         ))}
       </div>
+      {showConfirm && (
+        <div className="ConfirmationPopup">
+          <div className="popupBox" onClick={(e) => e.stopPropagation()}>
+            <p>
+              Are you sure you want to settle with?{" "}
+              <strong>({selectedUser?.name})</strong>
+              <br />
+              This action cannot be reversed!
+            </p>
+            <input
+              className="amountBox"
+              type="number"
+              value={editableBalance}
+              onChange={(e) => setEditableBalance(e.target.value)}
+            />
+            <div className="popupButton">
+              <button className="confirmButton" onClick={confirmSettle}>
+                Yes
+              </button>
+              <button className="confirmButton" onClick={cancelSettle}>
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

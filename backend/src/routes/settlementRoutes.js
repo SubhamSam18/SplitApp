@@ -5,6 +5,7 @@ const Settlement = require("../models/Settlement");
 
 const router = express.Router();
 
-router.post("/", authMiddleware, settlementController.settlePayment);
+router.post("/group", authMiddleware, settlementController.settleGroupPayment);
+router.post("/friend", authMiddleware, settlementController.settleFriendsPayment);
 
 module.exports = router;

@@ -14,6 +14,18 @@ function Friends() {
     setEditableBalance(user.balance);
   };
 
+  const getFriends = async () => {
+    try {
+      const friends = await axios.get("http://localhost:5000/api/friends", {
+        withCredentials: true,
+      });
+      // console.log(friends.data);
+      setFriends(friends.data);
+    } catch (err) {
+      alert("No friends Found");
+    }
+  };
+
   const confirmSettle = async () => {
     // console.log("Settled with:", selectedUser.name);
     try {
@@ -24,6 +36,7 @@ function Friends() {
           withCredentials: true,
         },
       );
+      await getFriends();
     } catch (err) {
       console.log("Error while Settelling");
     }
@@ -38,17 +51,6 @@ function Friends() {
   };
 
   useEffect(() => {
-    const getFriends = async () => {
-      try {
-        const friends = await axios.get("http://localhost:5000/api/friends", {
-          withCredentials: true,
-        });
-        // console.log(friends.data);
-        setFriends(friends.data);
-      } catch (err) {
-        alert("No friends Found");
-      }
-    };
     getFriends();
   }, []);
 

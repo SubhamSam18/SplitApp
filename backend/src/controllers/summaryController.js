@@ -1,39 +1,31 @@
 const Expense = require("../models/Expense");
+const Balance = require("../models/Balance");
 exports.getSummary = async (req, res) => {
   try {
     const currentUserId = req.user.userId;
-
-    const allExpense = await Expense.find({
-      status: "active",
-      $or: [{ paidBy: currentUserId }, { "splits.user": currentUserId }],
+    const balancesFrom = await Balance.find({
+      from: currentUserId,
+    });
+    const balancesTo = await Balance.find({
+      to: currentUserId,
     });
 
     const balances = {};
-
-    allExpense.forEach((expense) => {
-      expense.splits.forEach((split) => {
-        const splitUserId = split.user.toString();
-
-        if (expense.paidBy.toString() === currentUserId.toString()) {
-          if (splitUserId !== currentUserId.toString()) {
-            balances[splitUserId] = (balances[splitUserId] || 0) + split.amount;
-          }
-        } else if (splitUserId === currentUserId.toString()) {
-          balances[expense.paidBy.toString()] =
-            (balances[expense.paidBy.toString()] || 0) - split.amount;
-        }
-      });
-    });
-
     let youAreOwed = 0;
     let youOwe = 0;
 
-    Object.values(balances).forEach((amount) => {
-      if (amount > 0) {
-        youAreOwed += amount;
-      } else {
-        youOwe += Math.abs(amount);
-      }
+    //If you owe
+    balancesFrom.forEach((user) => {
+      balances[user.to.toString()] =
+        (balances[user.to.toString()] || 0) - user.amount;
+      youOwe += user.amount;
+    });
+
+    // If someone owes me
+    balancesTo.forEach((user) => {
+      balances[user.from.toString()] =
+        (balances[user.from.toString()] || 0) + user.amount;
+      youAreOwed += user.amount;
     });
 
     res.status(200).json({

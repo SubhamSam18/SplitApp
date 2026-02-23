@@ -1,14 +1,14 @@
 import "../designs/homeDesign.css";
 import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
-function HomeDesign({ youOwed, youAreOwed, groups }) {
+function HomeDesign({ youOwe, youAreOwed, groups }) {
   return (
     <div className="homeContainer">
       <div className="mainCard">
         <div className="summary">
           <div className="totalSection">
             <p>Total Balance</p>
-            <h2>₹{youAreOwed - youOwed}</h2>
+            <h2>₹{youAreOwed - youOwe}</h2>
           </div>
 
           <div className="splitSection">
@@ -19,7 +19,7 @@ function HomeDesign({ youOwed, youAreOwed, groups }) {
 
             <div className="moneyBox pay">
               <p>You'll Pay</p>
-              <h3>₹{youOwed}</h3>
+              <h3>₹{youOwe}</h3>
             </div>
           </div>
         </div>

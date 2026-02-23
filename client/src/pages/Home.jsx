@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 function Home() {
-  const [youOwed, setYouOwe] = useState(0);
+  const [youOwe, setYouOwe] = useState(0);
   const [youAreOwed, setYouAreOwed] = useState(0);
   const [groups, setGroups] = useState([]);
 
@@ -25,9 +25,7 @@ function Home() {
   useEffect(() => {
     findGroups();
   }, []);
-  return (
-    <HomeDesign youOwed={youOwed} youAreOwed={youAreOwed} groups={groups} />
-  );
+  return <HomeDesign youOwe={youOwe} youAreOwed={youAreOwed} groups={groups} />;
 }
 
 export default Home;

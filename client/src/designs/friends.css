@@ -7,6 +7,38 @@
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
+.friendsHeader {
+  margin-bottom: 20px;
+}
+
+.friendsHeader h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.friendsHeader p {
+  color: gray;
+  font-size: 14px;
+}
+
+.emptyState {
+  text-align: center;
+  margin-top: 40px;
+  color: gray;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 500;
+}
+
+.settleUp:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .userContainer {
   display: flex;
@@ -49,7 +81,6 @@
   background-color: #fcdede;  
   color: #b32d2d;            
 }
-
 
 .balanceBox.neutral {
   background-color: #eee;

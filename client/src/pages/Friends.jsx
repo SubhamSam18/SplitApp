@@ -56,30 +56,42 @@ function Friends() {
 
   return (
     <div className="friendsPage">
-      <div className="users">
-        {Friends.map((user) => (
-          <div key={user._id} className="userContainer">
-            <div className="user">{user.name}</div>
-            <div
-              className={`balanceBox ${
-                user.balance > 0
-                  ? "positive"
-                  : user.balance < 0
-                    ? "negative"
-                    : "neutral"
-              }`}
-            >
-              ₹{user.balance}
-            </div>
-            <button
-              className="settleUp"
-              onClick={() => handleSelectClick(user)}
-            >
-              Settle Up
-            </button>
-          </div>
-        ))}
+      <div className="friendsHeader">
+        <h2>Friends</h2>
+        <p>Track and settle balances with your friends</p>
       </div>
+
+      {Friends.length === 0 ? (
+        <div className="emptyState">
+          <h3>No friends available</h3>
+          <p>Add friends or create a group to start splitting expenses.</p>
+        </div>
+      ) : (
+        <div className="users">
+          {Friends.map((user) => (
+            <div key={user._id} className="userContainer">
+              <div className="user">{user.name}</div>
+              <div
+                className={`balanceBox ${
+                  user.balance > 0
+                    ? "positive"
+                    : user.balance < 0
+                      ? "negative"
+                      : "neutral"
+                }`}
+              >
+                ₹{user.balance}
+              </div>
+              <button
+                className="settleUp"
+                onClick={() => handleSelectClick(user)}
+              >
+                Settle Up
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
       {showConfirm && (
         <div className="ConfirmationPopup">
           <div className="popupBox" onClick={(e) => e.stopPropagation()}>

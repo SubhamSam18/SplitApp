@@ -48,8 +48,8 @@ exports.settleGroupPayment = async (req, res) => {
 exports.settleFriendsPayment = async (req, res) => {
   try {
     const { to } = req.body;
-    const from = req.user._id;
-    console.log(to);
+    const from = req.user.userId;
+
     if (!from || !to) return res.status(400).json({ message: "Invalid data!" });
 
     const balances = await Balance.find({
@@ -58,9 +58,6 @@ exports.settleFriendsPayment = async (req, res) => {
         { from: to, to: from },
       ],
     });
-
-    // const balances = await Balance.find({});
-    console.log(balances);
     // console.log(balances);
     if (!balances.length)
       return res.status(404).json({ message: "No balances found!" });
@@ -74,39 +71,20 @@ exports.settleFriendsPayment = async (req, res) => {
         netAmount += b.amount;
       }
     });
-
-    // await Balance.deleteMany({
-    //   $or: [
-    //     { from, to },
-    //     { from: to, to: from },
-    //   ],
-    // });
-    // await Settlement.create({
-    //   type: "Full",
-    //   from,
-    //   to,
-    //   amount: netAmount,
-    //   settledBy: req.user.userId,
-    // });
-
-    // await Expense.updateMany(
-    //   {
-    //     status: "active",
-    //     $or: [
-    //       {
-    //         paidBy: from,
-    //         "splits.user": to,
-    //       },
-    //       {
-    //         paidBy: to,
-    //         "splits.user": from,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     $set: { status: "cancelled" },
-    //   },
-    // );
+    // console.log(netAmount);
+    await Balance.deleteMany({
+      $or: [
+        { from, to },
+        { from: to, to: from },
+      ],
+    });
+    await Settlement.create({
+      type: "Full",
+      from,
+      to,
+      amount: netAmount,
+      settledBy: req.user.userId,
+    });
 
     res.status(200).json({ message: "Payment Settled!", netAmount });
   } catch (err) {

@@ -24,7 +24,6 @@ function Friends() {
           withCredentials: true,
         },
       );
-      console.log(res.data);
     } catch (err) {
       console.log("Error while Settelling");
     }

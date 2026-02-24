@@ -1,11 +1,26 @@
 const User = require("../models/User");
 const Balance = require("../models/Balance");
+const Group = require("../models/Group");
 
 exports.getFriends = async (req, res) => {
   const currentUserId = req.user.userId;
   try {
+    const groups = await Group.find({
+      members: currentUserId,
+    });
+    // console.log(groups);
+    const userId = new Set();
+
+    groups.forEach((group) => {
+      group.members.forEach((friendsId) => {
+        if (friendsId.toString() != currentUserId.toString()) {
+          userId.add(friendsId.toString());
+        }
+      });
+    });
+    // console.log(userId);
     const friends = await User.find({
-      _id: { $ne: currentUserId },
+      _id: { $in: Array.from(userId) },
     });
 
     const balancesFrom = await Balance.find({

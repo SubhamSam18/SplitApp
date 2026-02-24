@@ -182,7 +182,9 @@
 }
 
 .amountBox {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   padding: 12px 20px;
   border: 2px solid rgba(255, 255, 255, 0.2); /* semi-transparent border */
   background: rgba(255, 255, 255, 0.1); /* translucent background */

@@ -38,7 +38,7 @@ function Friends() {
       );
       await getFriends();
     } catch (err) {
-      console.log("Error while Settelling");
+      console.log("Error while Settling");
     }
 
     setShowConfirm(false);
@@ -64,7 +64,7 @@ function Friends() {
       {Friends.length === 0 ? (
         <div className="emptyState">
           <h3>No friends available</h3>
-          <p>Add friends or create a group to start splitting expenses.</p>
+          <p>Create a group to start splitting expenses.</p>
         </div>
       ) : (
         <div className="users">
@@ -101,12 +101,9 @@ function Friends() {
               <br />
               This action cannot be reversed!
             </p>
-            <input
-              className="amountBox"
-              type="number"
-              value={editableBalance}
-              onChange={(e) => setEditableBalance(e.target.value)}
-            />
+            <div className="amountBox" type="number">
+              {editableBalance}
+            </div>
             <div className="popupButton">
               <button className="confirmButton" onClick={confirmSettle}>
                 Yes

@@ -79,22 +79,27 @@ exports.addMember = async (req, res) => {
 };
 
 exports.groupSummary = async (req, res) => {
+  // console.log("Hi:  " +req.params.groupId);
   try {
     const { groupId } = req.params;
-    const group = await Group.findOne(groupId).populate("member", "name email");
-
+    // console.log(groupId);
+    const group = await Group.findById(groupId).populate(
+      "members",
+      "name email",
+    );
+    // console.log("Group Data: ", group);
     if (!groupId) {
       return res.status(404).json({ message: "Group not found!" });
     }
 
     const expenses = await Expense.find({
       group: groupId,
-      status: "active",
     });
 
+    // console.log(expenses);
     const totalExpense = expenses.reduce((acc, exp) => acc + exp.amount, 0);
 
-    const balances = Balance.find({
+    const balances = await Balance.find({
       group: groupId,
       amount: { $gt: 0 },
     })
@@ -103,8 +108,8 @@ exports.groupSummary = async (req, res) => {
 
     const memberNet = {};
 
-    groups.members.forEach((member) => {
-      memberNet[member._id] = {
+    group.members.forEach((member) => {
+      memberNet[member._id.toString()] = {
         userId: member._id,
         name: member.name,
         email: member.email,
@@ -113,8 +118,19 @@ exports.groupSummary = async (req, res) => {
     });
 
     balances.forEach((balance) => {
-      memberNet[balance.from.toString()].netBalance -= balance.amount;
-      memberNet[balance.to.toString()].netBalance += balance.amount;
+      const fromId = balance.from._id
+        ? balance.from._id.toString()
+        : balance.from.toString();
+      const toId = balance.to._id
+        ? balance.to._id.toString()
+        : balance.to.toString();
+
+      if (memberNet[fromId]) {
+        memberNet[fromId].netBalance -= balance.amount;
+      }
+      if (memberNet[toId]) {
+        memberNet[toId].netBalance += balance.amount;
+      }
     });
 
     res.status(200).json({
@@ -127,6 +143,7 @@ exports.groupSummary = async (req, res) => {
       memberSummary: Object.values(memberNet),
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

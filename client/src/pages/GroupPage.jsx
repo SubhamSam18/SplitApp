@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import "../designs/group.css";
+import { useLocation } from "react-router-dom";
 
-function Groups() {
+function GroupPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
+  useEffect(() => {
+    if (location.state?.showConfirm) {
+      setShowConfirm(true);
+    }
+  }, [location.state]);
   const [groupName, setGroupName] = useState("");
   const [memberInput, setMemberInput] = useState("");
   const [members, setMembers] = useState([]);
@@ -56,6 +65,9 @@ function Groups() {
     findGroups();
   }, []);
 
+  const handleClick = (groupId) => {
+    navigate(`/groups/${groupId}/summary`);
+  };
   return (
     <div className="groups-page">
       <div className="create-group-section">
@@ -66,12 +78,17 @@ function Groups() {
           + Create New Group
         </button>
       </div>
+      <h2>Your Groups</h2>
       <div className="groups-grid">
         {groups.length === 0 ? (
           <p>No groups available</p>
         ) : (
           groups.map((group) => (
-            <div className="group-card" key={group._id}>
+            <div
+              className="group-card"
+              key={group._id}
+              onClick={() => handleClick(group._id)}
+            >
               <div className="GroupTile">
                 ✈️
                 {group.name}
@@ -79,6 +96,7 @@ function Groups() {
             </div>
           ))
         )}
+        <Outlet />
       </div>
       {showConfirm && (
         <div className="create-body">
@@ -129,4 +147,4 @@ function Groups() {
   );
 }
 
-export default Groups;
+export default GroupPage;

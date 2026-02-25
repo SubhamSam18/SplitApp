@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import "../designs/friends.css";
 
-function Friends() {
+function FriendsPage() {
   const [Friends, setFriends] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -119,4 +119,4 @@ function Friends() {
   );
 }
 
-export default Friends;
+export default FriendsPage;

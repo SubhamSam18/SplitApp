@@ -1,7 +1,33 @@
-import "../designs/homeDesign.css";
+import axios from "axios";
+import "../designs/home.css";
 import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
-function HomeDesign({ youOwe, youAreOwed, groups }) {
+import { useState, useEffect } from "react";
+
+function HomePage() {
+  const [youOwe, setYouOwe] = useState(0);
+  const [youAreOwed, setYouAreOwed] = useState(0);
+  const [groups, setGroups] = useState([]);
+
+  const findGroups = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/groups/", {
+        withCredentials: true,
+      });
+      const summaryRes = await axios.get("http://localhost:5000/api/summary", {
+        withCredentials: true,
+      });
+      setGroups(response.data);
+      setYouOwe(summaryRes.data.youOwe);
+      setYouAreOwed(summaryRes.data.youAreOwed);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    findGroups();
+  }, []);
+
   return (
     <div className="homeContainer">
       <div className="mainCard">
@@ -27,7 +53,11 @@ function HomeDesign({ youOwe, youAreOwed, groups }) {
         <div className="groups">
           <p>Your Groups</p>
           <div className="groupsGrid">
-            <Link to="/groups" className="createGroupBox">
+            <Link
+              to="/groups"
+              state={{ showConfirm: true }}
+              className="createGroupBox"
+            >
               <div className="groupLogo">
                 <MdOutlineGroupAdd />
               </div>
@@ -49,5 +79,4 @@ function HomeDesign({ youOwe, youAreOwed, groups }) {
     </div>
   );
 }
-
-export default HomeDesign;
+export default HomePage;

@@ -7,9 +7,17 @@ const groupExpense = new mongoose.Schema(
       ref: "Group",
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     paidBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    payerName: {
+      type: String,
       required: true,
     },
     amount: {

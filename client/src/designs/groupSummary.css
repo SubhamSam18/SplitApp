@@ -1,0 +1,113 @@
+html {
+  scroll-behavior: smooth;
+}
+.summaryDiv {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #f0f4f8;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 80vh;
+  font-family: 'Roboto', sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #2980b9 #f0f4f8;
+  will-change: transform;
+}
+
+.summaryDiv h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: #34495e;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.groupSummary {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.groupSummary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.description,
+.paidBy,
+.amount {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  font-weight: 500;
+  flex: 1 1 100%;
+}
+
+strong {
+  color: #2980b9;
+}
+
+.share {
+  font-weight: bold;
+  flex-basis: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.share div {
+  font-size: 1.2rem;
+  margin-left: 12px;
+  font-weight: 600;
+  text-align: right;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sharePositive {
+  color: #2ecc71;
+}
+
+.shareNegative {
+  color: #e74c3c;
+  transform: scale(1.05);
+}
+
+.share div:hover {
+  transform: translateX(5px);
+}
+
+.noExpenses {
+  font-size: 1.3rem;
+  color: #95a5a6;
+  text-align: center;
+  margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+  .summaryDiv {
+    padding: 20px;
+  }
+  
+  .summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .share {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .share div {
+    margin-left: 0;
+    font-size: 1.1rem;
+  }
+}

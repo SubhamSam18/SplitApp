@@ -3,13 +3,21 @@ const Group = require("../models/Group");
 const balanceService = require("../services/balanceService");
 const Settlement = require("../models/Settlement");
 const mongoose = require("mongoose");
+const User = require("../models/User");
 
 exports.createExpense = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const { groupId, amount, splitType, splits, paidBy, expenseDate } =
-      req.body;
+    const {
+      groupId,
+      description,
+      amount,
+      splitType,
+      splits,
+      paidBy,
+      expenseDate,
+    } = req.body;
     const group = await Group.findById(groupId).session(session);
     if (!group) {
       return res.status(400).json({ message: "Group Not found" });
@@ -54,7 +62,9 @@ exports.createExpense = async (req, res) => {
     }
 
     const payerId = paidBy || req.user.userId;
-
+    const payerUser = await User.findById(payerId.toString());
+    const payerName = payerUser.name;
+    // console.log(payerName);
     if (!group.members.includes(payerId)) {
       return res.status(400).json({
         message: "Payer must be a group member",
@@ -65,7 +75,9 @@ exports.createExpense = async (req, res) => {
       [
         {
           group: groupId,
+          description: description,
           paidBy: payerId,
+          payerName: payerName,
           amount: totalAmount,
           splitType,
           splits: computedSplits,

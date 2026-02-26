@@ -132,7 +132,7 @@ exports.groupSummary = async (req, res) => {
         memberNet[toId].netBalance += balance.amount;
       }
     });
-
+    const currentUserId = req.user.userId;
     res.status(200).json({
       group: {
         id: group._id,
@@ -141,6 +141,8 @@ exports.groupSummary = async (req, res) => {
       totalExpense,
       balances,
       memberSummary: Object.values(memberNet),
+      expenses,
+      currentUserId,
     });
   } catch (err) {
     console.error(err);

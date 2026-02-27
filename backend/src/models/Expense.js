@@ -36,6 +36,10 @@ const groupExpense = new mongoose.Schema(
           ref: "User",
           required: true,
         },
+        name: {
+          type: String,
+          required: true,
+        },
         amount: {
           type: Number,
         },

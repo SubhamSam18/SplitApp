@@ -46,6 +46,7 @@ exports.createExpense = async (req, res) => {
         }
         computedSplits.push({
           user: userId.user,
+          name: userId.name,
           amount: userAmount,
         });
       });
@@ -64,7 +65,7 @@ exports.createExpense = async (req, res) => {
     const payerId = paidBy || req.user.userId;
     const payerUser = await User.findById(payerId.toString());
     const payerName = payerUser.name;
-    // console.log(payerName);
+    // console.log(computedSplits);
     if (!group.members.includes(payerId)) {
       return res.status(400).json({
         message: "Payer must be a group member",

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "../designs/groupSummary.css";
+import CreateExpense from "./CreateExpense";
 
 function GroupSummary() {
   const { groupId } = useParams();
@@ -10,6 +11,7 @@ function GroupSummary() {
   const [currentUserId, setCurrentUserId] = useState("");
   const [showExpense, setShowExpense] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
+  const [showExpenseCard, setShowExpenseCard] = useState();
 
   const findGroupData = async () => {
     try {
@@ -56,6 +58,15 @@ function GroupSummary() {
   return (
     <div className="summaryDiv">
       <h1>{groupName}</h1>
+      <button
+        className="addExpense"
+        onClick={() => setShowExpenseCard(!showExpenseCard)}
+      >
+        + Add Expense
+      </button>
+      {showExpenseCard && (
+        <CreateExpense onClose={() => setShowExpenseCard(!showExpenseCard)} />
+      )}
       {expenses.length > 0 ? (
         [...expenses].reverse().map((expense) => {
           const userShare = expense.splits.find(

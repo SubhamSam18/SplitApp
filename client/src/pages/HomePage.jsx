@@ -3,11 +3,13 @@ import "../designs/home.css";
 import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [youOwe, setYouOwe] = useState(0);
   const [youAreOwed, setYouAreOwed] = useState(0);
   const [groups, setGroups] = useState([]);
+  const navigate = useNavigate();
 
   const findGroups = async () => {
     try {
@@ -17,12 +19,15 @@ function HomePage() {
       const summaryRes = await axios.get("http://localhost:5000/api/summary", {
         withCredentials: true,
       });
-      setGroups(response.data);
+      setGroups(response.data.reverse());
       setYouOwe(summaryRes.data.youOwe);
       setYouAreOwed(summaryRes.data.youAreOwed);
     } catch (err) {
       console.log(err);
     }
+  };
+  const handleClick = (groupId) => {
+    navigate(`/groups/${groupId}/summary`);
   };
   useEffect(() => {
     findGroups();
@@ -67,7 +72,11 @@ function HomePage() {
               <p>No groups found</p>
             ) : (
               groups.map((group) => (
-                <div className="groupBox" key={group._id}>
+                <div
+                  className="groupBox"
+                  key={group._id}
+                  onClick={() => handleClick(group._id)}
+                >
                   <div className="groupLogo">✈️</div>
                   <div className="groupName">{group.name}</div>
                 </div>

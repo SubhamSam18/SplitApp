@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "../designs/groupSummary.css";
-import CreateExpense from "./CreateExpense";
+import CreateExpense from "./createExpense";
 
 function GroupSummary() {
   const { groupId } = useParams();
   const [groupName, setGroupName] = useState("");
   const [expenses, setExpenses] = useState([]);
   const [currentUserId, setCurrentUserId] = useState("");
+  const [members, setMembers] = useState([]);
   const [showExpense, setShowExpense] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showExpenseCard, setShowExpenseCard] = useState();
@@ -22,6 +23,7 @@ function GroupSummary() {
       setGroupName(response.data.group.name);
       setExpenses(response.data.expenses);
       setCurrentUserId(response.data.currentUserId);
+      setMembers(response.data.memberSummary);
     } catch (err) {
       console.log(err);
     }
@@ -65,7 +67,12 @@ function GroupSummary() {
         + Add Expense
       </button>
       {showExpenseCard && (
-        <CreateExpense onClose={() => setShowExpenseCard(!showExpenseCard)} />
+        <CreateExpense
+          groupId={groupId}
+          members={members}
+          currentUserId={currentUserId}
+          onClose={() => setShowExpenseCard(!showExpenseCard)}
+        />
       )}
       {expenses.length > 0 ? (
         [...expenses].reverse().map((expense) => {

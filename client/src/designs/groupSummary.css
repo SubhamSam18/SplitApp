@@ -131,6 +131,20 @@ body.modal-open {
   color: #e63946;
   transform: scale(1.2);
 }
+.addExpense{
+  width: 150px;
+  height: 40px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background: linear-gradient(145deg, #ffffff, #230b63);
+  border: none;
+  transform : translateY(-2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.addExpense:hover{
+  transform: translateY(-5px);
+}
 
 @keyframes fadeIn {
   from {

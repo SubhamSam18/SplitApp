@@ -8,15 +8,100 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
-
+.creatCard h2{
+  margin-bottom: 0;
+}
 .creatCard {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
+  background: linear-gradient(145deg, #ffffff, #230b63);
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
-.expenseDescription{
+.creatCard:hover {
+  transform: translateY(-5px);
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.expenseDesc, .expenseAmt {
+  line-height: 40px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #fff;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #000000;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+.expenseAmt{
+  margin-bottom: 20px;
+}
+.expenseType,
+.paidBySelect {
+  display: flex;
+  flex-direction: column;
+}
 
+.expenseSelect,
+.paidBy {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.expenseType label,
+.paidBySelect label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.expenseSelect:focus,
+.paidBy:focus {
+  border-color: #007bff;
+  outline: none;
+}
+.expenseDesc:focus, .expenseAmt:focus {
+  border-color: #000000; 
+  outline: none;
+}
+
+.saveExpense {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.saveExpense button {
+  background-color: #fff;
+  color: #000000;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.saveExpense button:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+.saveExpense button:active {
+  transform: translateY(1px);
 }

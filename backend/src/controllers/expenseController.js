@@ -17,8 +17,10 @@ exports.createExpense = async (req, res) => {
       splits,
       paidBy,
       expenseDate,
-    } = req.body;
+    } = req.body.data;
+
     const group = await Group.findById(groupId).session(session);
+
     if (!group) {
       return res.status(400).json({ message: "Group Not found" });
     }

@@ -6,16 +6,30 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
   const [amount, setAmount] = useState("");
   const [splitType, setSplitType] = useState("equal");
   const [paidBy, setPaidBy] = useState(currentUserId);
+  const [splitAmount, setSplitAmount] = useState({});
 
   // console.log("Group ID:", groupId);
   // console.log("Members:", members);
   // console.log("Current User ID:", currentUserId);
 
   const handleClick = async () => {
-    const splits = members.map((member) => ({
-      user: member.userId,
-      name: member.name,
-    }));
+    let splitsEqual = "";
+    let splitsExact = "";
+    let splits = "";
+    if (splitType == "equal") {
+      splitsEqual = members.map((member) => ({
+        user: member.userId,
+        name: member.name,
+      }));
+      splits = splitsEqual;
+    } else if (splitType == "exact") {
+      splitsExact = members.map((member) => ({
+        user: member.userId,
+        amount: splitAmount[member.userId] || 0,
+        name: member.name,
+      }));
+      splits = splitsExact;
+    }
 
     const expenseData = {
       groupId,
@@ -26,7 +40,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
       paidBy,
     };
 
-    // console.log("Expense Data:", expenseData);
+    console.log("Expense Data:", expenseData);
 
     try {
       const response = await axios.post(
@@ -78,7 +92,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
         </div>
         <div className="paidBySelect">
           <select
-            className="paidBy"
+            className="paidByUser"
             value={paidBy}
             onChange={(e) => setPaidBy(e.target.value)}
           >
@@ -89,6 +103,25 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
                 </option>
               ))}
           </select>
+        </div>
+        <div className="userList">
+          {splitType === "exact" &&
+            members.map((member) => (
+              <div key={member.userId} value={member.userId}>
+                {member.name}
+                <input
+                  type="number"
+                  className="splitAmount"
+                  value={splitAmount[member.userId] || ""}
+                  onChange={(e) => {
+                    setSplitAmount((other) => ({
+                      ...other,
+                      [member.userId]: Number(e.target.value),
+                    }));
+                  }}
+                />
+              </div>
+            ))}
         </div>
         <div className="saveExpense">
           <button onClick={onClose}>Close</button>

@@ -75,49 +75,53 @@ function GroupSummary() {
           onClose={() => setShowExpenseCard(!showExpenseCard)}
         />
       )}
-      {expenses.length > 0 ? (
-        [...expenses].reverse().map((expense) => {
-          const userShare = expense.splits.find(
-            (split) => split.user === currentUserId,
-          );
-          const userShareAmount = userShare ? userShare.amount : 0;
-          return (
-            <div
-              key={expense._id}
-              className="groupSummary"
-              onClick={() => handleClick(expense)}
-            >
-              <div className="description">
-                {expense.description || "No description"}
+
+      {/* Scrollable Expenses List */}
+      <div className="expensesList">
+        {expenses.length > 0 ? (
+          [...expenses].reverse().map((expense) => {
+            const userShare = expense.splits.find(
+              (split) => split.user === currentUserId,
+            );
+            const userShareAmount = userShare ? userShare.amount : 0;
+            return (
+              <div
+                key={expense._id}
+                className="groupSummary"
+                onClick={() => handleClick(expense)}
+              >
+                <div className="description">
+                  {expense.description || "No description"}
+                </div>
+                <div className="paidBy">
+                  <strong>Paid By: </strong>
+                  {expense.payerName}
+                </div>
+                <div className="amount">
+                  <strong>Amount: </strong>₹{expense.amount}
+                </div>
+                <div className="share">
+                  {expense.paidBy === currentUserId && userShareAmount > 0 ? (
+                    <div>
+                      <strong>Your Share: </strong>₹{userShareAmount}
+                    </div>
+                  ) : expense.paidBy !== currentUserId && userShareAmount > 0 ? (
+                    <div>
+                      <strong>Your Share: </strong>₹-{userShareAmount}
+                    </div>
+                  ) : (
+                    <div>
+                      <strong>Your Share: </strong>₹0
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="paidBy">
-                <strong>Paid By: </strong>
-                {expense.payerName}
-              </div>
-              <div className="amount">
-                <strong>Amount: </strong>₹{expense.amount}
-              </div>
-              <div className="share">
-                {expense.paidBy === currentUserId && userShareAmount > 0 ? (
-                  <div>
-                    <strong>Your Share: </strong>₹{userShareAmount}
-                  </div>
-                ) : expense.paidBy !== currentUserId && userShareAmount > 0 ? (
-                  <div>
-                    <strong>Your Share: </strong>₹-{userShareAmount}
-                  </div>
-                ) : (
-                  <div>
-                    <strong>Your Share: </strong>₹0
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <p>No expenses found.</p>
-      )}
+            );
+          })
+        ) : (
+          <p>No expenses found.</p>
+        )}
+      </div>
 
       {selectedExpense && (
         <ExpenseSummary

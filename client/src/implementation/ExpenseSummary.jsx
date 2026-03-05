@@ -1,4 +1,4 @@
-import "../designs/groupSummary.css";
+import "../designs/expenseSummary.css";
 import axios from "axios";
 function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
 
@@ -15,6 +15,9 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
       console.log(err);
     }
   }
+  const handleEditExpense = (expenseId) => {
+    console.log(expenseId);
+  }
   return (
     <div>
       {selectedExpense && (
@@ -23,9 +26,7 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
             <button className="close-btn" onClick={handleCloseExpense}>
               x
             </button>
-            <button className="delete-btn" onClick={() => handleDeleteExpense(selectedExpense._id)}>
-              delete
-            </button>
+
             <h2>Expense Details</h2>
 
             <div className="expense-detail">
@@ -57,6 +58,12 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
                 </div>
               ))}
             </div>
+            <button className="edit-btn" onClick={() => handleEditExpense(selectedExpense._id)}>
+              Edit Expense
+            </button>
+            <button className="delete-btn" onClick={() => handleDeleteExpense(selectedExpense._id)}>
+              Delete Expense
+            </button>
           </div>
         </div>
       )}

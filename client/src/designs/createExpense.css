@@ -4,109 +4,82 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
-.creatCard h2{
-  margin-bottom: 0;
-}
+
 .creatCard {
-  background: linear-gradient(145deg, #ffffff, #230b63);
-  padding: 30px;
-  border-radius: 20px;
-  width: 320px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-  animation: slideUp 0.2s ease-in-out;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease-out;
+  box-sizing: border-box;
 }
+
+.creatCard h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.expenseDesc,
+.expenseAmt {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #333;
+  background-color: transparent;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.expenseDesc, .expenseAmt {
-  line-height: 40px;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-bottom: 2px solid #fff;
-  border-radius: 5px;
-  background-color: transparent;
-  color: #000000;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
+
+.expenseDesc:focus,
+.expenseAmt:focus {
+  border-color: #007bff;
+  outline: none;
 }
-.expenseAmt{
-  margin-bottom: 20px;
-}
+
 .expenseType,
 .paidBySelect {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .expenseSelect,
 .paidByUser {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 8px;
-  transition: all 0.3s ease;
-}
-
-.expenseType label,
-.paidBySelect label {
+  width: 100%;
+  padding: 8px;
   font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   color: #333;
-  margin-bottom: 5px;
-  font-weight: bold;
+  background-color: transparent;
+  transition: border-color 0.3s ease;
 }
 
 .expenseSelect:focus,
-.paidBy:focus {
+.paidByUser:focus {
   border-color: #007bff;
   outline: none;
-}
-.expenseDesc:focus, .expenseAmt:focus {
-  border-color: #000000; 
-  outline: none;
-}
-
-.saveExpense {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.saveExpense button {
-  background-color: #fff;
-  color: #000000;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.saveExpense button:hover {
-  background-color: #ffffff;
-  color: #000000;
-  transform: translateY(-2px);
-}
-
-.saveExpense button:active {
-  transform: translateY(1px);
 }
 
 .userList {
   margin-top: 10px;
-  max-height: 150px;
-  overflow-y: auto;
 }
 
 .userList div {
@@ -138,4 +111,45 @@ input[type="number"]::-webkit-inner-spin-button {
 .splitAmount:focus {
   border-bottom: 2px solid #6366f1;
   outline: none;
+}
+.saveExpense button {
+  background-color: #ff5c5c;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.saveExpense button:hover {
+  background-color: #ff5c5c;
+  transform: scale(1.05);
+}
+
+.saveExpense button:active {
+  transform: scale(1);
+}
+
+.saveExpense button:last-child {
+  background-color: #0056b3;
+}
+
+.saveExpense button:last-child:hover {
+  background-color: #0056b3;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -3,13 +3,13 @@ import axios from "axios";
 function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
 
   const handleDeleteExpense = async (expenseId) => {
-    // console.log(expenseId);
+    console.log(expenseId);
     try {
-      const response = await axios.delete(`http://localhost:5000/expenses/${expenseId}`, {
-        withcredentials: true
+      const response = await axios.delete(`http://localhost:5000/api/expense/${expenseId}`, {
+        withCredentials: true
       });
       const data = response.data;
-      console.log(data);
+      // console.log(data);
       handleCloseExpense();
     } catch (err) {
       console.log(err);

@@ -94,6 +94,7 @@ exports.groupSummary = async (req, res) => {
 
     const expenses = await Expense.find({
       group: groupId,
+      status: "active",
     });
 
     // console.log(expenses);

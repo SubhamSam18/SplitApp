@@ -62,7 +62,7 @@ exports.reverseBalance = async ({ groupId, paidBy, splits }) => {
     }
     const debtor = split.user;
     const creditor = paidBy;
-    const amountToReverse = split.amount;
+    const amount = split.amount;
 
     let balance = await Balance.findOne({
       group: groupId,
@@ -71,51 +71,32 @@ exports.reverseBalance = async ({ groupId, paidBy, splits }) => {
     });
 
     if (balance) {
-      if (balance.amount > amountToReverse) {
-        balance.amount -= amountToReverse;
+      if (balance.amount > amount) {
+        balance.amount -= amount;
         await balance.save();
-      } else if (balance.amount < amountToReverse) {
-        const newAmount = amountToReverse - balance.amount;
-        await balance.deleteOne();
-
-        let reverseBalance = await Balance.findOne({
-          group: groupId,
-          from: creditor,
-          to: debtor,
-        });
-
-        if (reverseBalance) {
-          reverseBalance.amount += newAmount;
-          await reverseBalance.save();
-        } else {
-          await Balance.create({
-            group: groupId,
-            from: creditor,
-            to: debtor,
-            amount: newAmount,
-          });
-        }
-      } else {
-        await balance.deleteOne();
+        continue;
       }
+
+      if (balance.amount === amount) {
+        await balance.deleteOne();
+        continue;
+      }
+
+      const reverseAmount = amount - balance.amount;
+      await balance.deleteOne();
+
+      await Balance.findOneAndUpdate(
+        { group: groupId, from: creditor, to: debtor },
+        { $inc: { amount: reverseAmount } },
+        { upsert: true }
+      );
+
     } else {
-      let reverseBalance = await Balance.findOne({
-        group: groupId,
-        from: creditor,
-        to: debtor,
-      });
-
-      if (reverseBalance) {
-        reverseBalance.amount += amountToReverse;
-        await reverseBalance.save();
-      } else {
-        await Balance.create({
-          group: groupId,
-          from: creditor,
-          to: debtor,
-          amount: amountToReverse,
-        });
-      }
+      await Balance.findOneAndUpdate(
+        { group: groupId, from: creditor, to: debtor },
+        { $inc: { amount } },
+        { upsert: true }
+      );
     }
   }
 };

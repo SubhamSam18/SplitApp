@@ -65,22 +65,57 @@ exports.reverseBalance = async ({ groupId, paidBy, splits }) => {
     const amountToReverse = split.amount;
 
     let balance = await Balance.findOne({
-      groupId,
-      debtor,
-      creditor,
+      group: groupId,
+      from: debtor,
+      to: creditor,
     });
 
-    if (!balance) {
-      throw new Error("Balance inconsistency detected!");
-    }
+    if (balance) {
+      if (balance.amount > amountToReverse) {
+        balance.amount -= amountToReverse;
+        await balance.save();
+      } else if (balance.amount < amountToReverse) {
+        const newAmount = amountToReverse - balance.amount;
+        await balance.deleteOne();
 
-    if (balance.amount > amountToReverse) {
-      balance.amount -= amountToReverse;
-      await balance.save();
-    } else if (balance.amount === amountToReverse) {
-      await balance.deleteOne();
+        let reverseBalance = await Balance.findOne({
+          group: groupId,
+          from: creditor,
+          to: debtor,
+        });
+
+        if (reverseBalance) {
+          reverseBalance.amount += newAmount;
+          await reverseBalance.save();
+        } else {
+          await Balance.create({
+            group: groupId,
+            from: creditor,
+            to: debtor,
+            amount: newAmount,
+          });
+        }
+      } else {
+        await balance.deleteOne();
+      }
     } else {
-      throw new Error("Balance data invalid");
+      let reverseBalance = await Balance.findOne({
+        group: groupId,
+        from: creditor,
+        to: debtor,
+      });
+
+      if (reverseBalance) {
+        reverseBalance.amount += amountToReverse;
+        await reverseBalance.save();
+      } else {
+        await Balance.create({
+          group: groupId,
+          from: creditor,
+          to: debtor,
+          amount: amountToReverse,
+        });
+      }
     }
   }
 };

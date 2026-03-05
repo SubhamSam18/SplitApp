@@ -112,6 +112,7 @@ exports.createExpense = async (req, res) => {
 };
 
 exports.deleteExpense = async (req, res) => {
+  // console.log("delete hit");
   const session = await mongoose.startSession();
   session.startTransaction();
   try {

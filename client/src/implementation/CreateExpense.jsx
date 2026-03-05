@@ -8,10 +8,6 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
   const [paidBy, setPaidBy] = useState(currentUserId);
   const [splitAmount, setSplitAmount] = useState({});
 
-  // console.log("Group ID:", groupId);
-  // console.log("Members:", members);
-  // console.log("Current User ID:", currentUserId);
-
   const handleClick = async () => {
     let splitsEqual = "";
     let splitsExact = "";

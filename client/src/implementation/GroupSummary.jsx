@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "../designs/groupSummary.css";
-import CreateExpense from "./createExpense";
+import CreateExpense from "./CreateExpense";
+import ExpenseSummary from "./ExpenseSummary";
 
 function GroupSummary() {
   const { groupId } = useParams();
@@ -118,46 +119,11 @@ function GroupSummary() {
         <p>No expenses found.</p>
       )}
 
-      {showExpense && selectedExpense && (
-        <div className="expense-overlay" onClick={handleCloseExpense}>
-          <div className="expense-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={handleCloseExpense}>
-              ×
-            </button>
-
-            <h2>Expense Details</h2>
-
-            <div className="expense-detail">
-              <strong>Description: </strong>
-              {selectedExpense.description || "No description"}
-            </div>
-
-            <div className="expense-detail">
-              <strong>Amount: </strong>₹{selectedExpense.amount}
-            </div>
-
-            <div className="expense-detail">
-              <strong>Paid By: </strong>
-              {selectedExpense.payerName}
-            </div>
-
-            <div className="expense-detail">
-              <strong>Date: </strong>
-              {new Date(selectedExpense.createdAt).toLocaleDateString()}
-            </div>
-
-            <h3>Split Details</h3>
-
-            <div className="splits-list">
-              {selectedExpense.splits.map((split, index) => (
-                <div key={index} className="split-item">
-                  <span>{split.name || split.user}</span>
-                  <span>₹{split.amount}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      {selectedExpense && (
+        <ExpenseSummary
+          selectedExpense={selectedExpense}
+          handleCloseExpense={handleCloseExpense}
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import "../designs/expenseSummary.css";
 import axios from "axios";
-function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
 
+function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense }) {
   const handleDeleteExpense = async (expenseId) => {
     console.log(expenseId);
     try {
@@ -14,9 +14,6 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
     } catch (err) {
       console.log(err);
     }
-  }
-  const handleEditExpense = (expenseId) => {
-    console.log(expenseId);
   }
   return (
     <div>
@@ -58,7 +55,7 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense }) {
                 </div>
               ))}
             </div>
-            <button className="edit-btn" onClick={() => handleEditExpense(selectedExpense._id)}>
+            <button className="edit-btn" onClick={() => { handleEditExpense(selectedExpense); }}>
               Edit Expense
             </button>
             <button className="delete-btn" onClick={() => handleDeleteExpense(selectedExpense._id)}>

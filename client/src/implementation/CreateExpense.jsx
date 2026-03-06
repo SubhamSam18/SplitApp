@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "../designs/CreateExpense.css";
-function CreateExpense({ groupId, members, currentUserId, onClose }) {
+
+function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selectedExpense }) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [splitType, setSplitType] = useState("equal");
   const [paidBy, setPaidBy] = useState(currentUserId);
   const [splitAmount, setSplitAmount] = useState({});
+
+  useEffect(() => {
+    if (selectedExpense) {
+      setDescription(selectedExpense.description);
+      setAmount(selectedExpense.amount);
+      setSplitType(selectedExpense.splitType);
+      setPaidBy(selectedExpense.paidBy);
+      const splitAmounts = selectedExpense.splits.reduce((acc, split) => {
+        acc[split.user] = split.amount || 0;
+        return acc;
+      }, {});
+      setSplitAmount(splitAmounts);
+    }
+  }, [selectedExpense]);
 
   const handleClick = async () => {
     let splitsEqual = "";
@@ -39,15 +54,22 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
     console.log("Expense Data:", expenseData);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/expense",
-        { data: expenseData },
-        {
-          withCredentials: true,
-        },
-      );
-      // console.log("Expense created:", response.data);
-      onClose();
+      if (selectedExpense) {
+        await axios.put(
+          `http://localhost:5000/api/expense/${selectedExpense._id}`,
+          { data: expenseData },
+          { withCredentials: true }
+        );
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/expense",
+          { data: expenseData },
+          { withCredentials: true }
+        );
+      }
+      // console.log("Expense processed");
+      if (onSave) onSave();
+      else onClose();
     } catch (error) {
       console.error("Error creating expense:", error);
       alert(error.response?.data?.message || "Failed to create expense");
@@ -57,7 +79,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose }) {
   return (
     <div className="createExpenseCard">
       <div className="creatCard">
-        <h2>Add New Expense</h2>
+        <h2>{selectedExpense ? "Edit Expense" : "Add New Expense"}</h2>
         <div className="expenseDescription">
           <input
             type="text"

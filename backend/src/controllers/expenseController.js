@@ -147,11 +147,13 @@ exports.deleteExpense = async (req, res) => {
 };
 
 exports.updateExpenses = async (req, res) => {
+  // console.log("Update Hit!");
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
     const { expenseId } = req.params;
-    const { amount, paidBy, splitType, splits, expenseDate } = req.body;
+    const bodyData = req.body.data || req.body;
+    const { amount, paidBy, splitType, splits, expenseDate, description } = bodyData;
 
     const oldExpense = await Expense.findById(expenseId).session(session);
 
@@ -170,7 +172,6 @@ exports.updateExpenses = async (req, res) => {
         expense: expenseId,
         status: "active",
       },
-      session(session),
     );
 
     if (settlementExists) {
@@ -179,6 +180,8 @@ exports.updateExpenses = async (req, res) => {
       });
     }
     const payerId = paidBy || oldExpense.paidBy;
+    const payerUser = await User.findById(payerId.toString());
+    const payerName = payerUser ? payerUser.name : oldExpense.payerName;
 
     await balanceService.reverseBalance({
       groupId: oldExpense.group,
@@ -209,6 +212,7 @@ exports.updateExpenses = async (req, res) => {
         }
         computedSplits.push({
           user: userId.user,
+          name: userId.name,
           amount: userAmount,
         });
       });
@@ -224,22 +228,22 @@ exports.updateExpenses = async (req, res) => {
       return res.status(400).json({ message: "Invalid split type" });
     }
 
-    const newExpense = await Expense.create({
+    const newExpense = await Expense.create([{
       group: oldExpense.group,
+      description: description !== undefined ? description : oldExpense.description,
       paidBy: payerId,
+      payerName: payerName,
       amount: totalAmount,
       splitType,
       splits: computedSplits,
-      expenseDate: expenseDate || Date.now(),
-      session,
-    });
+      expenseDate: expenseDate || Date.now()
+    }], { session });
 
     await balanceService.updateBalance(
       {
         groupId: oldExpense.group,
         paidBy: payerId,
         splits: computedSplits,
-        session,
       },
       { session },
     );

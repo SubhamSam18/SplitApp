@@ -1,12 +1,20 @@
 .summaryDiv {
   background-color: #f4f6f9;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 20px;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.groupSummaryContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2f7, #e3e9f3);
 }
 
 .summaryDiv h1 {
@@ -18,7 +26,7 @@
 }
 
 .addExpense {
-  background-color: #007bff;
+  background-color: #0056b3;
   color: white;
   padding: 12px 20px;
   font-size: 16px;
@@ -40,7 +48,7 @@
 }
 
 .expensesList {
-  max-height: 400px; 
+  max-height: 400px;
   overflow-y: auto;
   margin-top: 20px;
   padding-right: 10px;
@@ -145,6 +153,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -172,6 +181,6 @@
   }
 
   .expensesList {
-    max-height: 300px; 
+    max-height: 300px;
   }
 }

@@ -38,6 +38,7 @@
 }
 
 .edit-btn {
+    font-family: 'Times New Roman', Times, serif;
     background-color: #0056b3;
     color: white;
     padding: 8px 12px;
@@ -56,6 +57,7 @@
 }
 
 .delete-btn {
+    font-family: 'Times New Roman', Times, serif;
     background-color: #ce2828;
     color: white;
     padding: 8px 12px;

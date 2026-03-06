@@ -63,15 +63,16 @@ function GroupSummary() {
     <div className="groupSummaryContainer">
       <div className="summaryDiv">
         <h1>{groupName}</h1>
-        <button
-          className="addExpense"
-          onClick={() => {
-            setSelectedExpense(null);
-            setShowCreateExpense(true);
-          }}
-        >
-          + Add Expense
-        </button>
+        <div className="addButton">
+          <button
+            className="addExpense"
+            onClick={() => {
+              setSelectedExpense(null);
+              setShowCreateExpense(true);
+            }}
+          >
+            + Add Expense
+          </button></div>
         {showCreateExpense && (
           <CreateExpense
             groupId={groupId}

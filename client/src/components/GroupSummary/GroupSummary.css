@@ -25,7 +25,15 @@
   font-weight: 600;
 }
 
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
 .addExpense {
+  font-family: 'Times New Roman', Times, serif;
   background-color: #0056b3;
   color: white;
   padding: 12px 20px;
@@ -33,14 +41,13 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  width: 100%;
-  margin-bottom: 20px;
+  width: 50%;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .addExpense:hover {
   background-color: #0056b3;
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 .addExpense:active {

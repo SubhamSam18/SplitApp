@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import './FriendsPage.css';
+import { motion, AnimatePresence } from "framer-motion";
 
 function FriendsPage() {
   const [Friends, setFriends] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editableBalance, setEditableBalance] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSelectClick = (user) => {
     setSelectedUser(user);
@@ -68,28 +70,45 @@ function FriendsPage() {
         </div>
       ) : (
         <div className="users">
-          {Friends.map((user) => (
-            <div key={user._id} className="userContainer">
-              <div className="user">{user.name}</div>
-              <div
-                className={`balanceBox ${
-                  user.balance > 0
+          <div className="searchFriend">
+            <span className="search-icon">⌕</span>
+            <input
+              type="text"
+              placeholder="Search Friend"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <AnimatePresence>
+            {Friends.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase())).map((user) => (
+              <motion.div
+                key={user._id}
+                className="userContainer"
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="user">{user.name}</div>
+                <div
+                  className={`balanceBox ${user.balance > 0
                     ? "positive"
                     : user.balance < 0
                       ? "negative"
                       : "neutral"
-                }`}
-              >
-                ₹{user.balance}
-              </div>
-              <button
-                className="settleUp"
-                onClick={() => handleSelectClick(user)}
-              >
-                Settle Up
-              </button>
-            </div>
-          ))}
+                    }`}
+                >
+                  ₹{user.balance}
+                </div>
+                <button
+                  className="settleUp"
+                  onClick={() => handleSelectClick(user)}
+                >
+                  Settle Up
+                </button>
+              </motion.div>
+            ))}</AnimatePresence>
         </div>
       )}
       {showConfirm && (

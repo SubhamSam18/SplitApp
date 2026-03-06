@@ -31,6 +31,7 @@
 
 .expenseDesc,
 .expenseAmt {
+  font-family: 'Times New Roman', Times, serif;
   width: 100%;
   padding: 8px;
   font-size: 14px;
@@ -62,6 +63,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .expenseSelect,
 .paidByUser {
+  font-family: 'Times New Roman', Times, serif;
   width: 100%;
   padding: 8px;
   font-size: 14px;
@@ -137,6 +139,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .saveExpense button {
+  font-family: 'Times New Roman', Times, serif;
   background-color: #0056b3;
   color: white;
   padding: 10px;

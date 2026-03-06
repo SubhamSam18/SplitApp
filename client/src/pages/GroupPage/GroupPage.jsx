@@ -91,7 +91,7 @@ function GroupPage() {
             >
               <div className="GroupTile">
                 <span className="groupIcon">✈️</span>
-                <span className="groupName">{group.name}</span>
+                <span className="gp-groupName">{group.name}</span>
               </div>
             </div>
           ))
@@ -116,7 +116,7 @@ function GroupPage() {
                 onChange={(e) => setMemberInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleAddMember()}
               />
-              <button onClick={handleAddMember}>Add</button>
+              <button onClick={handleAddMember}>ADD</button>
             </div>
             <div className="member-list">
               {members.map((m, i) => (
@@ -132,7 +132,7 @@ function GroupPage() {
               ))}
             </div>
             <button className="save-btn" onClick={handleCreateGroup}>
-              Save Group
+              Create Group
             </button>
             <button
               className="cancel-btn"

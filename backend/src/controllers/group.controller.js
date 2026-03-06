@@ -1,8 +1,8 @@
-const Group = require("../models/Group");
-const Expense = require("../models/Expense");
-const Balance = require("../models/Balance");
-const Settlement = require("../models/Settlement");
-const User = require("../models/User");
+const Group = require('../models/group.model');
+const Expense = require('../models/expense.model');
+const Balance = require('../models/balance.model');
+const Settlement = require('../models/settlement.model');
+const User = require('../models/user.model');
 
 exports.createGroup = async (req, res) => {
   try {

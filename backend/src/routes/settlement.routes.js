@@ -1,7 +1,7 @@
 const express = require("express");
-const settlementController = require("../controllers/settlementController");
-const authMiddleware = require("../middleware/authMiddleware");
-const Settlement = require("../models/Settlement");
+const settlementController = require('../controllers/settlement.controller');
+const authMiddleware = require('../middleware/auth.middleware');
+const Settlement = require('../models/settlement.model');
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
-const User = require("../models/User");
-const Balance = require("../models/Balance");
-const Group = require("../models/Group");
+const User = require('../models/user.model');
+const Balance = require('../models/balance.model');
+const Group = require('../models/group.model');
 
 exports.getFriends = async (req, res) => {
   const currentUserId = req.user.userId;

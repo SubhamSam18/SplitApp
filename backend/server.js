@@ -9,14 +9,14 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-const authRoutes = require("./src/routes/authRoutes");
-const authMiddleware = require("./src/middleware/authMiddleware");
-const groupRoutes = require("./src/routes/groupRoutes");
-const expenseRoutes = require("./src/routes/expenseRoutes");
-const balanceRoutes = require("./src/routes/balanceRoutes");
-const settlementRoutes = require("./src/routes/settlementRoutes");
-const summaryRoutes = require("./src/routes/summaryRoutes");
-const friendsRoutes = require("./src/routes/friendsRoutes");
+const authRoutes = require('./src/routes/auth.routes');
+const authMiddleware = require('./src/middleware/auth.middleware');
+const groupRoutes = require('./src/routes/group.routes');
+const expenseRoutes = require('./src/routes/expense.routes');
+const balanceRoutes = require('./src/routes/balance.routes');
+const settlementRoutes = require('./src/routes/settlement.routes');
+const summaryRoutes = require('./src/routes/summary.routes');
+const friendsRoutes = require('./src/routes/friends.routes');
 
 app.use(express.json());
 app.use(cookieParser());

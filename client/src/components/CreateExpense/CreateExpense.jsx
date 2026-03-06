@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../designs/CreateExpense.css";
+import "./CreateExpense.css";
 
 function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selectedExpense }) {
   const [description, setDescription] = useState("");
@@ -142,8 +142,8 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
             ))}
         </div>
         <div className="saveExpense">
-          <button onClick={onClose}>Close</button>
           <button onClick={handleClick}>Save</button>
+          <button onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

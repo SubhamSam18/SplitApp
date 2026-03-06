@@ -1,4 +1,4 @@
-import "../designs/expenseSummary.css";
+import './ExpenseSummary.css';
 import axios from "axios";
 
 function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense }) {

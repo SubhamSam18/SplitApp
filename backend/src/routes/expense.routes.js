@@ -1,6 +1,6 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
-const expenseController = require("../controllers/expenseController");
+const authMiddleware = require('../middleware/auth.middleware');
+const expenseController = require('../controllers/expense.controller');
 const router = express.Router();
 
 router.post("/", authMiddleware, expenseController.createExpense);

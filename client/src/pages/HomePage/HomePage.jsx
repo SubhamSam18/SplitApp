@@ -1,5 +1,5 @@
 import axios from "axios";
-import "../designs/home.css";
+import './HomePage.css';
 import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { useState, useEffect } from "react";

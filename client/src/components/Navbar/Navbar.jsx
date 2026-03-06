@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "../designs/navbar.css";
+import './Navbar.css';
 import { IoHome } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
 import { IoAnalyticsSharp } from "react-icons/io5";

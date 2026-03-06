@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Balance = require("../models/Balance");
-const authMiddleware = require("../middleware/authMiddleware");
+const Balance = require('../models/balance.model');
+const authMiddleware = require('../middleware/auth.middleware');
 
 router.get("/:groupId", authMiddleware, async(req,res) =>{
     try{

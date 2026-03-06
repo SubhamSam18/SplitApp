@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import axios from "axios";
-import "../designs/group.css";
+import './GroupPage.css';
 import { useLocation } from "react-router-dom";
 
 function GroupPage() {

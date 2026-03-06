@@ -1,5 +1,5 @@
-const Expense = require("../models/Expense");
-const Balance = require("../models/Balance");
+const Expense = require('../models/expense.model');
+const Balance = require('../models/balance.model');
 exports.getSummary = async (req, res) => {
   try {
     const currentUserId = req.user.userId;

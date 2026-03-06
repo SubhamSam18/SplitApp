@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Authentication from "./pages/Authentication";
+import Authentication from "./pages/Authentication/Authentication";
 import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardLayout from "./implementation/DashboardLayout";
-import Home from "./pages/HomePage";
-import Group from "./pages/GroupPage";
-import Friends from "./pages/FriendsPage";
-import GroupSummary from "./implementation/GroupSummary";
+import DashboardLayout from "./components/DashboardLayout/DashboardLayout";
+import Home from "./pages/HomePage/HomePage";
+import Group from "./pages/GroupPage/GroupPage";
+import Friends from "./pages/FriendsPage/FriendsPage";
+import GroupSummary from "./components/GroupSummary/GroupSummary";
 function App() {
   return (
     <Routes>

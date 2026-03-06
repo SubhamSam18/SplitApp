@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import "../designs/groupSummary.css";
-import CreateExpense from "./CreateExpense";
-import ExpenseSummary from "./ExpenseSummary";
+import './GroupSummary.css';
+import CreateExpense from "../CreateExpense/CreateExpense";
+import ExpenseSummary from "../ExpenseSummary/ExpenseSummary";
 
 function GroupSummary() {
   const { groupId } = useParams();

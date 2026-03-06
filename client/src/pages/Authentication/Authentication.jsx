@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../designs/auth.css";
+import './Authentication.css';
 
 function Authentication() {
   const [signupName, setSignupName] = useState("");

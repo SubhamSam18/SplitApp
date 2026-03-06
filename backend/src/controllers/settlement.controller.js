@@ -1,6 +1,6 @@
-const Balance = require("../models/Balance");
-const Settlement = require("../models/Settlement");
-const Expense = require("../models/Expense");
+const Balance = require('../models/balance.model');
+const Settlement = require('../models/settlement.model');
+const Expense = require('../models/expense.model');
 
 exports.settleGroupPayment = async (req, res) => {
   try {

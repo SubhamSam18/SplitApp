@@ -1,9 +1,9 @@
-const Expense = require("../models/Expense");
-const Group = require("../models/Group");
-const balanceService = require("../services/balanceService");
-const Settlement = require("../models/Settlement");
+const Expense = require('../models/expense.model');
+const Group = require('../models/group.model');
+const balanceService = require('../services/balance.service');
+const Settlement = require('../models/settlement.model');
 const mongoose = require("mongoose");
-const User = require("../models/User");
+const User = require('../models/user.model');
 
 exports.createExpense = async (req, res) => {
   const session = await mongoose.startSession();

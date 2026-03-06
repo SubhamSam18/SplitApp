@@ -1,4 +1,4 @@
-const Balance = require("../models/Balance");
+const Balance = require('../models/balance.model');
 
 exports.updateBalance = async ({ groupId, paidBy, splits }) => {
   for (const split of splits) {

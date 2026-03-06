@@ -90,8 +90,8 @@ function GroupPage() {
               onClick={() => handleClick(group._id)}
             >
               <div className="GroupTile">
-                ✈️
-                {group.name}
+                <span className="groupIcon">✈️</span>
+                <span className="groupName">{group.name}</span>
               </div>
             </div>
           ))
@@ -126,7 +126,7 @@ function GroupPage() {
                     className="remove-member"
                     onClick={() => handleRemoveMember(i)}
                   >
-                    X
+                    x
                   </button>
                 </span>
               ))}

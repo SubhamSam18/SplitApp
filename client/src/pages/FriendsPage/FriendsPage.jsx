@@ -7,13 +7,13 @@ function FriendsPage() {
   const [Friends, setFriends] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [editableBalance, setEditableBalance] = useState("");
+  const [Balance, setBalance] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSelectClick = (user) => {
     setSelectedUser(user);
     setShowConfirm(true);
-    setEditableBalance(user.balance);
+    setBalance(user.balance);
   };
 
   const getFriends = async () => {
@@ -33,7 +33,8 @@ function FriendsPage() {
     try {
       const res = await axios.post(
         "http://localhost:5000/api/settle/friend",
-        { to: selectedUser._id },
+        { to: selectedUser._id,
+         },
         {
           withCredentials: true,
         },
@@ -121,7 +122,7 @@ function FriendsPage() {
               This action cannot be reversed!
             </p>
             <div className="amountBox" type="number">
-              {editableBalance}
+              {Balance}
             </div>
             <div className="popupButton">
               <button className="confirmButton" onClick={confirmSettle}>

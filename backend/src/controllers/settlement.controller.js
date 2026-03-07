@@ -1,6 +1,6 @@
 const Balance = require('../models/balance.model');
 const Settlement = require('../models/settlement.model');
-const Expense = require('../models/expense.model');
+const User = require('../models/user.model');
 
 exports.settleGroupPayment = async (req, res) => {
   try {
@@ -49,7 +49,6 @@ exports.settleFriendsPayment = async (req, res) => {
   try {
     const { to } = req.body;
     const from = req.user.userId;
-
     if (!from || !to) return res.status(400).json({ message: "Invalid data!" });
 
     const balances = await Balance.find({
@@ -58,7 +57,7 @@ exports.settleFriendsPayment = async (req, res) => {
         { from: to, to: from },
       ],
     });
-    // console.log(balances);
+
     if (!balances.length)
       return res.status(404).json({ message: "No balances found!" });
 
@@ -71,7 +70,18 @@ exports.settleFriendsPayment = async (req, res) => {
         netAmount += b.amount;
       }
     });
-    // console.log(netAmount);
+    let sender, reciever;
+    if (netAmount < 0) {
+      sender = req.user.userId;
+      reciever = to;
+    } else {
+      sender = to;
+      reciever = req.user.userId;
+    }
+    const recieversName = await User.findOne({ _id: reciever });
+    const sendersName = await User.findOne({ _id: sender });
+    // console.log(recieversName.name);
+    // console.log(sendersName.name);
     await Balance.deleteMany({
       $or: [
         { from, to },
@@ -80,9 +90,11 @@ exports.settleFriendsPayment = async (req, res) => {
     });
     await Settlement.create({
       type: "Full",
-      from,
-      to,
-      amount: netAmount,
+      recieversName: recieversName.name,
+      from: sender,
+      sendersName: sendersName.name,
+      to: reciever,
+      amount: Math.abs(netAmount),
       settledBy: req.user.userId,
     });
 

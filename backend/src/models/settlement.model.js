@@ -12,9 +12,17 @@ const settlementSchema = new mongoose.Schema(
       enum: ["Group", "Full"],
       required: true,
     },
+    sendersName: {
+      type: String,
+      required: true,
+    },
     from: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    recieversName: {
+      type: String,
       required: true,
     },
     to: {

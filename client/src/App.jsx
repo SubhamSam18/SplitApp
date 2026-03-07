@@ -6,6 +6,7 @@ import Home from "./pages/HomePage/HomePage";
 import Group from "./pages/GroupPage/GroupPage";
 import Friends from "./pages/FriendsPage/FriendsPage";
 import GroupSummary from "./components/GroupSummary/GroupSummary";
+import Analytics from "./pages/AnalyticsPage/AnalyticsPage";
 function App() {
   return (
     <Routes>
@@ -21,7 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/groups" element={<Group />} />
         <Route path="/groups/:groupId/summary" element={<GroupSummary />} />
-        <Route path="/analytics" element={<div>Analytics Page</div>} />
+        <Route path="/analytics" element={<Analytics />} />
         <Route path="/friends" element={<Friends />} />
       </Route>
     </Routes>

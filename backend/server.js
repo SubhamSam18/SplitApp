@@ -17,6 +17,7 @@ const balanceRoutes = require('./src/routes/balance.routes');
 const settlementRoutes = require('./src/routes/settlement.routes');
 const summaryRoutes = require('./src/routes/summary.routes');
 const friendsRoutes = require('./src/routes/friends.routes');
+const analyticsRoutes = require('./src/routes/analytics.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -39,6 +40,7 @@ app.use("/api/balances", balanceRoutes);
 app.use("/api/settle", settlementRoutes);
 app.use("/api/summary", summaryRoutes);
 app.use("/api/friends", friendsRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 const PORT = process.env.PORT || 5000;
 

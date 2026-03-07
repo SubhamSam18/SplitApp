@@ -1,0 +1,61 @@
+.analyticsPage {
+    padding: 30px;
+    max-width: 1000px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.months {
+    margin-bottom: 25px;
+}
+
+.months select {
+    padding: 10px 0px 10px 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid #ccc;
+}
+
+.analyticsGrid {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 20px;
+}
+
+.box {
+    grid-column: span 6;
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.box:nth-child(5) {
+    grid-column: 4 / span 6;
+}
+
+.box:hover {
+    transform: translateY(-4px);
+}
+
+.box h3 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.box p {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.received p {
+    color: #2bae62;
+}
+
+.paid p {
+    color: #e74c3c;
+}

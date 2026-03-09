@@ -1,8 +1,8 @@
 .groups-page {
-  padding: 20px;
+  padding: 10% 10% 10% 10%;
   font-family: 'Times New Roman', Times, serif;
-  margin-top: 30px;
-  margin-left: 20%;
+  /* margin-top: 30px; */
+  margin-left: 15%;
 }
 
 .create-group-section {
@@ -33,7 +33,8 @@
 .groups-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+  width: 700px;
+  gap: 20px;
 }
 
 .group-card {
@@ -171,7 +172,6 @@
   font-weight: 600;
 }
 
-/* Save button */
 .save-btn,
 .cancel-btn {
   font-family: 'Times New Roman', Times, serif;

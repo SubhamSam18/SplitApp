@@ -9,39 +9,46 @@ function Authentication() {
   const [signupEmail, setSignupEmail] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   const chkRef = useRef(null);
 
-  const handleLogin = async () => {
-    // console.log("Email: ", email);
-    // console.log("Password: ", password);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    // console.log("Login triggered");
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",
         { email, password },
         { withCredentials: true },
       );
-      //   console.log(response.data);
-      alert("Login successful");
-      navigate("/");
+      setStatus("Success");
+      setMessage("Login successful");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (err) {
-      console.log(err);
-      alert("Login failed");
+      setStatus("Failed");
+      setMessage("Login Failed! Try Again!");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     }
   };
 
   const handleSignup = async () => {
-    console.log("Name: ", signupName);
-    console.log("Email: ", signupEmail);
-    console.log("Password: ", signupPassword);
+    // console.log("Name: ", signupName);
+    // console.log("Email: ", signupEmail);
+    // console.log("Password: ", signupPassword);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/signup",
         { name: signupName, email: signupEmail, password: signupPassword },
       );
       //   console.log(response.data);
-      alert("SignUp successful! Please Login");
+      // alert("SignUp successful! Please Login");
       if (chkRef.current) {
         chkRef.current.checked = true;
       }
@@ -88,9 +95,8 @@ function Authentication() {
           </button>
         </div>
 
-        <div className="login">
+        <form className="login" onSubmit={handleLogin}>
           <label htmlFor="chk">Login</label>
-
           <input
             className="AuthEmail"
             type="email"
@@ -107,10 +113,18 @@ function Authentication() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className="AuthButton" onClick={handleLogin}>
+          <button className="AuthButton" type="submit">
             Login
           </button>
-        </div>
+          {message && (
+            <p className={`auth-message ${status}`}>
+              {message}
+              {(status === "Success") && (
+                <span className="loading-dots"></span>
+              )}
+            </p>
+          )}
+        </form>
       </div>
     </div>
   );

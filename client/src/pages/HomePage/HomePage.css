@@ -115,6 +115,8 @@
 }
 
 .createGroupBox {
+  color: #0056b3;
+  text-decoration: none;
   width: 120px;
   height: 120px;
   text-decoration: none;

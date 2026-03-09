@@ -33,8 +33,9 @@ function FriendsPage() {
     try {
       const res = await axios.post(
         "http://localhost:5000/api/settle/friend",
-        { to: selectedUser._id,
-         },
+        {
+          to: selectedUser._id,
+        },
         {
           withCredentials: true,
         },
@@ -70,7 +71,9 @@ function FriendsPage() {
           <p>Create a group to start splitting expenses.</p>
         </div>
       ) : (
-        <div className="users">
+        <div className="friend">
+
+
           <div className="searchFriend">
             <span className="search-icon">⌕</span>
             <input
@@ -80,36 +83,38 @@ function FriendsPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <AnimatePresence>
-            {Friends.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase())).map((user) => (
-              <motion.div
-                key={user._id}
-                className="userContainer"
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.25 }}
-              >
-                <div className="user">{user.name}</div>
-                <div
-                  className={`balanceBox ${user.balance > 0
-                    ? "positive"
-                    : user.balance < 0
-                      ? "negative"
-                      : "neutral"
-                    }`}
+          <div className="users">
+            <AnimatePresence>
+              {Friends.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase())).map((user) => (
+                <motion.div
+                  key={user._id}
+                  className="userContainer"
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.25 }}
                 >
-                  ₹{user.balance}
-                </div>
-                <button
-                  className="settleUp"
-                  onClick={() => handleSelectClick(user)}
-                >
-                  Settle Up
-                </button>
-              </motion.div>
-            ))}</AnimatePresence>
+                  <div className="user">{user.name}</div>
+                  <div
+                    className={`balanceBox ${user.balance > 0
+                      ? "positive"
+                      : user.balance < 0
+                        ? "negative"
+                        : "neutral"
+                      }`}
+                  >
+                    ₹{user.balance}
+                  </div>
+                  <button
+                    className="settleUp"
+                    onClick={() => handleSelectClick(user)}
+                  >
+                    Settle Up
+                  </button>
+                </motion.div>
+              ))}</AnimatePresence>
+          </div>
         </div>
       )}
       {showConfirm && (

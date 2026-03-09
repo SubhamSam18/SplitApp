@@ -1,9 +1,12 @@
 .friendsPage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
   max-width: 600px;
   margin: auto auto;
-  margin-top: 10%;
-  padding: 20px;
-  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  padding: 2% 2% 2% 2%;
+  transform: translate(-45%, -50%);
   font-family: 'Times New Roman', Times, serif;
   background: #f7f9fc;
   border-radius: 12px;
@@ -57,6 +60,14 @@
   transition: transform 0.3s;
 }
 
+.users {
+  height: 340px;
+  max-height: 340px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  padding-right: 20px;
+}
+
 .user {
   font-weight: 600;
   font-size: 1rem;
@@ -98,7 +109,7 @@
 
 .settleUp {
   font-family: 'Times New Roman', Times, serif;
-  background: #007bff;
+  background: #0056b3;
   min-width: 90px;
   color: #fff;
   border: none;
@@ -110,7 +121,7 @@
 }
 
 .settleUp:hover {
-  background: #0056b3;
+  background: #2876ca;
   transform: translateY(-1px);
 }
 

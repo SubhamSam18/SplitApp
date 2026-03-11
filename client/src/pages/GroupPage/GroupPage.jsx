@@ -70,18 +70,24 @@ function GroupPage() {
   };
   return (
     <div className="groups-page">
-      <div className="create-group-section">
+      <div className="groups-header">
+        <div className="header-content">
+          <h1>Your Groups</h1>
+          <p>Manage and track shared expenses with your teams</p>
+        </div>
         <button
-          className="create-header"
+          className="create-group-btn"
           onClick={() => setShowConfirm(!showConfirm)}
         >
-          + Create New Group
+          <span className="plus-icon">+</span> Create New Group
         </button>
       </div>
-      <h2>Your Groups</h2>
+
       <div className="groups-grid">
         {groups.length === 0 ? (
-          <p>No groups available</p>
+          <div className="empty-groups">
+            <p>No groups found. Create one to get started!</p>
+          </div>
         ) : (
           groups.map((group) => (
             <div
@@ -89,9 +95,11 @@ function GroupPage() {
               key={group._id}
               onClick={() => handleClick(group._id)}
             >
-              <div className="GroupTile">
-                <span className="groupIcon">✈️</span>
-                <span className="gp-groupName">{group.name}</span>
+              <div className="card-glass-glow"></div>
+              <div className="groupIcon">✈️</div>
+              <div className="card-info">
+                <h3>{group.name}</h3>
+                <span className="view-summary">View Summary →</span>
               </div>
             </div>
           ))
@@ -99,7 +107,7 @@ function GroupPage() {
         <Outlet />
       </div>
       {showConfirm && (
-        <div className="create-body">
+        <div className="overlay">
           <div className="card">
             <p className="group-heading">Create New Group</p>
             <input
@@ -116,7 +124,7 @@ function GroupPage() {
                 onChange={(e) => setMemberInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleAddMember()}
               />
-              <button onClick={handleAddMember}>ADD</button>
+              <button className="add-member-btn" onClick={handleAddMember}>ADD</button>
             </div>
             <div className="member-list">
               {members.map((m, i) => (

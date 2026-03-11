@@ -1,124 +1,121 @@
 .summaryDiv {
-  background-color: #f4f6f9;
-  padding: 20px;
-  border-radius: 20px;
+  background-color: #1e293b;
+  padding: 32px;
+  border-radius: 1.5rem;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .groupSummaryContainer {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #eef2f7, #e3e9f3);
+  background-color: #0f172a;
+  padding: 40px 20px;
 }
 
 .summaryDiv h1 {
   text-align: center;
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: 600;
+  font-size: 1.5rem;
+  color: #f8fafc;
+  margin-bottom: 24px;
+  font-weight: 700;
 }
 
 .addButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 0px;
+  margin-bottom: 24px;
 }
 
 .addExpense {
-  font-family: 'Times New Roman', Times, serif;
-  background-color: #0056b3;
+  background: #6366f1;
   color: white;
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 12px 24px;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.75rem;
   cursor: pointer;
-  width: 50%;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: auto;
+  min-width: 200px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .addExpense:hover {
-  background-color: #0056b3;
-  transform: scale(1.01);
-}
-
-.addExpense:active {
-  transform: scale(1);
+  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
 }
 
 .expensesList {
-  max-height: 400px;
+  padding-top: 10px;
+  max-height: 58vh;
   overflow-y: auto;
-  margin-top: 20px;
-  padding-right: 10px;
-  scrollbar-width: thin;
+  margin-top: 24px;
+  padding-right: 12px;
 }
 
-
 .groupSummary {
-  background: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  background: #0f172a;
+  border-radius: 1rem;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .groupSummary:hover {
-  background-color: #e6f0ff;
-  transform: translateY(-5px);
+  background-color: #1e293b;
+  transform: translateY(-4px);
+  border-color: #6366f1;
 }
 
 .groupSummary .description {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 10px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 12px;
 }
 
 .groupSummary .paidBy,
 .groupSummary .amount,
 .groupSummary .share {
-  font-size: 14px;
-  color: #555;
+  font-size: 0.875rem;
+  color: #cbd5e1;
 }
 
 .groupSummary .paidBy strong,
 .groupSummary .amount strong,
 .groupSummary .share strong {
-  font-weight: bold;
+  color: #f1f5f9;
 }
 
 .groupSummary .share {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .groupSummary .share div {
   display: flex;
   justify-content: space-between;
-}
-
-.groupSummary .share div strong {
-  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .expense-summary-popup {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,68 +123,44 @@
 }
 
 .expense-summary-card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  width: 80%;
+  background: #1e293b;
+  padding: 32px;
+  border-radius: 1.5rem;
+  width: 90%;
   max-width: 600px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   animation: slideUp 0.3s ease-out;
 }
 
 .expense-summary-card h3 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 15px;
-  font-weight: 600;
+  font-size: 1.25rem;
+  color: #f8fafc;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
-
 
 .expense-summary-details {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin-bottom: 24px;
 }
 
-.expense-summary-details strong {
-  font-weight: bold;
-}
-
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .summaryDiv {
-    padding: 15px;
-    max-width: 100%;
+    padding: 20px;
+    border-radius: 1rem;
   }
-
+  
   .addExpense {
-    padding: 10px;
-    font-size: 14px;
+    width: 100%;
   }
-
+  
   .groupSummary {
-    padding: 12px;
+    padding: 16px;
   }
-
-  .groupSummary .description {
-    font-size: 14px;
-  }
-
-  .expensesList {
-    max-height: 300px;
+  
+  .groupSummaryContainer {
+    padding: 20px 16px;
   }
 }

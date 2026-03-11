@@ -12,107 +12,113 @@
 }
 
 .expense-popup {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    width: 350px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #1e293b;
+    padding: 32px;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     animation: slideUp 0.3s ease-out;
     position: relative;
 }
 
 .close-btn {
     background: transparent;
-    color: #444444;
+    color: #94a3b8;
     border: none;
-    font-size: 20px;
-    top: 10px;
-    right: 15px;
+    font-size: 24px;
+    top: 16px;
+    right: 20px;
     cursor: pointer;
     position: absolute;
+    transition: color 0.2s ease;
 }
 
 .close-btn:hover {
-    background-color: white;
-    color: black;
+    color: #f8fafc;
 }
 
 .edit-btn {
-    font-family: 'Times New Roman', Times, serif;
-    background-color: #0056b3;
+    background-color: #6366f1;
     color: white;
-    padding: 8px 12px;
+    padding: 12px;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
+    transition: all 0.2s ease;
+    margin-top: 16px;
     width: 100%;
 }
 
 .edit-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
+    background-color: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
 }
 
 .delete-btn {
-    font-family: 'Times New Roman', Times, serif;
-    background-color: #ce2828;
+    background-color: #f43f5e;
     color: white;
-    padding: 8px 12px;
+    padding: 12px;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
+    transition: all 0.2s ease;
+    margin-top: 12px;
     width: 100%;
 }
 
 .delete-btn:hover {
-    background-color: #d94f4f;
-    transform: scale(1.02);
-}
-
-.delete-btn:active {
-    transform: scale(1);
+    background-color: #e11d48;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
 }
 
 .expense-overlay h2 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #333;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    color: #f8fafc;
+    font-weight: 700;
 }
 
 .expense-overlay h3 {
-    font-size: 16px;
-    margin-top: 20px;
-    color: #333;
-}
-
-.expense-detail strong {
-    color: #333;
+    font-size: 1rem;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: #f1f5f9;
+    font-weight: 600;
 }
 
 .expense-detail {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
+    font-size: 0.9375rem;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+}
+
+.expense-detail strong {
+    color: #f8fafc;
 }
 
 .splits-list {
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .split-item {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
-    color: #555;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 6px;
-    margin-bottom: 6px;
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 0;
+}
+
+.split-item:last-child {
+    border-bottom: none;
 }
 
 @keyframes slideUp {

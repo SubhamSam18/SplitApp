@@ -11,17 +11,22 @@
 .mainCard {
   width: 100%;
   max-width: 680px;
-  background: #171f2c;
-  border-radius: 1.5rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 2.5rem;
   padding: 48px;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 40px 60px -12px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .mainCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.8);
+  transform: translateY(-6px);
+  border-color: rgba(99, 102, 241, 0.2);
+  box-shadow: 0 50px 80px -20px rgba(0, 0, 0, 0.9);
 }
 
 .totalSection {
@@ -39,10 +44,15 @@
 }
 
 .totalSection h2 {
-  font-size: clamp(2rem, 8vw, 3rem);
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
   margin: 0;
   color: #f8fafc;
-  font-weight: 800;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f8fafc 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.03em;
 }
 
 .splitSection {
@@ -143,52 +153,71 @@
 }
 
 .groupBox,
+.groupBox,
 .createGroupBox {
   aspect-ratio: 1 / 1;
   width: 100%;
-  background: #0f172a;
-  border-radius: 1rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   text-decoration: none;
 }
 
 .createGroupBox {
-  color: #6366f1;
-  border: 2px dashed #475569;
-  background: transparent;
+  color: #818cf8;
+  border: 1px dashed rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.03);
 }
 
-.groupBox:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  border-color: #6366f1;
-  background: #1e293b;
+.groupBox:hover,
+.createGroupBox:hover {
+  transform: translateY(-6px);
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .createGroupBox:hover {
-  background: rgba(99, 102, 241, 0.2);
-  border-color: #6366f1;
-  transform: translateY(-4px);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .groupLogo {
-  font-size: 2rem;
-  margin-bottom: 8px;
+  font-size: 2.25rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.groupBox:hover .groupLogo,
+.createGroupBox:hover .groupLogo {
+  transform: scale(1.05);
 }
 
 .groupName {
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
-  color: #f1f5f9;
-  padding: 0 8px;
+  color: #e2e8f0;
+  padding: 0 10px;
+}
+
+.card-glass-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 @media (max-width: 640px) {

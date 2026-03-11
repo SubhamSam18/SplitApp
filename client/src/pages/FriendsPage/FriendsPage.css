@@ -1,12 +1,27 @@
+.friendsPageContainer {
+  background-color: #020617;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .friendsPage {
   width: 100%;
   max-width: 680px;
   padding: 48px;
   margin: 40px auto;
-  background: #1e293b;
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 2.5rem;
+  box-shadow:
+    0 40px 100px -20px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(99, 102, 241, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .friendsHeader {
@@ -44,20 +59,34 @@
 .searchFriend input {
   width: 100%;
   outline: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(15, 23, 42, 0.4);
   color: #f8fafc;
   padding: 14px 16px 14px 52px;
   font-size: 1rem;
-  border-radius: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .searchFriend input:focus {
-  border-color: #6366f1;
+  border-color: #818cf8;
   background: rgba(15, 23, 42, 0.6);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
-  transform: scale(1.02);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 0 20px rgba(99, 102, 241, 0.1);
+  animation: searchGlowPulse 2s infinite;
+}
+
+@keyframes searchGlowPulse {
+  0% {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2);
+  }
+
+  100% {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  }
 }
 
 .search-icon {
@@ -65,6 +94,8 @@
   left: 20px;
   color: #6366f1;
   opacity: 0.7;
+  font-size: 40px;
+  margin-bottom: 8px;
 }
 
 .users {
@@ -79,12 +110,16 @@
   gap: 20px;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(145deg, #0f172a, rgba(30, 41, 59, 0.5));
-  padding: 15px 25px;
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 18px 25px;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .userContainer:hover {
@@ -116,37 +151,38 @@
   background-color: rgba(16, 185, 129, 0.1);
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.2);
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
 }
 
 .balanceBox.negative {
   background-color: rgba(244, 63, 94, 0.1);
   color: #f43f5e;
   border-color: rgba(244, 63, 94, 0.2);
-  text-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+  text-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
 }
 
 .balanceBox.neutral {
-  background-color: rgba(51, 65, 85, 0.3);
+  background-color: rgba(148, 163, 184, 0.1);
   color: #94a3b8;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .settleUp {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
   color: white;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   padding: 12px 24px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.9375rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 15px -5px rgba(99, 102, 241, 0.4);
 }
 
 .settleUp:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.5);
   filter: brightness(1.1);
 }
 
@@ -179,15 +215,21 @@
 }
 
 .popupBox {
-  background: #1e293b;
-  padding: 40px;
-  border-radius: 1.5rem;
-  width: 400px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 48px;
+  border-radius: 2.5rem;
+  width: 440px;
   max-width: 90%;
   text-align: center;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+  box-shadow:
+    0 40px 100px -20px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(99, 102, 241, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: scaleIn 0.3s ease-out;
+  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .popupBox p {

@@ -109,6 +109,7 @@ function GroupPage() {
       {showConfirm && (
         <div className="overlay">
           <div className="card">
+            <div className="card-glass-glow"></div>
             <p className="group-heading">Create New Group</p>
             <input
               type="text"

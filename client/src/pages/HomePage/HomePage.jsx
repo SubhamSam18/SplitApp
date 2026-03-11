@@ -36,6 +36,7 @@ function HomePage() {
   return (
     <div className="homeContainer">
       <div className="mainCard">
+        <div className="card-glass-glow"></div>
         <div className="summary">
           <div className="totalSection">
             <p>Total Balance</p>

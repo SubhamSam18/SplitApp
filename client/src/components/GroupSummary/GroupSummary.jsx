@@ -62,6 +62,7 @@ function GroupSummary() {
   return (
     <div className="groupSummaryContainer">
       <div className="summaryDiv">
+        <div className="card-glass-glow"></div>
         <h1>{groupName}</h1>
         <div className="addButton">
           <button
@@ -104,6 +105,7 @@ function GroupSummary() {
                   className="groupSummary"
                   onClick={() => handleClick(expense)}
                 >
+                  <div className="card-glass-glow"></div>
                   <div className="description">
                     {expense.description || "No description"}
                   </div>
@@ -115,19 +117,19 @@ function GroupSummary() {
                     <strong>Amount: </strong>₹{expense.amount}
                   </div>
                   <div className="share">
-                    {expense.paidBy === currentUserId && userShareAmount > 0 ? (
-                      <div>
-                        <strong>Your Share: </strong>₹{userShareAmount}
-                      </div>
-                    ) : expense.paidBy !== currentUserId && userShareAmount > 0 ? (
-                      <div>
-                        <strong>Your Share: </strong>₹-{userShareAmount}
-                      </div>
-                    ) : (
-                      <div>
-                        <strong>Your Share: </strong>₹0
-                      </div>
-                    )}
+                    <div className="share-row">
+                      <strong>Your Share: </strong>
+                      <span className={`share-amount ${
+                        expense.paidBy === currentUserId && userShareAmount > 0 ? "share-pos" : 
+                        expense.paidBy !== currentUserId && userShareAmount > 0 ? "share-neg" : ""
+                      }`}>
+                        <span className={`status-dot ${
+                          expense.paidBy === currentUserId && userShareAmount > 0 ? "dot-pos" : 
+                          expense.paidBy !== currentUserId && userShareAmount > 0 ? "dot-neg" : ""
+                        }`}></span>
+                        ₹{expense.paidBy === currentUserId ? userShareAmount : -userShareAmount}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );

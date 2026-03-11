@@ -79,6 +79,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
   return (
     <div className="createExpenseCard">
       <div className="creatCard">
+        <div className="card-glass-glow"></div>
         <h2>{selectedExpense ? "Edit Expense" : "Add New Expense"}</h2>
         <div className="expenseDescription">
           <input
@@ -126,6 +127,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
           {splitType === "exact" &&
             members.map((member) => (
               <div key={member.userId} value={member.userId}>
+                <div className="card-glass-glow"></div>
                 {member.name}
                 <input
                   type="number"

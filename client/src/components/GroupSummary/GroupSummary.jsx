@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../../services/api";
 import { useParams } from "react-router-dom";
 import './GroupSummary.css';
 import CreateExpense from "../CreateExpense/CreateExpense";
@@ -17,9 +17,8 @@ function GroupSummary() {
 
   const findGroupData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/groups/${groupId}/summary`,
-        { withCredentials: true },
+      const response = await API.get(
+        `/groups/${groupId}/summary`
       );
       setGroupName(response.data.group.name);
       setExpenses(response.data.expenses);
@@ -48,6 +47,10 @@ function GroupSummary() {
     setShowCreateExpense(true);
   };
   useEffect(() => {
+    findGroupData();
+  }, []);
+
+  useEffect(() => {
     const summary = document.querySelector(".summaryDiv");
 
     if (showExpense) {
@@ -55,8 +58,7 @@ function GroupSummary() {
     } else {
       summary.classList.remove("modal-open");
     }
-    findGroupData();
-    return () => summary.classList.remove("modal-open");
+    return () => summary?.classList.remove("modal-open");
   }, [showExpense]);
 
   return (
@@ -119,14 +121,12 @@ function GroupSummary() {
                   <div className="share">
                     <div className="share-row">
                       <strong>Your Share: </strong>
-                      <span className={`share-amount ${
-                        expense.paidBy === currentUserId && userShareAmount > 0 ? "share-pos" : 
+                      <span className={`share-amount ${expense.paidBy === currentUserId && userShareAmount > 0 ? "share-pos" :
                         expense.paidBy !== currentUserId && userShareAmount > 0 ? "share-neg" : ""
-                      }`}>
-                        <span className={`status-dot ${
-                          expense.paidBy === currentUserId && userShareAmount > 0 ? "dot-pos" : 
+                        }`}>
+                        <span className={`status-dot ${expense.paidBy === currentUserId && userShareAmount > 0 ? "dot-pos" :
                           expense.paidBy !== currentUserId && userShareAmount > 0 ? "dot-neg" : ""
-                        }`}></span>
+                          }`}></span>
                         ₹{expense.paidBy === currentUserId ? userShareAmount : -userShareAmount}
                       </span>
                     </div>
@@ -135,7 +135,9 @@ function GroupSummary() {
               );
             })
           ) : (
-            <p>No expenses found.</p>
+            <div className="noExpense">
+              <p>Please Add expenses to see them here.</p>
+            </div>
           )}
         </div>
 

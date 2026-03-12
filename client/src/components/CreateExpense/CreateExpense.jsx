@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../../services/api";
 import "./CreateExpense.css";
 
 function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selectedExpense }) {
@@ -55,16 +55,14 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
 
     try {
       if (selectedExpense) {
-        await axios.put(
-          `http://localhost:5000/api/expense/${selectedExpense._id}`,
-          { data: expenseData },
-          { withCredentials: true }
+        await API.put(
+          `/expense/${selectedExpense._id}`,
+          { data: expenseData }
         );
       } else {
-        await axios.post(
-          "http://localhost:5000/api/expense",
-          { data: expenseData },
-          { withCredentials: true }
+        await API.post(
+          "/expense",
+          { data: expenseData }
         );
       }
       // console.log("Expense processed");

@@ -1,4 +1,4 @@
-import axios from "axios";
+import API from "../../services/api";
 import { useState, useEffect } from "react";
 import './FriendsPage.css';
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,9 +18,7 @@ function FriendsPage() {
 
   const getFriends = async () => {
     try {
-      const friends = await axios.get("http://localhost:5000/api/friends", {
-        withCredentials: true,
-      });
+      const friends = await API.get("/friends");
       // console.log(friends.data);
       setFriends(friends.data);
     } catch (err) {
@@ -31,14 +29,11 @@ function FriendsPage() {
   const confirmSettle = async () => {
     // console.log("Settled with:", selectedUser.name);
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/settle/friend",
+      const res = await API.post(
+        "/settle/friend",
         {
           to: selectedUser._id,
-        },
-        {
-          withCredentials: true,
-        },
+        }
       );
       await getFriends();
     } catch (err) {

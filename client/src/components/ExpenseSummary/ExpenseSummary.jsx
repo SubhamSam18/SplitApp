@@ -1,13 +1,11 @@
 import './ExpenseSummary.css';
-import axios from "axios";
+import API from "../../services/api";
 
 function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense }) {
   const handleDeleteExpense = async (expenseId) => {
     console.log(expenseId);
     try {
-      const response = await axios.delete(`http://localhost:5000/api/expense/${expenseId}`, {
-        withCredentials: true
-      });
+      const response = await API.delete(`/expense/${expenseId}`);
       const data = response.data;
       // console.log(data);
       handleCloseExpense();

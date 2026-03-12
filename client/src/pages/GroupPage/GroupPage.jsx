@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import axios from "axios";
+import API from "../../services/api";
 import './GroupPage.css';
 import { useLocation } from "react-router-dom";
 
@@ -31,10 +31,9 @@ function GroupPage() {
 
   const handleCreateGroup = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/groups",
-        { name: groupName, members },
-        { withCredentials: true },
+      const res = await API.post(
+        "/groups",
+        { name: groupName, members }
       );
 
       setGroups([...groups, res.data]);
@@ -53,9 +52,7 @@ function GroupPage() {
   useEffect(() => {
     const findGroups = async () => {
       try {
-        const yourGroups = await axios.get("http://localhost:5000/api/groups", {
-          withCredentials: true,
-        });
+        const yourGroups = await API.get("/groups");
         // console.log(yourGroups.data);
         setGroups(yourGroups.data);
       } catch (err) {

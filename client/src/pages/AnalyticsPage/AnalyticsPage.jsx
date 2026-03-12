@@ -1,4 +1,4 @@
-import axios from "axios";
+import API from "../../services/api";
 import { useState, useEffect } from "react";
 import "./AnalyticsPage.css"
 function AnalyticsPage() {
@@ -8,7 +8,7 @@ function AnalyticsPage() {
     useEffect(() => {
         const findAnalytics = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/analytics/${month}`, { withCredentials: true });
+                const response = await API.get(`/analytics/${month}`);
                 setAnalytics(response.data);
             } catch (err) {
                 console.log(err);

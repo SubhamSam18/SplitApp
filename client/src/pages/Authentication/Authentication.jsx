@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import axios from "axios";
+import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import './Authentication.css';
 
@@ -19,10 +19,9 @@ function Authentication() {
     e.preventDefault();
     // console.log("Login triggered");
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password },
-        { withCredentials: true },
+      const response = await API.post(
+        "/auth/login",
+        { email, password }
       );
       setStatus("Success");
       setMessage("Login successful");
@@ -43,8 +42,8 @@ function Authentication() {
     // console.log("Email: ", signupEmail);
     // console.log("Password: ", signupPassword);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+      const response = await API.post(
+        "/auth/signup",
         { name: signupName, email: signupEmail, password: signupPassword },
       );
       //   console.log(response.data);

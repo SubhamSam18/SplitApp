@@ -1,4 +1,4 @@
-import axios from "axios";
+import API from "../../services/api";
 import './HomePage.css';
 import { Link } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
@@ -13,12 +13,8 @@ function HomePage() {
 
   const findGroups = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/groups/", {
-        withCredentials: true,
-      });
-      const summaryRes = await axios.get("http://localhost:5000/api/summary", {
-        withCredentials: true,
-      });
+      const response = await API.get("/groups/");
+      const summaryRes = await API.get("/summary");
       setGroups(response.data.reverse());
       setYouOwe(summaryRes.data.youOwe);
       setYouAreOwed(summaryRes.data.youAreOwed);

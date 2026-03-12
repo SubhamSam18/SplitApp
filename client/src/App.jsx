@@ -7,25 +7,31 @@ import Group from "./pages/GroupPage/GroupPage";
 import Friends from "./pages/FriendsPage/FriendsPage";
 import GroupSummary from "./components/GroupSummary/GroupSummary";
 import Analytics from "./pages/AnalyticsPage/AnalyticsPage";
+import { LoadingProvider } from "./context/LoadingContext";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+
 function App() {
   return (
-    <Routes>
-      <Route path="/auth" element={<Authentication />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/" element={<Home />} />
-        <Route path="/groups" element={<Group />} />
-        <Route path="/groups/:groupId/summary" element={<GroupSummary />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/friends" element={<Friends />} />
-      </Route>
-    </Routes>
+    <LoadingProvider>
+      <LoadingScreen />
+      <Routes>
+        <Route path="/auth" element={<Authentication />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/" element={<Home />} />
+          <Route path="/groups" element={<Group />} />
+          <Route path="/groups/:groupId/summary" element={<GroupSummary />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/friends" element={<Friends />} />
+        </Route>
+      </Routes>
+    </LoadingProvider>
   );
 }
 

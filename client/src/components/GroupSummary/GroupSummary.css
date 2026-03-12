@@ -7,6 +7,24 @@
   padding: 40px 10px;
 }
 
+.groupTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.groupTitle button {
+  position: absolute;
+  left: 0;
+  margin-left: 60px;
+  background: none;
+  border: none;
+  color: #f8fafc;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
 .summaryDiv {
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(25px);

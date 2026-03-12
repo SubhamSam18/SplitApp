@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import './GroupSummary.css';
 import CreateExpense from "../CreateExpense/CreateExpense";
 import ExpenseSummary from "../ExpenseSummary/ExpenseSummary";
+import { useNavigate } from "react-router-dom";
 
 function GroupSummary() {
+  const navigate = useNavigate();
   const { groupId } = useParams();
   const [groupName, setGroupName] = useState("");
   const [expenses, setExpenses] = useState([]);
@@ -65,7 +67,12 @@ function GroupSummary() {
     <div className="groupSummaryContainer">
       <div className="summaryDiv">
         <div className="card-glass-glow"></div>
-        <h1>{groupName}</h1>
+        <div className="groupTitle">
+          <button className="backButton" onClick={() => navigate(-1)}>
+            ←
+          </button>
+          <h1>{groupName}</h1>
+        </div>
         <div className="addButton">
           <button
             className="addExpense"

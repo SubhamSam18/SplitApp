@@ -110,6 +110,7 @@ function FriendsPage() {
                     <button
                       className="settleUp"
                       onClick={() => handleSelectClick(user)}
+                      disabled={user.balance === 0}
                     >
                       Settle Up
                     </button>
@@ -122,15 +123,15 @@ function FriendsPage() {
 
       <AnimatePresence>
         {showConfirm && (
-          <motion.div 
+          <motion.div
             className="ConfirmationPopup"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={cancelSettle}
           >
-            <motion.div 
-              className="popupBox" 
+            <motion.div
+              className="popupBox"
               onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}

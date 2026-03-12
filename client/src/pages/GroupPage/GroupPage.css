@@ -53,8 +53,9 @@
 }
 
 .create-group-btn:hover {
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
   filter: brightness(1.1);
 }
 
@@ -182,7 +183,7 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
-  box-shadow: 
+  box-shadow:
     0 40px 100px -20px rgba(0, 0, 0, 0.9),
     0 0 40px rgba(99, 102, 241, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -224,9 +225,17 @@
 }
 
 @keyframes inputGlowPulse {
-  0% { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
-  50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2); }
-  100% { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
+  0% {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2);
+  }
+
+  100% {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  }
 }
 
 .member-row {
@@ -308,8 +317,9 @@
 }
 
 .save-btn:hover {
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 25px 40px -12px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 15px 30px -12px rgba(99, 102, 241, 0.6);
   filter: brightness(1.1);
 }
 

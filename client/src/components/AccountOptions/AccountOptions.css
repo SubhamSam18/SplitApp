@@ -1,0 +1,84 @@
+.accountOptionValues {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 24px 0 24px;
+    width: 250px;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+}
+
+.accountDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 15px;
+}
+
+.accountDetails .userName {
+    color: #f8fafc;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.optionValues {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.optionValues select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(30, 41, 59, 0.6);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.optionValues select:hover {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.optionValues button {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.changePassword {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.changePassword:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.logout {
+    background: rgba(244, 63, 94, 0.1);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.logout:hover {
+    background: rgba(244, 63, 94, 0.2);
+    border-color: #fb7185;
+}

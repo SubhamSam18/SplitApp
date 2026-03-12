@@ -42,7 +42,10 @@ exports.getUserGroup = async (req, res) => {
       members: req.user.userId,
     }).populate("members", "name email");
 
-    res.status(200).json(groups);
+    res.status(200).json({
+      groups,
+      user: req.user
+    });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error!" });
   }

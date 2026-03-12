@@ -53,8 +53,8 @@ function GroupPage() {
     const findGroups = async () => {
       try {
         const yourGroups = await API.get("/groups");
-        // console.log(yourGroups.data);
-        setGroups(yourGroups.data);
+        // console.log(yourGroups.data.groups);
+        setGroups(yourGroups.data.groups);
       } catch (err) {
         console.log(err);
       }

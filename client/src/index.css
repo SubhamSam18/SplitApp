@@ -39,6 +39,10 @@ input {
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+ ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+.main-layout {
+  display: flex;
 }

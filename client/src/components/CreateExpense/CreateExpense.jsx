@@ -51,7 +51,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
       paidBy,
     };
 
-    console.log("Expense Data:", expenseData);
+    // console.log("Expense Data:", expenseData);
 
     try {
       if (selectedExpense) {

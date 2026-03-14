@@ -6,13 +6,23 @@ const LoadingContext = createContext();
 export const LoadingProvider = ({ children }) => {
   const [loadingCount, setLoadingCount] = useState(0);
   const [delayedIsLoading, setDelayedIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("Splitting things up...");
 
-  const startLoading = useCallback(() => {
+  const startLoading = useCallback((text) => {
+    if (typeof text === 'string') {
+      setLoadingText(text);
+    }
     setLoadingCount((prev) => prev + 1);
   }, []);
 
   const stopLoading = useCallback(() => {
-    setLoadingCount((prev) => Math.max(0, prev - 1));
+    setLoadingCount((prev) => {
+      const nextCount = Math.max(0, prev - 1);
+      if (nextCount === 0) {
+        setLoadingText("Splitting things up...");
+      }
+      return nextCount;
+    });
   }, []);
 
   useEffect(() => {
@@ -44,7 +54,7 @@ export const LoadingProvider = ({ children }) => {
   const isLoading = delayedIsLoading;
 
   return (
-    <LoadingContext.Provider value={{ isLoading, startLoading, stopLoading }}>
+    <LoadingContext.Provider value={{ isLoading, loadingText, startLoading, stopLoading }}>
       {children}
     </LoadingContext.Provider>
   );

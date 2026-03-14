@@ -50,7 +50,7 @@ function HomePage() {
           className="userProfile"
           animate={{
             paddingTop: accountOption ? "20px" : "0px",
-            paddingBottom: accountOption ? "20px" : "0px",
+            paddingBottom: accountOption ? "0px" : "0px",
           }}
           transition={{ duration: 0.3 }}
         >

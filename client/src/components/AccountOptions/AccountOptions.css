@@ -82,3 +82,55 @@
     background: rgba(244, 63, 94, 0.2);
     border-color: #fb7185;
 }
+
+.changePasswordPopUpValues {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.changePasswordPopUpValues input {
+    width: 100%;
+    margin-top: 12px;
+    row-gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(30, 41, 59, 0.6);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.changePasswordPopUpValues input:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.changePasswordPopUpValues input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.changePasswordButton {
+    margin-top: 15px;
+    margin-bottom: 24px;
+    width: 77%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: #6366f1;
+    color: #e2e8f0;
+}

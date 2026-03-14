@@ -20,7 +20,7 @@ function Authentication() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    startLoading();
+    startLoading("Splitting things up...");
     try {
       const response = await API.post(
         "/auth/login",

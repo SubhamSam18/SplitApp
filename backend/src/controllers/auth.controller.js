@@ -67,3 +67,31 @@ exports.logout = async (req, res) => {
     res.status(500).json({ message: "Logout failed!" });
   }
 }
+
+exports.changePassword = async (req, res) => {
+  try {
+    console.log(req.user);
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const user = await User.findOne({ _id: req.user.userId });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    if (isMatch && newPassword === currentPassword) {
+      return res.status(400).json({ message: "New password cannot be same as current password" });
+    }
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.log("Error " + error);
+    res.status(500).json({ message: "Failed to change password!" });
+  }
+}

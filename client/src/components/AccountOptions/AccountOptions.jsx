@@ -1,6 +1,13 @@
 import './AccountOptions.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 function AccountOptions(response) {
     console.log("Account Reponse", response.userDetails);
+    const navigate = useNavigate();
+    const handleLogout = async () => {
+        const response = await axios.post('/api/auth/logout');
+        navigate('/login');
+    }
     return (
         <div className="accountOptionValues">
             <div className="accountDetails">
@@ -13,7 +20,7 @@ function AccountOptions(response) {
                     <option value="EUR">EUR</option>
                 </select>
                 <button className="changePassword">Change Password</button>
-                <button className="logout">Logout</button>
+                <button className="logout" onClick={() => handleLogout()}>Logout</button>
             </div>
         </div>
     )

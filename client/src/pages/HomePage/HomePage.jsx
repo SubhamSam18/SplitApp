@@ -6,14 +6,23 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountOptions from "../../components/AccountOptions/AccountOptions";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoading } from "../../context/LoadingContext";
 
 function HomePage() {
+  const { startLoading } = useLoading();
   const [youOwe, setYouOwe] = useState(0);
   const [youAreOwed, setYouAreOwed] = useState(0);
   const [groups, setGroups] = useState([]);
   const [accountOption, setAccountOption] = useState(false);
   const [accountDetails, setAccountDetails] = useState([]);
   const navigate = useNavigate();
+
+  const handleNewGroup = () => {
+    startLoading();
+    setTimeout(() => {
+      navigate("/groups", { state: { showConfirm: true } });
+    }, 100);
+  };
 
   const findGroups = async () => {
     try {
@@ -95,16 +104,16 @@ function HomePage() {
         <div className="groups">
           <p>Your Groups</p>
           <div className="groupsGrid">
-            <Link
-              to="/groups"
-              state={{ showConfirm: true }}
+            <div
+              onClick={handleNewGroup}
               className="createGroupBox"
+              style={{ cursor: "pointer" }}
             >
               <div className="groupLogo">
                 <MdOutlineGroupAdd />
               </div>
               <div className="groupName">Create Group</div>
-            </Link>
+            </div>
             {groups.length === 0 ? (
               <p>No groups found</p>
             ) : (

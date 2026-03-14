@@ -54,6 +54,6 @@ mongoose
     });
   })
   .catch((error) => {
-    console.error("❌ MongoDB Connection Failed:");
+    console.error("MongoDB Connection Failed:");
     console.error(error.message);
   });

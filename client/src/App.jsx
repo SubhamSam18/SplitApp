@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Authentication from "./pages/Authentication/Authentication";
 import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardLayout from "./components/DashboardLayout/DashboardLayout";
 import Home from "./pages/HomePage/HomePage";
 import Group from "./pages/GroupPage/GroupPage";
 import Friends from "./pages/FriendsPage/FriendsPage";
@@ -9,6 +8,8 @@ import GroupSummary from "./components/GroupSummary/GroupSummary";
 import Analytics from "./pages/AnalyticsPage/AnalyticsPage";
 import { LoadingProvider } from "./context/LoadingContext";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import Navbar from "./components/Navbar/Navbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
@@ -20,7 +21,12 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <DashboardLayout />
+              <div className="main-layout">
+                <Navbar />
+                <div className="dashboard-content">
+                  <Outlet />
+                </div>
+              </div>
             </ProtectedRoute>
           }
         >

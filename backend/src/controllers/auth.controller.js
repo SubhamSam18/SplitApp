@@ -70,8 +70,12 @@ exports.logout = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    console.log(req.user);
+    // console.log(req.user);
     const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     const user = await User.findOne({ _id: req.user.userId });
     if (!user) {
       return res.status(400).json({ message: "User not found" });

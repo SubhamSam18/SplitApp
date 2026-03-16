@@ -100,3 +100,8 @@ button:hover {
 #chk:checked~.signup label {
   transform: scale(0.6);
 }
+
+.auth-message {
+  margin-top: 10px;
+  color: rgb(82, 82, 82);
+}

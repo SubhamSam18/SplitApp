@@ -21,12 +21,6 @@ const analyticsRoutes = require('./src/routes/analytics.routes');
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "http://localhost:5001",
-    credentials: true,
-  }),
-);
 app.use("/api/auth", authRoutes);
 app.use("/protected", authMiddleware, (req, res) => {
   res.json({

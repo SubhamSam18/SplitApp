@@ -8,6 +8,9 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
   const [splitType, setSplitType] = useState("equal");
   const [paidBy, setPaidBy] = useState(currentUserId);
   const [splitAmount, setSplitAmount] = useState({});
+  const [selectedUsers, setSelectedUsers] = useState(
+    members ? members.map((m) => m.userId) : []
+  );
 
   useEffect(() => {
     if (selectedExpense) {
@@ -20,26 +23,44 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
         return acc;
       }, {});
       setSplitAmount(splitAmounts);
+      setSelectedUsers(selectedExpense.splits.map((s) => s.user));
     }
-  }, [selectedExpense]);
+  }, [selectedExpense, members]);
+
+  const handleUserToggle = (userId) => {
+    setSelectedUsers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const getCalculatedSplit = (userId) => {
+    if (splitType === "equal") {
+      if (!selectedUsers.includes(userId) || selectedUsers.length === 0) return 0;
+      return (parseFloat(amount) || 0) / selectedUsers.length;
+    }
+    return splitAmount[userId] || 0;
+  };
 
   const handleClick = async () => {
-    let splitsEqual = "";
-    let splitsExact = "";
-    let splits = "";
+    let splits = [];
     if (splitType == "equal") {
-      splitsEqual = members.map((member) => ({
-        user: member.userId,
-        name: member.name,
-      }));
-      splits = splitsEqual;
+      splits = members
+        .filter((member) => selectedUsers.includes(member.userId))
+        .map((member) => ({
+          user: member.userId,
+          name: member.name,
+          amount: parseFloat(amount) / selectedUsers.length,
+        }));
     } else if (splitType == "exact") {
-      splitsExact = members.map((member) => ({
-        user: member.userId,
-        amount: splitAmount[member.userId] || 0,
-        name: member.name,
-      }));
-      splits = splitsExact;
+      splits = members
+        .filter((member) => selectedUsers.includes(member.userId))
+        .map((member) => ({
+          user: member.userId,
+          amount: splitAmount[member.userId] || 0,
+          name: member.name,
+        }));
     }
 
     const expenseData = {
@@ -121,30 +142,49 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
               ))}
           </select>
         </div>
-        <div className="userList">
-          {splitType === "exact" &&
-            members.map((member) => (
-              <div key={member.userId} value={member.userId}>
-                <div className="card-glass-glow"></div>
-                {member.name}
-                <input
-                  type="number"
-                  className="splitAmount"
-                  value={splitAmount[member.userId] || ""}
-                  onChange={(e) => {
-                    setSplitAmount((other) => ({
-                      ...other,
-                      [member.userId]: Number(e.target.value),
-                    }));
-                  }}
-                />
-              </div>
-            ))}
-        </div>
+
         <div className="saveExpense">
-          <button onClick={handleClick}>Save</button>
-          <button onClick={onClose}>Close</button>
+          <button className="saveButton" onClick={handleClick}>Save Expense</button>
+          <button className="closeButton" onClick={onClose}>Discard</button>
         </div>
+      </div>
+      <div className="userList">
+        {members.map((member) => (
+          <div
+            key={member.userId}
+            className={`userItem ${
+              selectedUsers.includes(member.userId) ? "selected" : ""
+            }`}
+            onClick={() => handleUserToggle(member.userId)}
+          >
+            <div className="card-glass-glow"></div>
+            <div className="userAvatar">
+              {member.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="userInfo">
+              <span className="userName">{member.name}</span>
+              {selectedUsers.includes(member.userId) && (
+                <span className="calculatedAmount">
+                  ₹{getCalculatedSplit(member.userId).toFixed(2)}
+                </span>
+              )}
+            </div>
+            {splitType === "exact" && selectedUsers.includes(member.userId) && (
+              <input
+                type="number"
+                className="splitAmount"
+                value={splitAmount[member.userId] || ""}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => {
+                  setSplitAmount((other) => ({
+                    ...other,
+                    [member.userId]: Number(e.target.value),
+                  }));
+                }}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

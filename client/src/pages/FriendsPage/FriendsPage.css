@@ -7,23 +7,10 @@
   align-items: center;
 }
 
-.friendsPage:hover {
-  transform: translateY(-5px);
-}
-
 .friendsPage {
   width: 100%;
-  max-width: 680px;
-  padding: 48px;
-  margin: 40px auto;
-  background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 2.5rem;
-  box-shadow:
-    0 40px 100px -20px rgba(0, 0, 0, 0.9),
-    0 0 40px rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 650px;
+  height: 80vh;
   position: relative;
   overflow: hidden;
   transition: 0.3s ease-in-out
@@ -116,7 +103,7 @@
 .users {
   padding-right: 20px;
   overflow-y: scroll;
-  height: 340px;
+  height: 50vh;
 }
 
 .userContainer {

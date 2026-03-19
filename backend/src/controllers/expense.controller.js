@@ -118,7 +118,7 @@ exports.deleteExpense = async (req, res) => {
   try {
     const { expenseId } = req.params;
     const expense = await Expense.findById(expenseId).session(session);
-
+    // console.log("Expense: ", expense);
     if (!expense) {
       return res.status(404).json({ message: "Expense not found" });
     }
@@ -132,12 +132,12 @@ exports.deleteExpense = async (req, res) => {
 
     expense.status = "cancelled";
     await expense.save();
-
-    await session.commitTransaction();
-    session.endSession();
     res.status(200).json({
       message: "Expense deleted successfully",
     });
+    await session.commitTransaction();
+    session.endSession();
+
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

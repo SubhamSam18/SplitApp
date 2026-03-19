@@ -2,20 +2,21 @@ const Activity = require("../models/activity.model");
 
 exports.addActivity = async (req, res) => {
     try {
-        const { groupId, description, amount, paidBy, splits } = req.body.data || req.body;
+        const { groupId, description, amount, paidBy, splits, deleted } = req.body.data || req.body;
         const descriptionContent = `${req.user.userName} added an expense of ${amount} for ${description}`;
         const activity = new Activity({
             groupId,
-            description: descriptionContent,
+            description: deleted ? description : descriptionContent,
             amount,
             paidBy,
             createdBy: req.user.userName,
             splits
         });
+        // console.log(activity);
         await activity.save();
         res.status(201).json({ message: "Activity added successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
     }
 }
 

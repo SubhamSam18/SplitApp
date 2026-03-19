@@ -153,6 +153,7 @@ function GroupSummary() {
             selectedExpense={selectedExpense}
             handleCloseExpense={handleCloseExpense}
             handleEditExpense={handleEditExpense}
+            refreshData={findGroupData}
           />
         )}
       </div>

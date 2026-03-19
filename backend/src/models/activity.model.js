@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const activitySchema = new mongoose.Schema({
     paidBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
+        ref: "User"
     },
     groupId: {
         type: mongoose.Schema.Types.ObjectId,

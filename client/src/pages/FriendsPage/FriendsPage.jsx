@@ -56,7 +56,6 @@ function FriendsPage() {
   return (
     <div className="friendsPageContainer">
       <div className="friendsPage">
-        <div className="card-glass-glow"></div>
         <div className="friendsHeader">
           <h2>Friends</h2>
           <p>Track and settle balances with your friends</p>
@@ -132,7 +131,6 @@ function FriendsPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <div className="card-glass-glow"></div>
               <p>
                 Are you sure you want to settle with?{" "}
                 <strong>({selectedUser?.name})</strong>

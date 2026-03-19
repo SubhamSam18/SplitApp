@@ -1,13 +1,29 @@
 import './ExpenseSummary.css';
 import API from "../../services/api";
+import { useContext } from "react";
+import { NotificationContext } from "../../context/NotificationContext";
 
-function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense }) {
+function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense, refreshData }) {
+  const { showNotification } = useContext(NotificationContext);
   const handleDeleteExpense = async (expenseId) => {
-    console.log(expenseId);
     try {
-      const response = await API.delete(`/expense/${expenseId}`);
-      const data = response.data;
-      // console.log(data);
+      await API.delete(`/expense/${expenseId}`);
+      const activityData = {
+        groupId: selectedExpense.group,
+        type: "expense",
+        description: `${selectedExpense.payerName} deleted an expense of ${selectedExpense.amount} for ${selectedExpense.description}`,
+        amount: selectedExpense.amount,
+        payerName: selectedExpense.payerName,
+        splits: selectedExpense.splits,
+        createdAt: new Date(),
+        deleted: true
+      };
+      await API.post(
+        "/activity/addActivity",
+        { data: activityData }
+      );
+      showNotification(`${selectedExpense.payerName} deleted an expense of ${selectedExpense.amount} for ${selectedExpense.description}`);
+      if (refreshData) refreshData();
       handleCloseExpense();
     } catch (err) {
       console.log(err);
@@ -56,7 +72,7 @@ function ExpenseSummary({ selectedExpense, handleCloseExpense, handleEditExpense
             <button className="edit-btn" onClick={() => { handleEditExpense(selectedExpense); }}>
               Edit Expense
             </button>
-            <button className="delete-btn" onClick={() => handleDeleteExpense(selectedExpense._id)}>
+            <button className="delete-btn" onClick={() => { handleDeleteExpense(selectedExpense._id) }}>
               Delete Expense
             </button>
           </div>

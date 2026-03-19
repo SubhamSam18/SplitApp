@@ -100,3 +100,18 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ message: "Failed to change password!" });
   }
 }
+
+exports.deleteAccount = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.user.userId });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    await user.deleteOne();
+    res.clearCookie("token");
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.log("Error " + error);
+    res.status(500).json({ message: "Failed to delete account!" });
+  }
+}

@@ -52,13 +52,29 @@ function AccountOptions(response) {
             console.log("Error", error);
         }
     }
+    const handleDeleteAccount = async () => {
+        try {
+            startLoading("Deleting Account...");
+            await API.post('/auth/deleteAccount', {
+                withcredentials: true
+            })
+            setTimeout(() => {
+                stopLoading();
+                navigate("/auth");
+            }, 2000);
+        }
+        catch (error) {
+            stopLoading();
+            console.log("Error", error);
+        }
+    }
     return (
         <div className="accountOptionValues">
             <div className="accountDetails">
                 <p className="userName">{response.userDetails.userName}</p>
             </div>
             <div className="optionValues">
-                <select name="currencyCd" id="currency" placeholder="Currency" defaultValue="IND">
+                {/* <select name="currencyCd" id="currency" placeholder="Currency" defaultValue="IND">
                     <option value="INR">INR</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -78,7 +94,7 @@ function AccountOptions(response) {
                     <option value="BRL">BRL</option>
                     <option value="TRY">TRY</option>
                     <option value="RUB">RUB</option>
-                </select>
+                </select> */}
                 <button className="changePassword" onClick={() => { setChangePassword(!changePassword), (settingPopup) ? setSettingPopup(false) : setConfirmationPopup(false), setConfirmationPopup(false) }}>Change Password</button>
                 <button className="settings" onClick={() => { setSettingPopup(!settingPopup), (changePassword) ? setChangePassword(false) : setConfirmationPopup(false) }}>Settings</button>
                 <button className="logout" onClick={() => handleLogout()}>Logout</button>
@@ -109,7 +125,7 @@ function AccountOptions(response) {
                     {confirmationPopup && (
                         <div className="confirmationPopupValues">
                             <p>Are you sure you want to delete your account?</p>
-                            <button className="deleteAccountConfirmation" onClick={() => { }}>Yes, Delete My Account</button>
+                            <button className="deleteAccountConfirmation" onClick={() => handleDeleteAccount()}>Yes, Delete My Account</button>
                             <button className="cancelConfirmation" onClick={() => { setConfirmationPopup(!confirmationPopup), setSettingPopup(false) }}>Cancel</button>
                         </div>
                     )}

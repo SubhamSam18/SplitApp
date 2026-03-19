@@ -4,6 +4,7 @@ import { IoHome } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
 
 function Navbar() {
   const navItems = [
@@ -26,7 +27,11 @@ function Navbar() {
       name: "Friends",
       path: "/friends",
       src: <FaUserFriends />,
-    },
+    },{
+      name: "Activity",
+      path: "/activity",
+      src: <IoNotifications />,
+    }
   ];
   return (
     <div className="main-div">

@@ -10,33 +10,38 @@ import { LoadingProvider } from "./context/LoadingContext";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import Navbar from "./components/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
+import ActivityPage from "./pages/ActivityPage/ActivityPage";
+import { NotificationProvider } from "./context/NotificationContext";
 
 function App() {
   return (
     <LoadingProvider>
-      <LoadingScreen />
-      <Routes>
-        <Route path="/auth" element={<Authentication />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <div className="main-layout">
-                <Navbar />
-                <div className="dashboard-content">
-                  <Outlet />
+      <NotificationProvider>
+        <LoadingScreen />
+        <Routes>
+          <Route path="/auth" element={<Authentication />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <div className="main-layout">
+                  <Navbar />
+                  <div className="dashboard-content">
+                    <Outlet />
+                  </div>
                 </div>
-              </div>
-            </ProtectedRoute>
-          }
-        >
-          <Route path="/" element={<Home />} />
-          <Route path="/groups" element={<Group />} />
-          <Route path="/groups/:groupId/summary" element={<GroupSummary />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/friends" element={<Friends />} />
-        </Route>
-      </Routes>
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/" element={<Home />} />
+            <Route path="/groups" element={<Group />} />
+            <Route path="/groups/:groupId/summary" element={<GroupSummary />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/activity" element={<ActivityPage />} />
+          </Route>
+        </Routes>
+      </NotificationProvider>
     </LoadingProvider>
   );
 }

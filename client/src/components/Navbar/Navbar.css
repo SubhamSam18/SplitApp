@@ -1,6 +1,7 @@
-body{
+body {
   margin: 0;
 }
+
 .navbar {
   display: flex;
   position: sticky;
@@ -62,7 +63,7 @@ body{
 .dashboard-content {
   flex: 1;
   padding: 0;
-  background-color: #0f172a;
+  background-color: #020617;
   overflow-x: hidden;
 }
 

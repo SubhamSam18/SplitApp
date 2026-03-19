@@ -18,6 +18,7 @@ const settlementRoutes = require('./src/routes/settlement.routes');
 const summaryRoutes = require('./src/routes/summary.routes');
 const friendsRoutes = require('./src/routes/friends.routes');
 const analyticsRoutes = require('./src/routes/analytics.routes');
+const activityRoutes = require('./src/routes/activity.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +36,7 @@ app.use("/api/settle", settlementRoutes);
 app.use("/api/summary", summaryRoutes);
 app.use("/api/friends", friendsRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/activity", activityRoutes);
 
 const PORT = process.env.PORT || 5000;
 

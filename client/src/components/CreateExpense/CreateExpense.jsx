@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import API from "../../services/api";
 import "./CreateExpense.css";
+import { NotificationContext } from "../../context/NotificationContext";
 
 function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selectedExpense }) {
   const [description, setDescription] = useState("");
@@ -11,6 +12,7 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
   const [selectedUsers, setSelectedUsers] = useState(
     members ? members.map((m) => m.userId) : []
   );
+  const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     if (selectedExpense) {
@@ -72,7 +74,15 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
       paidBy,
     };
 
-    // console.log("Expense Data:", expenseData);
+    const activityData = {
+      groupId,
+      description,
+      amount: parseFloat(amount),
+      splits,
+      paidBy,
+    }
+
+    console.log("Expense Data:", activityData);
 
     try {
       if (selectedExpense) {
@@ -85,10 +95,15 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
           "/expense",
           { data: expenseData }
         );
+        await API.post(
+          "/activity/addActivity",
+          { data: activityData }
+        );
       }
       // console.log("Expense processed");
       if (onSave) onSave();
       else onClose();
+      showNotification(`${members.find((m) => m.userId === paidBy)?.name} added an expense of ${amount} for ${description}`);
     } catch (error) {
       console.error("Error creating expense:", error);
       alert(error.response?.data?.message || "Failed to create expense");
@@ -152,9 +167,8 @@ function CreateExpense({ groupId, members, currentUserId, onClose, onSave, selec
         {members.map((member) => (
           <div
             key={member.userId}
-            className={`userItem ${
-              selectedUsers.includes(member.userId) ? "selected" : ""
-            }`}
+            className={`userItem ${selectedUsers.includes(member.userId) ? "selected" : ""
+              }`}
             onClick={() => handleUserToggle(member.userId)}
           >
             <div className="card-glass-glow"></div>

@@ -1,18 +1,29 @@
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { headerStyles } from "./styles";
 
 interface HeaderProps {
     title: string;
-    avatar: string;
+    avatar?: string;
+    showBack?: boolean;
+    onBackPress?: () => void;
 }
 
-export const Header = ({ title, avatar }: HeaderProps) => {
+export const Header = ({ title, avatar, showBack, onBackPress }: HeaderProps) => {
     return (
         <View style={headerStyles.container}>
-            <Text style={headerStyles.title}>{title}</Text>
-            <View style={headerStyles.avatarContainer}>
-                <Image source={{ uri: avatar }} style={headerStyles.avatar} />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {showBack && (
+                    <TouchableOpacity onPress={onBackPress} style={{ marginRight: 12 }}>
+                        <Text style={{ fontSize: 24, color: '#1A1A1A' }}>←</Text>
+                    </TouchableOpacity>
+                )}
+                <Text style={headerStyles.title}>{title}</Text>
             </View>
+            {avatar && (
+                <View style={headerStyles.avatarContainer}>
+                    <Image source={{ uri: avatar }} style={headerStyles.avatar} />
+                </View>
+            )}
         </View>
     )
 }

@@ -1,0 +1,141 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F8F9FA',
+    },
+    scrollContent: {
+        paddingHorizontal: 20,
+        paddingBottom: 40,
+    },
+    loader: {
+        marginTop: 50,
+    },
+    headerCard: {
+        backgroundColor: '#4361EE',
+        padding: 24,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        marginBottom: 20,
+    },
+    groupName: {
+        fontSize: 24,
+        fontWeight: '800',
+        color: '#FFFFFF',
+        marginBottom: 8,
+    },
+    totalExpenseLabel: {
+        fontSize: 14,
+        color: 'rgba(255, 255, 255, 0.8)',
+        fontWeight: '500',
+    },
+    totalExpenseAmount: {
+        fontSize: 32,
+        fontWeight: '800',
+        color: '#FFFFFF',
+    },
+    section: {
+        marginTop: 20,
+    },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#1A1A1A',
+    },
+    expenseCard: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.04,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    expenseInfo: {
+        flex: 1,
+    },
+    expenseDescription: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#333333',
+        marginBottom: 4,
+    },
+    expenseSubText: {
+        fontSize: 12,
+        color: '#888888',
+    },
+    expenseAmount: {
+        fontSize: 16,
+        fontWeight: '700',
+    },
+    balanceCard: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderLeftWidth: 4,
+    },
+    memberInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    avatarPlaceholder: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#F0F3FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+    },
+    avatarText: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#4361EE',
+    },
+    memberName: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#333333',
+    },
+    memberBalance: {
+        fontSize: 14,
+        fontWeight: '700',
+    },
+    fab: {
+        position: 'absolute',
+        right: 20,
+        bottom: 30,
+        backgroundColor: '#4361EE',
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 8,
+        shadowColor: '#4361EE',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+    },
+    fabIcon: {
+        fontSize: 32,
+        color: '#FFFFFF',
+        fontWeight: '300',
+    }
+});

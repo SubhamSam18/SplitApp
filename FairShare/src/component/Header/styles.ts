@@ -22,5 +22,11 @@ export const headerStyles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-    }
+    },
+    backButtonText: {
+        fontSize: 30,
+        color: '#1A1A1A',
+        fontWeight: 'bold',
+        marginTop: -2,
+    },
 });

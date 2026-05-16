@@ -14,7 +14,7 @@ export const Header = ({ title, avatar, showBack, onBackPress }: HeaderProps) =>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {showBack && (
                     <TouchableOpacity onPress={onBackPress} style={{ marginRight: 12 }}>
-                        <Text style={{ fontSize: 24, color: '#1A1A1A' }}>←</Text>
+                        <Text style={headerStyles.backButtonText}>←</Text>
                     </TouchableOpacity>
                 )}
                 <Text style={headerStyles.title}>{title}</Text>

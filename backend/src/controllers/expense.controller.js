@@ -131,7 +131,7 @@ exports.deleteExpense = async (req, res) => {
     });
 
     expense.status = "cancelled";
-    await expense.save();
+    await expense.save({ session });
     res.status(200).json({
       message: "Expense deleted successfully",
     });
@@ -256,6 +256,24 @@ exports.updateExpenses = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.getExpenseById = async (req, res) => {
+  try {
+    const { expenseId } = req.params;
+    const expense = await Expense.findById(expenseId)
+      .populate("paidBy", "name email")
+      .populate("group", "name");
+
+    if (!expense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    res.status(200).json(expense);
+  } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });
   }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    View, Text, TextInput, TouchableOpacity, ScrollView, 
+import {
+    View, Text, TextInput, TouchableOpacity, ScrollView,
     KeyboardAvoidingView, Platform, ActivityIndicator, Alert,
-    TouchableWithoutFeedback, Keyboard 
+    TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -18,7 +18,7 @@ type CreateExpenseNavigationProp = NativeStackNavigationProp<MainStackParamList,
 const CreateExpense = () => {
     const navigation = useNavigation<CreateExpenseNavigationProp>();
     const route = useRoute<any>();
-    const { groupId, groupMembers } = route.params;
+    const { groupId, groupMembers, pageName, expenseType } = route.params;
     const userData = useSelector((state: any) => state.user.userData);
 
     const [description, setDescription] = useState('');
@@ -30,14 +30,44 @@ const CreateExpense = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // Default to all members selected for equal split
-        if (groupMembers) {
-            setSelectedMembers(groupMembers.map((m: any) => m._id));
-        }
-        if (userData?._id) {
-            setPaidBy(userData._id);
-        }
-    }, [groupMembers, userData]);
+        const initializeForm = async () => {
+            if (expenseType === 'Edit' && route.params.expenseId) {
+                setLoading(true);
+                try {
+                    const res = await API.get(`/expense/${route.params.expenseId}`);
+                    const exp = res.data;
+                    setDescription(exp.description);
+                    setAmount(exp.amount.toString());
+                    setPaidBy(exp.paidBy._id || exp.paidBy);
+                    setSplitType(exp.splitType);
+                    setSelectedMembers(exp.splits.map((s: any) => s.user));
+                    
+                    if (exp.splitType === 'exact') {
+                        const amounts: any = {};
+                        exp.splits.forEach((s: any) => {
+                            amounts[s.user] = s.amount.toString();
+                        });
+                        setExactAmounts(amounts);
+                    }
+                } catch (error) {
+                    console.log('Error fetching expense for edit:', error);
+                    Alert.alert('Error', 'Could not load expense details');
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                // Default to all members selected for equal split (Add mode)
+                if (groupMembers) {
+                    setSelectedMembers(groupMembers.map((m: any) => m._id));
+                }
+                if (userData?._id) {
+                    setPaidBy(userData._id);
+                }
+            }
+        };
+
+        initializeForm();
+    }, [expenseType, route.params.expenseId, groupMembers, userData]);
 
     const toggleMember = (memberId: string) => {
         if (selectedMembers.includes(memberId)) {
@@ -94,18 +124,31 @@ const CreateExpense = () => {
 
         setLoading(true);
         try {
-            await API.post('/expense/', {
-                data: {
-                    groupId,
-                    description: description.trim(),
-                    amount: totalAmount,
-                    splitType,
-                    splits,
-                    paidBy: paidBy || userData?._id,
-                    expenseDate: new Date()
-                }
-            });
-            Alert.alert('Success', 'Expense added successfully!', [
+            if (expenseType === "Add")
+                await API.post('/expense/', {
+                    data: {
+                        groupId,
+                        description: description.trim(),
+                        amount: totalAmount,
+                        splitType,
+                        splits,
+                        paidBy: paidBy || userData?._id,
+                        expenseDate: new Date()
+                    }
+                });
+            else if (expenseType === "Edit")
+                await API.put(`/expense/${route.params.expenseId}`, {
+                    data: {
+                        groupId,
+                        description: description.trim(),
+                        amount: totalAmount,
+                        splitType,
+                        splits,
+                        paidBy: paidBy || userData?._id,
+                        expenseDate: new Date()
+                    }
+                });
+            Alert.alert('Success', `Expense ${expenseType === 'Edit' ? 'updated' : 'added'} successfully!`, [
                 { text: 'OK', onPress: () => navigation.goBack() }
             ]);
         } catch (error: any) {
@@ -118,8 +161,8 @@ const CreateExpense = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <Header title="Add Expense" showBack onBackPress={() => navigation.goBack()} />
-            <KeyboardAvoidingView 
+            <Header title={pageName} showBack={true} onBackPress={() => navigation.goBack()} />
+            <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
@@ -152,7 +195,7 @@ const CreateExpense = () => {
                                 <Text style={styles.label}>Paid By</Text>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.paidByScroll}>
                                     {groupMembers.map((member: any) => (
-                                        <TouchableOpacity 
+                                        <TouchableOpacity
                                             key={member._id}
                                             style={[styles.paidByButton, paidBy === member._id && styles.activePaidByButton]}
                                             onPress={() => setPaidBy(member._id)}
@@ -166,13 +209,13 @@ const CreateExpense = () => {
                             </View>
 
                             <View style={styles.splitTypeContainer}>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     style={[styles.splitTypeButton, splitType === 'equal' && styles.activeSplitType]}
                                     onPress={() => setSplitType('equal')}
                                 >
                                     <Text style={[styles.splitTypeText, splitType === 'equal' && styles.activeSplitTypeText]}>Equally</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     style={[styles.splitTypeButton, splitType === 'exact' && styles.activeSplitType]}
                                     onPress={() => setSplitType('exact')}
                                 >
@@ -182,8 +225,8 @@ const CreateExpense = () => {
 
                             <Text style={styles.memberSelectionTitle}>Split with:</Text>
                             {groupMembers.map((member: any) => (
-                                <TouchableOpacity 
-                                    key={member._id} 
+                                <TouchableOpacity
+                                    key={member._id}
                                     style={[styles.memberItem, selectedMembers.includes(member._id) && styles.activeMemberItem]}
                                     onPress={() => toggleMember(member._id)}
                                 >
@@ -204,7 +247,6 @@ const CreateExpense = () => {
                                             value={exactAmounts[member._id] || ''}
                                             onChangeText={(val) => handleExactAmountChange(member._id, val)}
                                             keyboardType="numeric"
-                                            onClick={(e: any) => e.stopPropagation()}
                                         />
                                     )}
                                 </TouchableOpacity>
@@ -212,8 +254,8 @@ const CreateExpense = () => {
                         </ScrollView>
 
                         <View style={styles.footer}>
-                            <TouchableOpacity 
-                                style={styles.createButton} 
+                            <TouchableOpacity
+                                style={styles.createButton}
                                 onPress={handleCreateExpense}
                                 disabled={loading}
                             >

@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '700',
         color: '#1A1A1A',
+        marginBottom: 20,
     },
     expenseCard: {
         backgroundColor: '#FFFFFF',
@@ -79,6 +80,13 @@ export const styles = StyleSheet.create({
     expenseAmount: {
         fontSize: 16,
         fontWeight: '700',
+    },
+    expensePayerInfo: {
+        alignItems: 'flex-end',
+    },
+    expensePayer: {
+        fontSize: 12,
+        color: '#888888',
     },
     balanceCard: {
         backgroundColor: '#FFFFFF',

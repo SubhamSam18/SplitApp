@@ -6,6 +6,7 @@ import CreateGroup from '../screens/App/CreateGroup';
 import Groups from '../screens/App/Groups';
 import GroupDetails from '../screens/App/GroupDetails';
 import CreateExpense from '../screens/App/CreateExpense';
+import ExpenseDetails from '../screens/App/ExpenseDetails';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -17,6 +18,7 @@ export const MainStack = () => {
             <Stack.Screen name="Groups" component={Groups} />
             <Stack.Screen name="GroupDetails" component={GroupDetails} />
             <Stack.Screen name="CreateExpense" component={CreateExpense} />
+            <Stack.Screen name="ExpenseDetails" component={ExpenseDetails} />
         </Stack.Navigator>
     );
 };

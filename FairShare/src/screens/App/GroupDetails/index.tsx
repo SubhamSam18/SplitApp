@@ -8,7 +8,6 @@ import { useFocusEffect, useRoute, useNavigation } from '@react-navigation/nativ
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
 
-type GroupDetailsRouteProp = any; // Simplifying for now, can use RouteProp later
 type GroupDetailsNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const GroupDetails = () => {
@@ -49,28 +48,30 @@ const GroupDetails = () => {
         <SafeAreaView style={styles.container}>
             <Header title={groupName || "Group Details"} showBack={true} onBackPress={() => navigation.goBack()} />
 
-            <ScrollView
-                contentContainerStyle={styles.scrollContent}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}
-                showsVerticalScrollIndicator={false}
-            >
-                {loading && !refreshing ? (
-                    <ActivityIndicator size="large" color="#4361EE" style={styles.loader} />
-                ) : (
-                    <>
+            {loading && !refreshing ? (
+                <ActivityIndicator size="large" color="#4361EE" style={styles.loader} />
+            ) : (
+                <>
+                    <View style={{ paddingHorizontal: 20 }}>
                         <View style={styles.headerCard}>
                             <Text style={styles.groupName}>{summary?.group?.name || groupName}</Text>
                             <Text style={styles.totalExpenseLabel}>Total Group Spending</Text>
                             <Text style={styles.totalExpenseAmount}>₹{summary?.totalExpense || 0}</Text>
                         </View>
+                    </View>
 
+                    <ScrollView
+                        contentContainerStyle={styles.scrollContent}
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}
+                        showsVerticalScrollIndicator={false}
+                    >
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Balances</Text>
                             {summary?.memberSummary?.map((member: any) => (
-                                <View 
-                                    key={member.userId} 
+                                <View
+                                    key={member.userId}
                                     style={[
-                                        styles.balanceCard, 
+                                        styles.balanceCard,
                                         { borderLeftColor: member.netBalance >= 0 ? '#28a745' : '#dc3545' }
                                     ]}
                                 >
@@ -95,36 +96,41 @@ const GroupDetails = () => {
                                 <Text style={styles.sectionTitle}>Recent Expenses</Text>
                             </View>
                             {summary?.expenses?.length > 0 ? (
-                                summary.expenses.map((expense: any) => (
-                                    <TouchableOpacity key={expense._id} style={styles.expenseCard}>
+                                summary.expenses.reverse().map((expense: any) => (
+                                    <TouchableOpacity key={expense._id} style={styles.expenseCard} onPress={() => navigation.navigate('ExpenseDetails', { expenseId: expense._id })}>
                                         <View style={styles.expenseInfo}>
                                             <Text style={styles.expenseDescription}>{expense.description}</Text>
                                             <Text style={styles.expenseSubText}>
                                                 {new Date(expense.expenseDate).toLocaleDateString()}
                                             </Text>
                                         </View>
-                                        <Text style={[styles.expenseAmount, { color: '#1A1A1A' }]}>
-                                            ₹{expense.amount}
-                                        </Text>
+                                        <View style={styles.expensePayerInfo}>
+                                            <Text style={[styles.expenseAmount, { color: '#1A1A1A' }]}>
+                                                ₹{expense.amount}
+                                            </Text>
+                                            <Text style={styles.expensePayer}>paid by {expense.payerName}</Text>
+                                        </View>
                                     </TouchableOpacity>
                                 ))
                             ) : (
                                 <Text style={{ textAlign: 'center', color: '#888', marginTop: 20 }}>No expenses yet</Text>
                             )}
                         </View>
-                    </>
-                )}
-            </ScrollView>
+                    </ScrollView>
+                </>
+            )}
 
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.fab}
-                onPress={() => navigation.navigate('CreateExpense', { 
-                    groupId, 
+                onPress={() => navigation.navigate('CreateExpense', {
+                    groupId,
                     groupMembers: summary?.memberSummary?.map((m: any) => ({
                         _id: m.userId,
                         name: m.name,
                         email: m.email
-                    })) || []
+                    })) || [],
+                    pageName: "Add Expense",
+                    expenseType: "Add",
                 })}
             >
                 <Text style={styles.fabIcon}>+</Text>

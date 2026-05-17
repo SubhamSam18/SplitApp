@@ -98,9 +98,9 @@ const Home = () => {
                                     <Text style={styles.groupName}>Create Group</Text>
                                 </TouchableOpacity>
 
-                                {groups.map((group) => (
-                                    <TouchableOpacity 
-                                        key={group._id} 
+                                {groups.slice(0, 3).map((group) => (
+                                    <TouchableOpacity
+                                        key={group._id}
                                         style={styles.groupBox}
                                         onPress={() => navigation.navigate('GroupDetails', { groupId: group._id, groupName: group.name })}
                                     >

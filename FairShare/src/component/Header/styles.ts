@@ -1,32 +1,60 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const headerStyles = StyleSheet.create({
     container: {
-        marginHorizontal: 20,
-        marginVertical: 20,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        backgroundColor: '#FFFFFF',
+        borderBottomWidth: 1,
+        borderBottomColor: '#dbdadaff',
+    },
+    leftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
+    backButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 24,
+    },
+    backIcon: {
+        fontSize: 28,
+        color: '#1A1A1A',
+        fontWeight: '900',
+        marginTop: -10,
+    },
+    titleContainer: {
+        flex: 1,
     },
     title: {
-        fontSize: 32,
-        fontWeight: '900',
+        fontSize: 24,
+        fontWeight: '800',
+        color: '#1A1A1A',
+        letterSpacing: -0.5,
+    },
+    subtitle: {
+        fontSize: 12,
+        color: '#6C757D',
+        fontWeight: '500',
+        marginTop: -2,
     },
     avatarContainer: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: '#ccc',
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        borderWidth: 2,
+        borderColor: '#4361EE',
+        padding: 2,
+        backgroundColor: '#FFFFFF',
+        marginLeft: 10,
     },
     avatar: {
-        width: 40,
-        height: 40,
+        width: '100%',
+        height: '100%',
         borderRadius: 20,
-    },
-    backButtonText: {
-        fontSize: 30,
-        color: '#1A1A1A',
-        fontWeight: 'bold',
-        marginTop: -2,
     },
 });

@@ -41,7 +41,7 @@ const CreateExpense = () => {
                     setPaidBy(exp.paidBy._id || exp.paidBy);
                     setSplitType(exp.splitType);
                     setSelectedMembers(exp.splits.map((s: any) => s.user));
-                    
+
                     if (exp.splitType === 'exact') {
                         const amounts: any = {};
                         exp.splits.forEach((s: any) => {
@@ -175,6 +175,7 @@ const CreateExpense = () => {
                                     placeholder="₹0"
                                     placeholderTextColor="#A0A0A0"
                                     value={amount}
+                                    cursorColor='transparent'
                                     onChangeText={setAmount}
                                     keyboardType="numeric"
                                 />

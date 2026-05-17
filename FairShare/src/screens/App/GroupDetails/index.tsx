@@ -18,6 +18,7 @@ const GroupDetails = () => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [summary, setSummary] = useState<any>(null);
+    const [activeTab, setActiveTab] = useState<'expenses' | 'balances'>('expenses');
 
     const fetchGroupData = async () => {
         try {
@@ -60,62 +61,85 @@ const GroupDetails = () => {
                         </View>
                     </View>
 
+                    <View style={styles.tabContainer}>
+                        <TouchableOpacity
+                            style={[styles.tabButton, activeTab === 'expenses' && styles.activeTabButton]}
+                            onPress={() => setActiveTab('expenses')}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={[styles.tabText, activeTab === 'expenses' && styles.activeTabText]}>
+                                Expenses
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.tabButton, activeTab === 'balances' && styles.activeTabButton]}
+                            onPress={() => setActiveTab('balances')}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={[styles.tabText, activeTab === 'balances' && styles.activeTabText]}>
+                                Balances
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <ScrollView
                         contentContainerStyle={styles.scrollContent}
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}
                         showsVerticalScrollIndicator={false}
                     >
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Balances</Text>
-                            {summary?.memberSummary?.map((member: any) => (
-                                <View
-                                    key={member.userId}
-                                    style={[
-                                        styles.balanceCard,
-                                        { borderLeftColor: member.netBalance >= 0 ? '#28a745' : '#dc3545' }
-                                    ]}
-                                >
-                                    <View style={styles.memberInfo}>
-                                        <View style={styles.avatarPlaceholder}>
-                                            <Text style={styles.avatarText}>{getInitial(member.name)}</Text>
-                                        </View>
-                                        <View>
-                                            <Text style={styles.memberName}>{member.name}</Text>
-                                            <Text style={styles.expenseSubText}>{member.email}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={[styles.memberBalance, { color: member.netBalance >= 0 ? '#28a745' : '#dc3545' }]}>
-                                        {member.netBalance >= 0 ? '+' : ''}₹{member.netBalance}
-                                    </Text>
+                        {activeTab === 'expenses' ? (
+                            <View style={styles.section}>
+                                <View style={styles.sectionHeader}>
+                                    <Text style={styles.sectionTitle}>Recent Expenses</Text>
                                 </View>
-                            ))}
-                        </View>
-
-                        <View style={styles.section}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionTitle}>Recent Expenses</Text>
+                                {summary?.expenses?.length > 0 ? (
+                                    [...summary.expenses].reverse().map((expense: any) => (
+                                        <TouchableOpacity key={expense._id} style={styles.expenseCard} onPress={() => navigation.navigate('ExpenseDetails', { expenseId: expense._id })}>
+                                            <View style={styles.expenseInfo}>
+                                                <Text style={styles.expenseDescription}>{expense.description}</Text>
+                                                <Text style={styles.expenseSubText}>
+                                                    {new Date(expense.expenseDate).toLocaleDateString()}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.expensePayerInfo}>
+                                                <Text style={[styles.expenseAmount, { color: '#1A1A1A' }]}>
+                                                    ₹{expense.amount}
+                                                </Text>
+                                                <Text style={styles.expensePayer}>by {expense.payerName}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    ))
+                                ) : (
+                                    <Text style={{ textAlign: 'center', color: '#888', marginTop: 40 }}>No expenses yet</Text>
+                                )}
                             </View>
-                            {summary?.expenses?.length > 0 ? (
-                                summary.expenses.reverse().map((expense: any) => (
-                                    <TouchableOpacity key={expense._id} style={styles.expenseCard} onPress={() => navigation.navigate('ExpenseDetails', { expenseId: expense._id })}>
-                                        <View style={styles.expenseInfo}>
-                                            <Text style={styles.expenseDescription}>{expense.description}</Text>
-                                            <Text style={styles.expenseSubText}>
-                                                {new Date(expense.expenseDate).toLocaleDateString()}
-                                            </Text>
+                        ) : (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Balances</Text>
+                                {summary?.memberSummary?.map((member: any) => (
+                                    <View
+                                        key={member.userId}
+                                        style={[
+                                            styles.balanceCard,
+                                            { borderLeftColor: member.netBalance >= 0 ? '#28a745' : '#dc3545' }
+                                        ]}
+                                    >
+                                        <View style={styles.memberInfo}>
+                                            <View style={styles.avatarPlaceholder}>
+                                                <Text style={styles.avatarText}>{getInitial(member.name)}</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.memberName}>{member.name}</Text>
+                                                <Text style={styles.expenseSubText}>{member.email}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.expensePayerInfo}>
-                                            <Text style={[styles.expenseAmount, { color: '#1A1A1A' }]}>
-                                                ₹{expense.amount}
-                                            </Text>
-                                            <Text style={styles.expensePayer}>paid by {expense.payerName}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))
-                            ) : (
-                                <Text style={{ textAlign: 'center', color: '#888', marginTop: 20 }}>No expenses yet</Text>
-                            )}
-                        </View>
+                                        <Text style={[styles.memberBalance, { color: member.netBalance >= 0 ? '#28a745' : '#dc3545' }]}>
+                                            {member.netBalance >= 0 ? '+' : ''}₹{member.netBalance}
+                                        </Text>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
                     </ScrollView>
                 </>
             )}

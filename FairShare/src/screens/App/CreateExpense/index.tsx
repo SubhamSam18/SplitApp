@@ -124,7 +124,7 @@ const CreateExpense = () => {
 
         setLoading(true);
         try {
-            if (expenseType === "Add")
+            if (expenseType === "Add") {
                 await API.post('/expense/', {
                     data: {
                         groupId,
@@ -136,7 +136,10 @@ const CreateExpense = () => {
                         expenseDate: new Date()
                     }
                 });
-            else if (expenseType === "Edit")
+                Alert.alert('Success', `Expense added successfully!`, [
+                    { text: 'OK', onPress: () => navigation.goBack() }
+                ]);
+            } else if (expenseType === "Edit") {
                 await API.put(`/expense/${route.params.expenseId}`, {
                     data: {
                         groupId,
@@ -148,9 +151,10 @@ const CreateExpense = () => {
                         expenseDate: new Date()
                     }
                 });
-            Alert.alert('Success', `Expense ${expenseType === 'Edit' ? 'updated' : 'added'} successfully!`, [
-                { text: 'OK', onPress: () => navigation.goBack() }
-            ]);
+                Alert.alert('Success', 'Expense updated successfully!', [
+                    { text: 'OK', onPress: () => navigation.goBack() }
+                ]);
+            }
         } catch (error: any) {
             console.log('Create Expense Error:', error);
             Alert.alert('Error', error.response?.data?.message || 'Failed to add expense');

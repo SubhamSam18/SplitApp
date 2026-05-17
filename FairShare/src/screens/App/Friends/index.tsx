@@ -68,7 +68,7 @@ const Friends = () => {
                     onPress: async () => {
                         try {
                             setLoading(true);
-                            await API.post('/settlement/friend', { to: friend._id });
+                            await API.post('/settle/friend', { to: friend._id });
                             Alert.alert('Success', `Balances with ${friend.name} settled successfully!`);
                             fetchFriends();
                         } catch (error) {

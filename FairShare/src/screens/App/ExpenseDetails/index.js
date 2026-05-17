@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { Header } from '../../../component/Header';
 import API from '../../../services/api';
 import { styles } from './styles';
@@ -26,22 +26,24 @@ const ExpenseDetails = () => {
         }
     };
 
-    useEffect(() => {
-        fetchExpenseDetails();
-    }, [expenseId]);
+    useFocusEffect(
+        useCallback(() => {
+            fetchExpenseDetails();
+        }, [expenseId])
+    );
 
     const handleEditExpense = () => {
         if (!expense) return;
-        navigation.navigate('CreateExpense', { 
-            expenseId, 
-            expenseType: "Edit", 
+        navigation.navigate('CreateExpense', {
+            expenseId,
+            expenseType: "Edit",
             pageName: "Edit Expense",
-            groupName: expense.group?.name, 
+            groupName: expense.group?.name,
             groupId: expense.group?._id || expense.group,
-            groupMembers: expense.splits?.map(m => ({ 
-                _id: m.user, 
-                name: m.name, 
-                email: m.email || '' 
+            groupMembers: expense.splits?.map(m => ({
+                _id: m.user,
+                name: m.name,
+                email: m.email || ''
             })) || []
         });
     }

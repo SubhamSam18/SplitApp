@@ -35,12 +35,12 @@ exports.updateBalance = async ({ groupId, paidBy, splits, session }) => {
         const newAmount = amountOwed - reverse.amount;
         await reverse.deleteOne({ session });
 
-        await Balance.create({
+        await Balance.create([{
           group: groupId,
           from: debtor,
           to: creditor,
           amount: newAmount,
-        }, { session });
+        }], { session });
       } else {
         await reverse.deleteOne({ session });
       }
@@ -88,14 +88,14 @@ exports.reverseBalance = async ({ groupId, paidBy, splits, session }) => {
       await Balance.findOneAndUpdate(
         { group: groupId, from: creditor, to: debtor },
         { $inc: { amount: reverseAmount } },
-        { upsert: true, session, new: true }
+        { upsert: true, session, returnDocument: 'after' }
       );
 
     } else {
       await Balance.findOneAndUpdate(
         { group: groupId, from: creditor, to: debtor },
         { $inc: { amount } },
-        { upsert: true, session, new: true }
+        { upsert: true, session, returnDocument: 'after' }
       );
     }
   }

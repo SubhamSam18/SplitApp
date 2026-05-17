@@ -10,6 +10,10 @@ const activitySchema = new mongoose.Schema({
         ref: "Group",
         required: true
     },
+    expenseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Expense"
+    },
     description: {
         type: String,
         required: true

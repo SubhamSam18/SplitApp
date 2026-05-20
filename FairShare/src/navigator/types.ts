@@ -10,4 +10,5 @@ export type MainStackParamList = {
     GroupDetails: { groupId: string; groupName: string };
     CreateExpense: { groupId: string; groupMembers: { _id: string; name: string; email: string }[]; pageName: string, expenseType: string };
     ExpenseDetails: { expenseId: string };
+    Profile: undefined;
 };

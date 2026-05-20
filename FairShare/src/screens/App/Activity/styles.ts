@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
         color: '#1A1A1A',
         marginTop: 16,
         marginBottom: 16,
-        marginLeft: 20,
     },
     emptyText: {
         textAlign: 'center',

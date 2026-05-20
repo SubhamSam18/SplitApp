@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { headerStyles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 interface HeaderProps {
     title: string;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ title, subtitle, avatar, showBack, onBackPress }: HeaderProps) => {
+    const navigation = useNavigation();
     return (
         <View style={headerStyles.container}>
             <View style={headerStyles.leftContainer}>
@@ -30,7 +32,7 @@ export const Header = ({ title, subtitle, avatar, showBack, onBackPress }: Heade
             </View>
             
             {avatar && (
-                <TouchableOpacity style={headerStyles.avatarContainer} activeOpacity={0.8}>
+                <TouchableOpacity style={headerStyles.avatarContainer} activeOpacity={0.8} onPress={()=>{navigation.navigate('Profile' as never)}}>
                     <Image source={{ uri: avatar }} style={headerStyles.avatar} />
                 </TouchableOpacity>
             )}

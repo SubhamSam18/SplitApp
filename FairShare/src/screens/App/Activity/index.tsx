@@ -104,18 +104,18 @@ const Activity = () => {
                 <ActivityIndicator size="large" color="#4361EE" style={styles.loader} />
             ) : (
                 <>
-                    <Text style={styles.sectionTitle}>Activity Log</Text>
                     <ScrollView
                         contentContainerStyle={styles.scrollContent}
                         refreshControl={
                             <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                tintColor="#4361EE"
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#4361EE"
                             />
                         }
                         showsVerticalScrollIndicator={false}
                     >
+                        <Text style={styles.sectionTitle}>Activity Log</Text>
                         {activities.length > 0 ? (
                             activities.map((activity) => {
                                 const isDeleted = activity.description.toLowerCase().includes('deleted');

@@ -47,7 +47,12 @@ exports.login = async (req, res) => {
     });
     res.status(200).json({
       message: "Login successful",
-      token: token
+      token: token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      }
     });
   } catch (error) {
     console.log("Error " + error);
@@ -113,5 +118,37 @@ exports.deleteAccount = async (req, res) => {
   } catch (error) {
     console.log("Error " + error);
     res.status(500).json({ message: "Failed to delete account!" });
+  }
+}
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const user = await User.findOne({ _id: req.user.userId });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (name) user.name = name;
+    if (email) {
+      const existingUser = await User.findOne({ email, _id: { $ne: req.user.userId } });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email is already in use" });
+      }
+      user.email = email;
+    }
+
+    await user.save();
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.log("Error updating profile: " + error);
+    res.status(500).json({ message: "Failed to update profile!" });
   }
 }

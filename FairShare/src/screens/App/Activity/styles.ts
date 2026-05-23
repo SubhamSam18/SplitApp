@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingHorizontal: 20,
-        paddingBottom: 40,
     },
     loader: {
         marginTop: 100,

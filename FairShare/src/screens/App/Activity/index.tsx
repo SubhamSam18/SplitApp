@@ -95,7 +95,7 @@ const Activity = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header
                 title="Recent Activity"
                 avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png"

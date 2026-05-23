@@ -123,22 +123,14 @@ exports.deleteAccount = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name } = req.body;
     const user = await User.findOne({ _id: req.user.userId });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
     if (name) user.name = name;
-    if (email) {
-      const existingUser = await User.findOne({ email, _id: { $ne: req.user.userId } });
-      if (existingUser) {
-        return res.status(400).json({ message: "Email is already in use" });
-      }
-      user.email = email;
-    }
-
-    await user.save();
+    await user.updateOne();
     res.status(200).json({
       message: "Profile updated successfully",
       user: {

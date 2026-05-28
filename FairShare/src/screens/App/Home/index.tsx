@@ -7,12 +7,13 @@ import API from '../../../services/api';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
+import Groups from '../Groups';
 
 type HomeNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const Home = () => {
     const navigation = useNavigation<HomeNavigationProp>();
-    
+
     const [youOwe, setYouOwe] = useState(0);
     const [youAreOwed, setYouAreOwed] = useState(0);
     const [groups, setGroups] = useState<any[]>([]);
@@ -39,7 +40,7 @@ const Home = () => {
     useFocusEffect(
         useCallback(() => {
             fetchData();
-        }, [fetchData])
+        }, [])
     );
 
     const onRefresh = () => {
@@ -50,7 +51,7 @@ const Home = () => {
     const totalBalance = youAreOwed - youOwe;
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header title="SplitAura" avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png" />
 
             <ScrollView
@@ -84,7 +85,7 @@ const Home = () => {
                         <View style={styles.groupsSection}>
                             <View style={styles.groupsHeader}>
                                 <Text style={styles.groupsTitle}>Your Groups</Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate('GroupsTab' as never)}>
                                     <Text style={styles.seeAllText}>See All</Text>
                                 </TouchableOpacity>
                             </View>
@@ -97,8 +98,12 @@ const Home = () => {
                                     <Text style={styles.groupName}>Create Group</Text>
                                 </TouchableOpacity>
 
-                                {groups.map((group) => (
-                                    <TouchableOpacity key={group._id} style={styles.groupBox}>
+                                {groups.slice(0, 3).map((group) => (
+                                    <TouchableOpacity
+                                        key={group._id}
+                                        style={styles.groupBox}
+                                        onPress={() => navigation.navigate('GroupDetails', { groupId: group._id, groupName: group.name })}
+                                    >
                                         <View style={styles.groupIconContainer}>
                                             <Text style={styles.groupIcon}>✈️</Text>
                                         </View>

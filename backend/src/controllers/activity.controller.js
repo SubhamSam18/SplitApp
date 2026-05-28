@@ -22,7 +22,12 @@ exports.addActivity = async (req, res) => {
 
 exports.getActivities = async (req, res) => {
     try {
-        const activities = await Activity.find({ "splits.user": req.user.userId }).sort({ createdAt: -1 });
+        const activities = await Activity.find({
+            $or: [
+                { "splits.user": req.user.userId },
+                { paidBy: req.user.userId }
+            ]
+        }).sort({ createdAt: -1 });
         res.status(200).json({ activities, currentUserId: req.user.userId });
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -41,7 +41,7 @@ const Groups = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header title="Your Groups" avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png" />
+      <Header title="Your Groups" showProfile={true} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}

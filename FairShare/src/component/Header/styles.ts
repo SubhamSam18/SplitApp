@@ -46,8 +46,6 @@ export const headerStyles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 22,
-        borderWidth: 2,
-        borderColor: '#4361EE',
         padding: 2,
         backgroundColor: '#FFFFFF',
         marginLeft: 10,

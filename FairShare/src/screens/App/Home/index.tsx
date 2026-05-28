@@ -52,7 +52,7 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <Header title="SplitAura" avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png" />
+            <Header title="SplitAura" showProfile={true} />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}

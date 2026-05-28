@@ -98,7 +98,7 @@ const Activity = () => {
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header
                 title="Recent Activity"
-                avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png"
+                showProfile={true}
             />
             {loading && !refreshing ? (
                 <ActivityIndicator size="large" color="#4361EE" style={styles.loader} />
@@ -108,9 +108,9 @@ const Activity = () => {
                         contentContainerStyle={styles.scrollContent}
                         refreshControl={
                             <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor="#4361EE"
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                tintColor="#4361EE"
                             />
                         }
                         showsVerticalScrollIndicator={false}
@@ -119,7 +119,7 @@ const Activity = () => {
                         {activities.length > 0 ? (
                             activities.map((activity) => {
                                 const isDeleted = activity.description.toLowerCase().includes('deleted');
-                                const mySplit = activity.splits?.find(s => s.user === currentUserId)?.amount || 0;
+                                const mySplit = Math.round(activity.splits?.find(s => s.user === currentUserId)?.amount ?? 0);
                                 const isPayer = activity.paidBy === currentUserId;
                                 let receivableAmount = activity.amount - mySplit;
                                 receivableAmount = Math.round(receivableAmount);

@@ -12,6 +12,18 @@ export const styles = StyleSheet.create({
     loader: {
         marginTop: 50,
     },
+    editButton: {
+        position: 'absolute',
+        top: 15,
+        right: 15,
+        padding: 10,
+        zIndex: 10,
+    },
+    editIcon:{
+        width: 20,
+        height: 20,
+        tintColor: '#FFFFFF',
+    },
     headerCard: {
         backgroundColor: '#4361EE',
         padding: 24,

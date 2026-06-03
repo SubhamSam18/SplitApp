@@ -32,20 +32,39 @@ const ExpenseDetails = () => {
         }, [expenseId])
     );
 
-    const handleEditExpense = () => {
+    const handleEditExpense = async () => {
         if (!expense) return;
-        navigation.navigate('CreateExpense', {
-            expenseId,
-            expenseType: "Edit",
-            pageName: "Edit Expense",
-            groupName: expense.group?.name,
-            groupId: expense.group?._id || expense.group,
-            groupMembers: expense.splits?.map(m => ({
-                _id: m.user,
+        const groupId = expense.group?._id || expense.group;
+        try {
+            const res = await API.get(`/groups/${groupId}/summary`);
+            const members = res.data?.memberSummary?.map((m) => ({
+                _id: m.userId,
                 name: m.name,
                 email: m.email || ''
-            })) || []
-        });
+            })) || [];
+            navigation.navigate('CreateExpense', {
+                expenseId,
+                expenseType: "Edit",
+                pageName: "Edit Expense",
+                groupName: expense.group?.name,
+                groupId,
+                groupMembers: members
+            });
+        } catch (error) {
+            console.log('Error fetching group members for edit:', error);
+            navigation.navigate('CreateExpense', {
+                expenseId,
+                expenseType: "Edit",
+                pageName: "Edit Expense",
+                groupName: expense.group?.name,
+                groupId,
+                groupMembers: expense.splits?.map(m => ({
+                    _id: m.user,
+                    name: m.name,
+                    email: m.email || ''
+                })) || []
+            });
+        }
     }
 
     const handleDelete = () => {

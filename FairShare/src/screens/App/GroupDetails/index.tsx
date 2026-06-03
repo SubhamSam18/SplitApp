@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../../../component/Header';
@@ -7,6 +7,7 @@ import API from '../../../services/api';
 import { useFocusEffect, useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
+import assets from '../../../assets/asset';
 
 type GroupDetailsNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -14,7 +15,6 @@ const GroupDetails = () => {
     const route = useRoute<any>();
     const navigation = useNavigation<GroupDetailsNavigationProp>();
     const { groupId, groupName } = route.params;
-
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [summary, setSummary] = useState<any>(null);
@@ -43,6 +43,21 @@ const GroupDetails = () => {
         fetchGroupData();
     };
 
+    const handleEditGroup = () => {
+        if (!summary) return;
+        const memberEmails = summary.memberSummary
+            .filter((m: any) => m.userId !== summary.currentUserId)
+            .map((m: any) => m.email)
+            .filter((email: any) => email);
+        const groupData = {
+            _id: summary.group.id,
+            name: summary.group.name,
+            groupAvatar: summary.group.groupAvatar,
+            members: memberEmails
+        };
+        navigation.navigate('CreateGroup', { group: groupData } as any);
+    }
+
     const getInitial = (name: string) => name ? name.charAt(0).toUpperCase() : '?';
 
     return (
@@ -55,6 +70,9 @@ const GroupDetails = () => {
                 <>
                     <View style={{ paddingHorizontal: 20 }}>
                         <View style={styles.headerCard}>
+                            <TouchableOpacity style={styles.editButton} onPress={() => handleEditGroup()}>
+                                <Image source={assets.editIcon} style={styles.editIcon} />
+                            </TouchableOpacity>
                             <Text style={styles.groupName}>{summary?.group?.name || groupName}</Text>
                             <Text style={styles.totalExpenseLabel}>Total Group Spending</Text>
                             <Text style={styles.totalExpenseAmount}>₹{summary?.totalExpense || 0}</Text>

@@ -86,7 +86,7 @@ const CreateExpense = () => {
             Alert.alert('Error', 'Please enter a description');
             return;
         }
-        if (!amount || parseFloat(amount) <= 0) {
+        if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
             Alert.alert('Error', 'Please enter a valid amount');
             return;
         }

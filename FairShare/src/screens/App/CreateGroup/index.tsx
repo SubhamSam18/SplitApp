@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { 
-    View, Text, TextInput, TouchableOpacity, ScrollView, 
-    KeyboardAvoidingView, Platform, ActivityIndicator, Alert,
-    TouchableWithoutFeedback, Keyboard 
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
 import API from '../../../services/api';
 import { styles } from './styles';
+import assets from '../../../assets/asset';
 
 type CreateGroupNavigationProp = NativeStackNavigationProp<MainStackParamList, 'CreateGroup'>;
 
 const CreateGroup = () => {
     const navigation = useNavigation<CreateGroupNavigationProp>();
+    const route = useRoute<any>();
     
-    const [name, setName] = useState('');
+    const group = route.params?.group;
+
+    const [name, setName] = useState(group?.name || '');
     const [emailInput, setEmailInput] = useState('');
-    const [members, setMembers] = useState<string[]>([]);
+    const [members, setMembers] = useState<string[]>(group?.members || []);
     const [loading, setLoading] = useState(false);
+    const [groupAvatar, setGroupAvatar] = useState(group?.groupAvatar || "travel");
+
+    const handleIconPress = (iconName: string) => {
+        setGroupAvatar(iconName);
+    };
 
     const handleAddMember = () => {
         const trimmedEmail = emailInput.trim().toLowerCase();
@@ -58,18 +63,27 @@ const CreateGroup = () => {
 
         setLoading(true);
         try {
-            await API.post('/groups/', { name: name.trim(), members });
-            Alert.alert(
-                'Success', 
-                'Group created successfully!',
-                [{ text: 'OK', onPress: () => navigation.goBack() }]
-            );
+            if (group?._id) {
+                await API.put(`/groups/${group._id}`, { name: name.trim(), members, groupAvatar });
+                    Alert.alert(
+                        'Success',
+                        'Group updated successfully!',
+                        [{ text: 'OK', onPress: () => navigation.goBack() }]
+                    );
+            } else {
+                await API.post('/groups/', { name: name.trim(), members, groupAvatar });
+                    Alert.alert(
+                        'Success',
+                        'Group created successfully!',
+                        [{ text: 'OK', onPress: () => navigation.goBack() }]
+                    );
+            }
         } catch (error: any) {
             console.log("Create Group Error: ", error);
             const msg = error.response?.data?.message || 'Failed to create group.';
             if (error.response?.data?.invalidEmails) {
                 Alert.alert(
-                    'Invalid Members', 
+                    'Invalid Members',
                     `The following emails do not exist: ${error.response.data.invalidEmails.join(', ')}`
                 );
             } else {
@@ -82,7 +96,7 @@ const CreateGroup = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <KeyboardAvoidingView 
+            <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
@@ -92,7 +106,7 @@ const CreateGroup = () => {
                             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                                 <Text style={styles.backButtonText}>←</Text>
                             </TouchableOpacity>
-                            <Text style={styles.headerTitle}>New Group</Text>
+                            <Text style={styles.headerTitle}>{group ? "Edit Group" : "New Group"}</Text>
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                             <View style={styles.inputGroup}>
@@ -104,6 +118,24 @@ const CreateGroup = () => {
                                     value={name}
                                     onChangeText={setName}
                                 />
+                            </View>
+                            <Text style={styles.label}>Trip Category</Text>
+                            <View style={styles.iconRow}>
+                                <TouchableOpacity style={[styles.iconWrapper, groupAvatar === 'travel' && styles.iconSelected]} onPress={() => handleIconPress('travel')}>
+                                    <Image source={assets.travelIcon} style={styles.icon} resizeMode="contain" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.iconWrapper, groupAvatar === 'mountain' && styles.iconSelected]} onPress={() => handleIconPress('mountain')}>
+                                    <Image source={assets.mountainIcon} style={styles.icon} resizeMode="contain" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.iconWrapper, groupAvatar === 'roadTrip' && styles.iconSelected]} onPress={() => handleIconPress('roadTrip')}>
+                                    <Image source={assets.roadTripIcon} style={styles.icon} resizeMode="contain" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.iconWrapper, groupAvatar === 'international' && styles.iconSelected]} onPress={() => handleIconPress('international')}>
+                                    <Image source={assets.internationalIcon} style={styles.icon} resizeMode="contain" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.iconWrapper, groupAvatar === 'beach' && styles.iconSelected]} onPress={() => handleIconPress('beach')}>
+                                    <Image source={assets.beachIcon} style={styles.icon} resizeMode="contain" />
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.inputGroup}>
                                 <Text style={styles.label}>Add Members (by Email)</Text>
@@ -140,15 +172,15 @@ const CreateGroup = () => {
                         </ScrollView>
 
                         <View style={styles.footer}>
-                            <TouchableOpacity 
-                                style={styles.createButton} 
+                            <TouchableOpacity
+                                style={styles.createButton}
                                 onPress={handleCreateGroup}
                                 disabled={loading}
                             >
                                 {loading ? (
                                     <ActivityIndicator color="#FFFFFF" />
                                 ) : (
-                                    <Text style={styles.createButtonText}>Create Group</Text>
+                                    <Text style={styles.createButtonText}>{group ? 'Save Changes' : 'Create Group'}</Text>
                                 )}
                             </TouchableOpacity>
                         </View>

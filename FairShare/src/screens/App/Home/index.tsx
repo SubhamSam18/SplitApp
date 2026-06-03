@@ -81,37 +81,7 @@ const Home = () => {
                                 </View>
                             </View>
                         </View>
-
-                        <View style={styles.groupsSection}>
-                            <View style={styles.groupsHeader}>
-                                <Text style={styles.groupsTitle}>Your Groups</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('GroupsTab' as never)}>
-                                    <Text style={styles.seeAllText}>See All</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.groupsGrid}>
-                                <TouchableOpacity style={styles.createGroupBox} onPress={() => navigation.navigate('CreateGroup')}>
-                                    <View style={styles.createIconContainer}>
-                                        <Text style={styles.createIcon}>+</Text>
-                                    </View>
-                                    <Text style={styles.groupName}>Create Group</Text>
-                                </TouchableOpacity>
-
-                                {groups.slice(0, 3).map((group) => (
-                                    <TouchableOpacity
-                                        key={group._id}
-                                        style={styles.groupBox}
-                                        onPress={() => navigation.navigate('GroupDetails', { groupId: group._id, groupName: group.name })}
-                                    >
-                                        <View style={styles.groupIconContainer}>
-                                            <Text style={styles.groupIcon}>✈️</Text>
-                                        </View>
-                                        <Text style={styles.groupName} numberOfLines={1}>{group.name}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </View>
+                        <Groups showHeader={false} />
                     </>
                 )}
             </ScrollView>

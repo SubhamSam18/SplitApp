@@ -3,6 +3,7 @@ const Balance = require('../models/balance.model');
 const Settlement = require('../models/settlement.model');
 const User = require('../models/user.model');
 const Activity = require('../models/activity.model');
+const Group = require('../models/group.model');
 
 exports.settleGroupPayment = async (req, res) => {
   const session = await mongoose.startSession();
@@ -22,8 +23,15 @@ exports.settleGroupPayment = async (req, res) => {
       return res.status(400).json({ message: "Invalid amount!" });
     }
 
+    const group = await Group.findById(groupId).session(session);
+    if (!group || !group.members.includes(req.user.userId)) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
     const balance = await Balance.findOne({
-      groupId,
+      group: groupId,
       from,
       to,
     }).session(session);
@@ -167,7 +175,7 @@ exports.settleFriendsPayment = async (req, res) => {
         const fromUser = await User.findById(b.from).session(session);
         const toUser = await User.findById(b.to).session(session);
         const descriptionContent = `${fromUser.name} settled ₹${b.amount} with ${toUser.name}`;
-        
+
         await Activity.create(
           [
             {

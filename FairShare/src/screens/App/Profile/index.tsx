@@ -231,7 +231,7 @@ const ProfilePage = () => {
                             {uploadingAvatar ? (
                                 <ActivityIndicator color="#FFFFFF" size="small" style={{ transform: [{ scale: 0.7 }] }} />
                             ) : (
-                                <Text style={styles.avatarEditIcon}>✏️</Text>
+                                <Text style={styles.avatarEditIcon}>🖍</Text>
                             )}
                         </TouchableOpacity>
                     </View>

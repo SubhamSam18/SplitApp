@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
         color: '#333333',
-        marginBottom: 8,
+        marginBottom: 12,
     },
     input: {
         backgroundColor: '#FFFFFF',
@@ -149,5 +149,32 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 16,
         fontWeight: '700',
+    },
+    iconRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    iconWrapper: {
+        alignItems: 'center',
+        width: 60,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
+    iconSelected: {
+        backgroundColor: '#E1E7FF',
+        borderWidth: 1,
+        borderColor: '#4361EE',
+    },
+    icon: {
+        width: 50,
+        height: 50,
+        marginBottom: 4,
+    },
+    iconLabel: {
+        fontSize: 12,
+        color: '#333333',
+        fontWeight: '500',
     },
 });

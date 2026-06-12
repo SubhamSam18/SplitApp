@@ -41,13 +41,11 @@ exports.login = async (req, res) => {
     });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 2 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
       message: "Login successful",
-      token: token,
       user: {
         _id: user._id,
         name: user.name,
@@ -64,6 +62,8 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     res.clearCookie("token", {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production", 
       secure: true,
       sameSite: "strict"
     });
@@ -177,5 +177,21 @@ exports.getAvatar = async (req, res) => {
   } catch (error) {
     console.log("Error getting avatar: " + error);
     res.status(500).json({ message: "Server error while getting avatar" });
+  }
+};
+
+exports.getAvatarInfo = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      name: user.name,
+      avatarUpdatedAt: user.updatedAt ? new Date(user.updatedAt).getTime().toString() : Date.now().toString()
+    });
+  } catch (error) {
+    console.error("Error getting avatar info:", error);
+    res.status(500).json({ message: "Server error while getting avatar info" });
   }
 };

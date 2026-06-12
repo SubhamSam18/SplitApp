@@ -191,11 +191,7 @@ const ProfilePage = () => {
             } as any);
 
             setUploadingAvatar(true);
-            await API.post("/auth/uploadAvatar", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            });
+            await API.post("/auth/uploadAvatar", formData);
             Alert.alert("Success", "Profile picture updated successfully!");
             const newKey = Date.now().toString();
             setAvatarKey(newKey);

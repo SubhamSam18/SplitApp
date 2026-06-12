@@ -14,6 +14,7 @@ router.post("/deleteAccount", authMiddleware, authController.deleteAccount);
 router.put("/updateProfile", authMiddleware, authController.updateProfile);
 router.post("/uploadAvatar", authMiddleware, upload.single("avatar"), authController.uploadAvatar);
 router.get("/avatar/:id", authController.getAvatar);
+router.get("/getAvatar", authMiddleware, authController.getAvatarInfo);
 router.get("/me", authMiddleware, (req, res) => {
   res.status(200).json({
     user: req.user,

@@ -20,6 +20,13 @@ const friendsRoutes = require('./src/routes/friends.routes');
 const analyticsRoutes = require('./src/routes/analytics.routes');
 const activityRoutes = require('./src/routes/activity.routes');
 
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);

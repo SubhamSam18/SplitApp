@@ -26,9 +26,8 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await API.post('/auth/login', { email, password });
-            const token = response.data.token;
             const userData = response.data.user;
-            dispatch(setUser({ ...userData, token }));
+            dispatch(setUser({ ...userData }));
         } catch (error: any) {
             console.log("Login Error: ", error);
             const msg = error.response?.data?.message || 'Login failed. Please check your credentials and try again.';

@@ -8,11 +8,14 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
 import Groups from '../Groups';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../../../../Redux/userSlice';
 
 type HomeNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const Home = () => {
     const navigation = useNavigation<HomeNavigationProp>();
+    const dispatch = useDispatch();
 
     const [youOwe, setYouOwe] = useState(0);
     const [youAreOwed, setYouAreOwed] = useState(0);
@@ -22,13 +25,20 @@ const Home = () => {
 
     const fetchData = async () => {
         try {
-            const [groupsRes, summaryRes] = await Promise.all([
+            const [groupsRes, summaryRes, avatarRes] = await Promise.all([
                 API.get('/groups/'),
-                API.get('/summary')
+                API.get('/summary'),
+                API.get('/auth/getAvatar')
             ]);
             setGroups(groupsRes.data.groups.reverse());
             setYouOwe(summaryRes.data.youOwe || 0);
             setYouAreOwed(summaryRes.data.youAreOwed || 0);
+            if (avatarRes?.data) {
+                dispatch(updateUser({ 
+                    name: avatarRes.data.name, 
+                    avatarUpdatedAt: avatarRes.data.avatarUpdatedAt 
+                }));
+            }
         } catch (error) {
             console.log('Error fetching home data:', error);
         } finally {

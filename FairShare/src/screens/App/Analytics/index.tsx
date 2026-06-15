@@ -6,12 +6,14 @@ import {
     ActivityIndicator,
     RefreshControl,
     TouchableOpacity,
+    Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { Header } from '../../../component/Header';
 import API from '../../../services/api';
 import { analyticsStyles as styles } from './styles';
+import assets from '../../../assets/asset';
 
 const MONTH_NAMES = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -313,7 +315,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgSuccessLight]}>
-                                    <Text style={styles.settlementIconText}>📥</Text>
+                                    <Image
+                                        source={assets.recievedIcon}
+                                        style={styles.Icon}
+                                    />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Total Received</Text>
@@ -330,7 +335,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgDangerLight]}>
-                                    <Text style={styles.settlementIconText}>📤</Text>
+                                    <Image
+                                        source={assets.paidIcon}
+                                        style={styles.Icon}
+                                    />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Total Paid</Text>
@@ -347,7 +355,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgPrimaryLight]}>
-                                    <Text style={styles.settlementIconText}>⚖️</Text>
+                                    <Image
+                                        source={assets.settlementIcon}
+                                        style={styles.Icon}
+                                    />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Net Settlement</Text>
@@ -373,7 +384,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgSuccessLight]}>
-                                    <Text style={styles.settlementIconText}>🤝</Text>
+                                   <Image
+                                       source={assets.settlementIcon}
+                                       style={styles.Icon}
+                                   />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Received</Text>
@@ -390,7 +404,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgDangerLight]}>
-                                    <Text style={styles.settlementIconText}>💸</Text>
+                                    <Image
+                                        source={assets.paidIcon}
+                                        style={styles.Icon}
+                                    />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Paid</Text>

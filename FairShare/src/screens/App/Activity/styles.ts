@@ -53,8 +53,8 @@ export const styles = StyleSheet.create({
         marginRight: 12,
     },
     avatarImage: {
-        height: 28,
-        width: 28,
+        height: 30,
+        width: 30,
     },
     detailsContainer: {
         flex: 1,

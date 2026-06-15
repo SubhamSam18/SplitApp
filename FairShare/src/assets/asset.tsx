@@ -15,6 +15,8 @@ const logoutIcon = require('./png/logout.png');
 const deleteIcon = require('./png/delete.png');
 const expenseIcon = require('./png/expenseIcon.png');
 const settlementIcon = require('./png/settlementIcon.png');
+const recievedIcon = require('./png/recievedIcon.png');
+const paidIcon = require('./png/paidIcon.png');
 
 const assets = {
     homeIcon,
@@ -33,7 +35,9 @@ const assets = {
     logoutIcon,
     deleteIcon,
     expenseIcon,
-    settlementIcon
+    settlementIcon,
+    recievedIcon,
+    paidIcon
 };
 
 export default assets;

@@ -13,6 +13,12 @@ export const analyticsStyles = StyleSheet.create({
         marginTop: 100,
     },
 
+    // Monthly settlement
+    Icon: {
+        width: 30,
+        height: 30,
+    },
+
     // Month Selector
     monthSelectorContainer: {
         flexDirection: 'row',

@@ -11,11 +11,13 @@ import {
     KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, updateUser } from "../../../../Redux/userSlice";
+import assets from "../../../assets/asset";
 import { Header } from "../../../component/Header";
 import Avatar from "../../../component/Avatar";
 import API from "../../../services/api";
@@ -272,7 +274,7 @@ const ProfilePage = () => {
                         }}
                     >
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>👤</Text>
+                            <Image source={assets.profileIcon} style={styles.actionIcon} />
                             <Text style={styles.actionLabel}>Edit Full Name</Text>
                         </View>
                         <Text style={styles.arrowIcon}>›</Text>
@@ -285,7 +287,7 @@ const ProfilePage = () => {
                         onPress={() => setIsPasswordModalVisible(true)}
                     >
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🔒</Text>
+                            <Image source={assets.resetPasswordIcon} style={styles.actionIcon} />
                             <Text style={styles.actionLabel}>Change Password</Text>
                         </View>
                         <Text style={styles.arrowIcon}>›</Text>
@@ -300,7 +302,7 @@ const ProfilePage = () => {
                     {/* Logout */}
                     <TouchableOpacity style={styles.actionRow} activeOpacity={0.7} onPress={handleLogout}>
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🚪</Text>
+                            <Image source={assets.logoutIcon} style={styles.actionIcon} />
                             <Text style={[styles.actionLabel, styles.logoutText]}>Logout</Text>
                         </View>
                     </TouchableOpacity>
@@ -308,7 +310,7 @@ const ProfilePage = () => {
                     {/* Delete Account */}
                     <TouchableOpacity style={styles.actionRow} activeOpacity={0.7} onPress={handleDeleteAccount}>
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🗑️</Text>
+                            <Image source={assets.deleteIcon} style={styles.actionIcon} />
                             <Text style={[styles.actionLabel, styles.deleteText]}>Delete Account</Text>
                         </View>
                     </TouchableOpacity>

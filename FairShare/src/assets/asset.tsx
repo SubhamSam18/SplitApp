@@ -9,6 +9,12 @@ const roadTripIcon = require('./png/roadTrip.png');
 const internationalIcon = require('./png/international.png');
 const travelIcon = require('./png/travel.png');
 const editIcon = require('./png/editIcon.png');
+const profileIcon = require('./png/profileIcon.png');
+const resetPasswordIcon = require('./png/resetPassword.png');
+const logoutIcon = require('./png/logout.png');
+const deleteIcon = require('./png/delete.png');
+const expenseIcon = require('./png/expenseIcon.png');
+const settlementIcon = require('./png/settlementIcon.png');
 
 const assets = {
     homeIcon,
@@ -22,6 +28,12 @@ const assets = {
     internationalIcon,
     travelIcon,
     editIcon,
+    profileIcon,
+    resetPasswordIcon,
+    logoutIcon,
+    deleteIcon,
+    expenseIcon,
+    settlementIcon
 };
 
 export default assets;

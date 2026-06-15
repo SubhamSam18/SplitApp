@@ -89,7 +89,7 @@ const Groups = ({ showHeader = true }: IProps) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header title="Your Groups" showProfile={true} />
+      <Header title="Groups" showProfile={true} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}

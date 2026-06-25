@@ -7,9 +7,10 @@ import API from '../../../services/api';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
-import Groups from '../Groups';
-import { useDispatch } from 'react-redux';
+import HomeGroups from '../HomeGroups';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../../Redux/userSlice';
+import type { RootState } from '../../../../Redux/store';
 
 type HomeNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -34,9 +35,9 @@ const Home = () => {
             setYouOwe(summaryRes.data.youOwe || 0);
             setYouAreOwed(summaryRes.data.youAreOwed || 0);
             if (avatarRes?.data) {
-                dispatch(updateUser({ 
-                    name: avatarRes.data.name, 
-                    avatarUpdatedAt: avatarRes.data.avatarUpdatedAt 
+                dispatch(updateUser({
+                    name: avatarRes.data.name,
+                    avatarUpdatedAt: avatarRes.data.avatarUpdatedAt
                 }));
             }
         } catch (error) {
@@ -62,7 +63,7 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <Header title="SplitAura" showProfile={true} />
+            <Header title="Fair Share" showProfile={true} />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
@@ -91,7 +92,7 @@ const Home = () => {
                                 </View>
                             </View>
                         </View>
-                        <Groups showHeader={false} />
+                        <HomeGroups showHeader={false} />
                     </>
                 )}
             </ScrollView>

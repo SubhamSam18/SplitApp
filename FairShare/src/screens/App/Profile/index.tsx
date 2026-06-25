@@ -134,7 +134,7 @@ const ProfilePage = () => {
     const handleLogout = () => {
         Alert.alert(
             "Logout",
-            "Are you sure you want to log out from SplitAura?",
+            "Are you sure you want to log out from FairShare?",
             [
                 { text: "Cancel", style: "cancel" },
                 {
@@ -317,7 +317,7 @@ const ProfilePage = () => {
                 </View>
 
                 <View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>SplitAura v1.0.0</Text>
+                    <Text style={styles.footerText}>FairShare v1.0.0</Text>
                     <Text style={styles.footerSubText}>FairShare Expense Management</Text>
                 </View>
             </ScrollView>

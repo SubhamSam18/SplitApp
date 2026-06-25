@@ -51,13 +51,13 @@ export const TabNavigator = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <Image 
-              source={assets.homeIcon} 
+            <Image
+              source={assets.homeIcon}
               style={[
-                styles.IconTabBar, 
-                { tintColor: color }, 
+                styles.IconTabBar,
+                { tintColor: color },
                 focused && { transform: [{ scale: 1.25 }] }
-              ]} 
+              ]}
             />
           )
         }}
@@ -67,13 +67,13 @@ export const TabNavigator = () => {
         component={Groups}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <Image 
-              source={assets.groupIcon} 
+            <Image
+              source={assets.groupIcon}
               style={[
-                styles.IconTabBar, 
-                { tintColor: color }, 
+                styles.IconTabBar,
+                { tintColor: color },
                 focused && { transform: [{ scale: 1.25 }] }
-              ]} 
+              ]}
             />
           )
         }}
@@ -83,13 +83,13 @@ export const TabNavigator = () => {
         component={Analytics}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <Image 
-              source={assets.analyticsIcon} 
+            <Image
+              source={assets.analyticsIcon}
               style={[
-                styles.IconTabBar, 
-                { tintColor: color }, 
+                styles.IconTabBar,
+                { tintColor: color },
                 focused && { transform: [{ scale: 1.25 }] }
-              ]} 
+              ]}
             />
           )
         }}
@@ -99,13 +99,13 @@ export const TabNavigator = () => {
         component={Friends}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <Image 
-              source={assets.friendsIcon} 
+            <Image
+              source={assets.friendsIcon}
               style={[
-                styles.IconTabBar, 
-                { tintColor: color }, 
+                styles.IconTabBar,
+                { tintColor: color },
                 focused && { transform: [{ scale: 1.25 }] }
-              ]} 
+              ]}
             />
           )
         }}
@@ -115,13 +115,13 @@ export const TabNavigator = () => {
         component={Activity}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <Image 
-              source={assets.activityIcon} 
+            <Image
+              source={assets.activityIcon}
               style={[
-                styles.IconTabBar, 
-                { tintColor: color }, 
+                styles.IconTabBar,
+                { tintColor: color },
                 focused && { transform: [{ scale: 1.25 }] }
-              ]} 
+              ]}
             />
           )
         }}

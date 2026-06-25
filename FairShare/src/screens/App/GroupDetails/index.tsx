@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../../../component/Header';
@@ -8,12 +8,15 @@ import { useFocusEffect, useRoute, useNavigation } from '@react-navigation/nativ
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
 import assets from '../../../assets/asset';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../Redux/store';
 
 type GroupDetailsNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const GroupDetails = () => {
     const route = useRoute<any>();
     const navigation = useNavigation<GroupDetailsNavigationProp>();
+    const user = useSelector((state: RootState) => state.user.userData) as any;
     const { groupId, groupName } = route.params;
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -57,6 +60,37 @@ const GroupDetails = () => {
         };
         navigation.navigate('CreateGroup', { group: groupData } as any);
     }
+
+    const handleSettleGroupDebt = (debt: any) => {
+        Alert.alert(
+            'Settle Up',
+            `Are you sure you want to settle your debt of ₹${debt.amount} with ${debt.to?.name}?`,
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Settle',
+                    style: 'default',
+                    onPress: async () => {
+                        try {
+                            setLoading(true);
+                            await API.post('/settle/group', {
+                                groupId: summary.group.id,
+                                from: user._id,
+                                to: debt.to._id,
+                                amount: debt.amount
+                            });
+                            Alert.alert('Success', 'Payment settled successfully!');
+                            fetchGroupData();
+                        } catch (error) {
+                            console.log('Settle error:', error);
+                            Alert.alert('Error', 'Failed to settle payment');
+                            setLoading(false);
+                        }
+                    }
+                }
+            ]
+        );
+    };
 
     const getInitial = (name: string) => name ? name.charAt(0).toUpperCase() : '?';
 
@@ -133,8 +167,55 @@ const GroupDetails = () => {
                             </View>
                         ) : (
                             <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Balances</Text>
-                                {summary?.memberSummary?.map((member: any) => (
+                                {(summary?.balances?.filter((b: any) => b.from._id === user._id) || []).length > 0 || 
+                                 (summary?.balances?.filter((b: any) => b.to._id === user._id) || []).length > 0 ? (
+                                    <>
+                                        <Text style={styles.sectionTitle}>Your Debts</Text>
+                                        
+                                        {summary?.balances?.filter((b: any) => b.from._id === user._id).map((debt: any) => (
+                                            <View key={debt._id} style={[styles.balanceCard, { borderLeftColor: '#dc3545', justifyContent: 'space-between' }]}>
+                                                <View style={styles.memberInfo}>
+                                                    <View style={styles.avatarPlaceholder}>
+                                                        <Text style={styles.avatarText}>{getInitial(debt.to?.name)}</Text>
+                                                    </View>
+                                                    <View>
+                                                        <Text style={styles.memberName}>You owe {debt.to?.name}</Text>
+                                                        <Text style={[styles.memberBalance, { color: '#dc3545', marginTop: 4, fontSize: 14 }]}>
+                                                            ₹{debt.amount}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <TouchableOpacity 
+                                                    style={styles.settleButton}
+                                                    onPress={() => handleSettleGroupDebt(debt)}
+                                                >
+                                                    <Text style={styles.settleButtonText}>Settle Up</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        ))}
+
+                                        {summary?.balances?.filter((b: any) => b.to._id === user._id).map((credit: any) => (
+                                            <View key={credit._id} style={[styles.balanceCard, { borderLeftColor: '#28a745' }]}>
+                                                <View style={styles.memberInfo}>
+                                                    <View style={styles.avatarPlaceholder}>
+                                                        <Text style={styles.avatarText}>{getInitial(credit.from?.name)}</Text>
+                                                    </View>
+                                                    <View>
+                                                        <Text style={styles.memberName}>{credit.from?.name} owes you</Text>
+                                                        <Text style={[styles.memberBalance, { color: '#28a745', marginTop: 4, fontSize: 14 }]}>
+                                                            ₹{credit.amount}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        ))}
+                                        
+                                        <View style={{ height: 20 }} />
+                                    </>
+                                ) : null}
+
+                                <Text style={styles.sectionTitle}>Overall Net Balances</Text>
+                                {summary?.memberSummary?.filter((member: any) => member.userId !== user._id).map((member: any) => (
                                     <View
                                         key={member.userId}
                                         style={[

@@ -90,7 +90,7 @@ export const styles = StyleSheet.create({
         borderColor: '#FFE0E0',
     },
     editButton: {
-        marginTop: 40,
+        marginTop: 20,
         backgroundColor: '#E8F2FF',
         paddingVertical: 16,
         borderRadius: 12,
@@ -104,7 +104,21 @@ export const styles = StyleSheet.create({
         fontWeight: '700',
     },
     deleteButtonText: {
-        color: '#E53E3E',
+        color: '#dc3545',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    settleExpenseButton: {
+        backgroundColor: '#b8f6c6ff',
+        borderColor: '#7cea95ff',
+        borderWidth: 1,
+        padding: 16,
+        borderRadius: 12,
+        alignItems: 'center',
+        marginTop: 24,
+    },
+    settleExpenseButtonText: {
+        color: '#19742eff',
         fontSize: 16,
         fontWeight: '700',
     }

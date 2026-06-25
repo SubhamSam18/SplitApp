@@ -137,6 +137,17 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '700',
     },
+    settleButton: {
+        backgroundColor: '#4361EE',
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+    },
+    settleButtonText: {
+        color: '#FFFFFF',
+        fontSize: 12,
+        fontWeight: '600',
+    },
     fab: {
         position: 'absolute',
         right: 20,

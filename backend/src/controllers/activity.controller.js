@@ -12,7 +12,6 @@ exports.addActivity = async (req, res) => {
             createdBy: req.user.userName,
             splits
         });
-        // console.log(activity);
         await activity.save();
         res.status(201).json({ message: "Activity added successfully" });
     } catch (error) {
@@ -28,7 +27,6 @@ exports.getActivities = async (req, res) => {
                 { paidBy: req.user.userId }
             ]
         }).sort({ createdAt: -1 });
-        console.log(activities);
         res.status(200).json({ activities, currentUserId: req.user.userId });
     } catch (error) {
         res.status(500).json({ message: error.message });

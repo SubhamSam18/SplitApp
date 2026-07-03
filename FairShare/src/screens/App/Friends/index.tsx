@@ -85,7 +85,7 @@ const Friends = () => {
     const getInitial = (name: string) => name ? name.charAt(0).toUpperCase() : '?';
 
     const totalOwed = friends.filter(f => f.balance > 0).reduce((sum, f) => sum + f.balance, 0);
-    const totalOwe  = Math.abs(friends.filter(f => f.balance < 0).reduce((sum, f) => sum + f.balance, 0));
+    const totalOwe = Math.abs(friends.filter(f => f.balance < 0).reduce((sum, f) => sum + f.balance, 0));
     const netBalance = totalOwed - totalOwe;
 
     const filteredFriends = friends.filter(friend =>
@@ -95,7 +95,7 @@ const Friends = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <Header title="Friends" showProfile={true} />
+            <Header title="FRIENDS" showProfile={true} />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}

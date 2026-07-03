@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image, Platform, StatusBar } from 'react-native';
+import { Image, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useFocusEffect } from "@react-navigation/native";
 
 import Home from '../screens/App/Home';
 import Groups from '../screens/App/Groups';
@@ -16,15 +15,6 @@ const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
 
-  useFocusEffect(
-    React.useCallback(() => {
-      StatusBar.setHidden(true);
-      return () => {
-        StatusBar.setHidden(false);
-      };
-    }, [])
-  );
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -35,7 +25,7 @@ export const TabNavigator = () => {
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
           height: Platform.OS === 'ios' ? 85 : 70,
-          paddingTop: 10,
+          paddingTop: 15,
           borderTopWidth: 1,
           borderTopColor: '#F3F4F6',
           elevation: 15,

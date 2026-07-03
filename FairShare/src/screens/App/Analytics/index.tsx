@@ -177,7 +177,7 @@ const Analytics = () => {
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header
-                title="Analytics"
+                title="ANALYTICS"
                 showProfile={true}
             />
 
@@ -384,10 +384,10 @@ const Analytics = () => {
                         <View style={styles.settlementRow}>
                             <View style={styles.settlementLeft}>
                                 <View style={[styles.settlementIconCircle, styles.bgSuccessLight]}>
-                                   <Image
-                                       source={assets.settlementIcon}
-                                       style={styles.Icon}
-                                   />
+                                    <Image
+                                        source={assets.settlementIcon}
+                                        style={styles.Icon}
+                                    />
                                 </View>
                                 <View>
                                     <Text style={styles.settlementLabel}>Received</Text>

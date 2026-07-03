@@ -11,7 +11,7 @@ export const TabStyles = StyleSheet.create({
         borderTopColor: '#ddd',
     },
     IconTabBar: {
-        width: 28,
-        height: 28,
+        width: 26,
+        height: 26,
     },
 });

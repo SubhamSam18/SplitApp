@@ -44,7 +44,6 @@ exports.login = async (req, res) => {
       secure: false,
       maxAge: 2 * 24 * 60 * 60 * 1000,
     });
-    console.log("Cookie", res.cookie)
     res.status(200).json({
       message: "Login successful",
       token: token,
@@ -77,7 +76,6 @@ exports.logout = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    // console.log(req.user);
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (!currentPassword || !newPassword || !confirmPassword) {

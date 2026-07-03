@@ -183,9 +183,8 @@ const ProfilePage = () => {
             if (result.didCancel || !result.assets || result.assets.length === 0) {
                 return;
             }
-
             const asset = result.assets[0];
-            const formData = new FormData();
+            const formData = new FormData()
             formData.append("avatar", {
                 uri: asset.uri,
                 type: asset.type || "image/jpeg",
@@ -193,14 +192,28 @@ const ProfilePage = () => {
             } as any);
 
             setUploadingAvatar(true);
-            await API.post("/auth/uploadAvatar", formData);
+            const response = await fetch(`${API.defaults.baseURL}/auth/uploadAvatar`, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "Accept": "application/json",
+                },
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                if (response.status === 401) {
+                    dispatch(clearUser());
+                }
+                throw new Error(data.message || "Failed to upload avatar");
+            }
             Alert.alert("Success", "Profile picture updated successfully!");
             const newKey = Date.now().toString();
             setAvatarKey(newKey);
             dispatch(updateUser({ avatarUpdatedAt: newKey }));
         } catch (error: any) {
             console.log("Avatar upload error:", error);
-            Alert.alert("Error", error.response?.data?.message || "Failed to upload avatar");
+            Alert.alert("Error", error.message || error.response?.data?.message || "Failed to upload avatar");
         } finally {
             setUploadingAvatar(false);
         }

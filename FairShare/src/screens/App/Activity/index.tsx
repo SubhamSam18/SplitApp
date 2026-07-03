@@ -107,7 +107,7 @@ const Activity = () => {
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header
-                title="Activity"
+                title="ACTIVITY"
                 showProfile={true}
             />
             {loading && !refreshing ? (
@@ -168,7 +168,7 @@ const Activity = () => {
                                     >
                                         <View style={styles.leftSection}>
                                             <View style={[styles.avatarPlaceholder, { backgroundColor: avatarBg }]}>
-                                                <Image source={avatarEmoji} style={styles.avatarImage}/>
+                                                <Image source={avatarEmoji} style={styles.avatarImage} />
                                             </View>
 
                                             <View style={styles.detailsContainer}>
@@ -254,7 +254,7 @@ const Activity = () => {
                                         </Text>
                                     </>
                                 )}
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     style={styles.closeButton}
                                     onPress={() => setSettlementModalVisible(false)}
                                 >

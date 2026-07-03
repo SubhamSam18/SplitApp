@@ -57,7 +57,7 @@ const Groups = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Header title="Groups" showProfile={true} />
+      <Header title="GROUPS" showProfile={true} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#4361EE" />}
@@ -93,7 +93,7 @@ const Groups = () => {
               <TouchableOpacity
                 style={styles.createGroupCard}
                 onPress={() => navigation.navigate('CreateGroup')}
-                activeOpacity={0.8}
+                activeOpacity={1}
               >
                 <View style={styles.createIconBubble}>
                   <Text style={styles.createIconText}>+</Text>

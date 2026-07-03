@@ -63,7 +63,7 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <Header title="Fair Share" showProfile={true} />
+            <Header title="FAIR SHARE" showProfile={true} />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}

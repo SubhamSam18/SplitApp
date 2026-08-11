@@ -12,6 +12,18 @@ export const styles = StyleSheet.create({
     loader: {
         marginTop: 50,
     },
+    editButton: {
+        position: 'absolute',
+        top: 15,
+        right: 15,
+        padding: 10,
+        zIndex: 10,
+    },
+    editIcon:{
+        width: 20,
+        height: 20,
+        tintColor: '#FFFFFF',
+    },
     headerCard: {
         backgroundColor: '#4361EE',
         padding: 24,
@@ -124,6 +136,17 @@ export const styles = StyleSheet.create({
     memberBalance: {
         fontSize: 14,
         fontWeight: '700',
+    },
+    settleButton: {
+        backgroundColor: '#4361EE',
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+    },
+    settleButtonText: {
+        color: '#FFFFFF',
+        fontSize: 12,
+        fontWeight: '600',
     },
     fab: {
         position: 'absolute',

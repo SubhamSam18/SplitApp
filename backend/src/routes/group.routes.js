@@ -8,5 +8,6 @@ router.get("/", authMiddleware, groupController.getUserGroup);
 router.patch("/:groupId/addMember", authMiddleware, groupController.addMember);
 router.get("/:groupId/summary", authMiddleware, groupController.groupSummary);
 router.get("/:groupId/activity", authMiddleware, groupController.groupActivity);
+router.put("/:groupId", authMiddleware, groupController.updateGroup);
 
 module.exports = router;

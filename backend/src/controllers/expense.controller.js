@@ -30,7 +30,7 @@ exports.createExpense = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    const totalAmount = Math.round(amount);
+    const totalAmount = Math.round(amount * 100) / 100;
     let computedSplits = [];
 
     if (splitType === "equal") {
@@ -55,7 +55,7 @@ exports.createExpense = async (req, res) => {
       });
     } else if (splitType == "exact") {
       const totalSplit = splits.reduce((acc, s) => acc + s.amount, 0);
-      if (totalSplit !== totalAmount) {
+      if (Math.abs(totalSplit - totalAmount) > 0.01) {
         return res.status(400).json({
           message: "Split amount doesnt match",
         });
@@ -140,6 +140,13 @@ exports.deleteExpense = async (req, res) => {
       return res.status(404).json({ message: "Expense not found" });
     }
 
+    const group = await Group.findById(expense.group).session(session);
+    if (!group || !group.members.includes(req.user.userId)) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
     await balanceService.reverseBalance({
       groupId: expense.group,
       paidBy: expense.paidBy,
@@ -165,12 +172,11 @@ exports.deleteExpense = async (req, res) => {
       { session }
     );
 
+    await session.commitTransaction();
+    session.endSession();
     res.status(200).json({
       message: "Expense deleted successfully",
     });
-    await session.commitTransaction();
-    session.endSession();
-
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
@@ -181,9 +187,9 @@ exports.deleteExpense = async (req, res) => {
 
 exports.updateExpenses = async (req, res) => {
   // console.log("Update Hit!");
-  const session = await mongoose.startSession();
   let retries = 5;
   while (retries > 0) {
+    const session = await mongoose.startSession();
     session.startTransaction();
     try {
       const { expenseId } = req.params;
@@ -208,7 +214,7 @@ exports.updateExpenses = async (req, res) => {
 
       const settlementExists = await Settlement.findOne(
         {
-          expense: expenseId,
+          group: oldExpense.group,
           status: "active",
         },
       ).session(session);
@@ -231,7 +237,7 @@ exports.updateExpenses = async (req, res) => {
         session,
       });
 
-      const totalAmount = Math.round(amount);
+      const totalAmount = Math.round(amount * 100) / 100;
       let computedSplits = [];
 
       if (splitType === "equal") {
@@ -258,7 +264,7 @@ exports.updateExpenses = async (req, res) => {
         });
       } else if (splitType == "exact") {
         const totalSplit = splits.reduce((acc, s) => acc + s.amount, 0);
-        if (totalSplit !== totalAmount) {
+        if (Math.abs(totalSplit - totalAmount) > 0.01) {
           await session.abortTransaction();
           session.endSession();
           return res.status(400).json({
@@ -323,9 +329,12 @@ exports.updateExpenses = async (req, res) => {
       });
     } catch (error) {
       await session.abortTransaction();
-            session.endSession();
+      session.endSession();
       console.log(error);
-      return res.status(500).json({ message: "Server error" });
+      retries--;
+      if (retries <= 0) {
+        return res.status(500).json({ message: "Server error" });
+      }
     }
   }
 };

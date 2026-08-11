@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     View,
     Text,
@@ -6,23 +6,25 @@ import {
     ScrollView,
     Modal,
     TextInput,
-    Switch,
     Alert,
     ActivityIndicator,
     KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, updateUser } from "../../../../Redux/userSlice";
+import assets from "../../../assets/asset";
 import { Header } from "../../../component/Header";
 import Avatar from "../../../component/Avatar";
 import API from "../../../services/api";
 import styles from "./styles";
 import type { RootState } from "../../../../Redux/store";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { launchImageLibrary } from "react-native-image-picker";
 
 const ProfilePage = () => {
     const user = useSelector((state: RootState) => state.user.userData) as any;
@@ -45,6 +47,10 @@ const ProfilePage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [updatingPassword, setUpdatingPassword] = useState(false);
 
+    // Avatar upload state
+    const [uploadingAvatar, setUploadingAvatar] = useState(false);
+    const [avatarKey, setAvatarKey] = useState(Date.now().toString());
+
 
 
     const fetchSummary = async () => {
@@ -59,9 +65,16 @@ const ProfilePage = () => {
         }
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            if (user) {
+                fetchSummary();
+            }
+        }, [user])
+    );
+
     useEffect(() => {
         if (user) {
-            fetchSummary();
             setEditName(user.name || "");
         }
     }, [user]);
@@ -121,7 +134,7 @@ const ProfilePage = () => {
     const handleLogout = () => {
         Alert.alert(
             "Logout",
-            "Are you sure you want to log out from SplitAura?",
+            "Are you sure you want to log out from FairShare?",
             [
                 { text: "Cancel", style: "cancel" },
                 {
@@ -164,6 +177,48 @@ const ProfilePage = () => {
         );
     };
 
+    const handleAvatarEdit = async () => {
+        try {
+            const result = await launchImageLibrary({ mediaType: "photo", quality: 0.5 });
+            if (result.didCancel || !result.assets || result.assets.length === 0) {
+                return;
+            }
+            const asset = result.assets[0];
+            const formData = new FormData()
+            formData.append("avatar", {
+                uri: asset.uri,
+                type: asset.type || "image/jpeg",
+                name: asset.fileName || "profile.jpg"
+            } as any);
+
+            setUploadingAvatar(true);
+            const response = await fetch(`${API.defaults.baseURL}/auth/uploadAvatar`, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "Accept": "application/json",
+                },
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                if (response.status === 401) {
+                    dispatch(clearUser());
+                }
+                throw new Error(data.message || "Failed to upload avatar");
+            }
+            Alert.alert("Success", "Profile picture updated successfully!");
+            const newKey = Date.now().toString();
+            setAvatarKey(newKey);
+            dispatch(updateUser({ avatarUpdatedAt: newKey }));
+        } catch (error: any) {
+            console.log("Avatar upload error:", error);
+            Alert.alert("Error", error.message || error.response?.data?.message || "Failed to upload avatar");
+        } finally {
+            setUploadingAvatar(false);
+        }
+    };
+
     const totalBalance = summary.youAreOwed - summary.youOwe;
 
     return (
@@ -175,15 +230,20 @@ const ProfilePage = () => {
                 <View style={styles.profileHeaderCard}>
                     <View style={styles.avatarWrapper}>
                         <Avatar
-                            url="https://img.freepik.com/premium-psd/3d-male-avatar-profile_975163-767.jpg?semt=ais_hybrid&w=740&q=80"
+                            url={user ? `${API.defaults.baseURL}/auth/avatar/${user._id}?t=${avatarKey}` : ""}
                             size={100}
                         />
                         <TouchableOpacity
                             style={styles.avatarEditBadge}
                             activeOpacity={0.7}
-                            onPress={() => setIsEditModalVisible(true)}
+                            onPress={handleAvatarEdit}
+                            disabled={uploadingAvatar}
                         >
-                            <Text style={styles.avatarEditIcon}>✏️</Text>
+                            {uploadingAvatar ? (
+                                <ActivityIndicator color="#FFFFFF" size="small" style={{ transform: [{ scale: 0.7 }] }} />
+                            ) : (
+                                <Text style={styles.avatarEditIcon}>🖍</Text>
+                            )}
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.userName}>{user?.name || "FairShare User"}</Text>
@@ -227,7 +287,7 @@ const ProfilePage = () => {
                         }}
                     >
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>👤</Text>
+                            <Image source={assets.profileIcon} style={styles.actionIcon} />
                             <Text style={styles.actionLabel}>Edit Full Name</Text>
                         </View>
                         <Text style={styles.arrowIcon}>›</Text>
@@ -240,7 +300,7 @@ const ProfilePage = () => {
                         onPress={() => setIsPasswordModalVisible(true)}
                     >
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🔒</Text>
+                            <Image source={assets.resetPasswordIcon} style={styles.actionIcon} />
                             <Text style={styles.actionLabel}>Change Password</Text>
                         </View>
                         <Text style={styles.arrowIcon}>›</Text>
@@ -255,7 +315,7 @@ const ProfilePage = () => {
                     {/* Logout */}
                     <TouchableOpacity style={styles.actionRow} activeOpacity={0.7} onPress={handleLogout}>
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🚪</Text>
+                            <Image source={assets.logoutIcon} style={styles.actionIcon} />
                             <Text style={[styles.actionLabel, styles.logoutText]}>Logout</Text>
                         </View>
                     </TouchableOpacity>
@@ -263,15 +323,14 @@ const ProfilePage = () => {
                     {/* Delete Account */}
                     <TouchableOpacity style={styles.actionRow} activeOpacity={0.7} onPress={handleDeleteAccount}>
                         <View style={styles.actionLabelContainer}>
-                            <Text style={styles.actionIcon}>🗑️</Text>
-                            <Text style={[styles.actionLabel, styles.deleteText]}>Delete Account Permanently</Text>
+                            <Image source={assets.deleteIcon} style={styles.actionIcon} />
+                            <Text style={[styles.actionLabel, styles.deleteText]}>Delete Account</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
 
-                {/* Footer Info */}
                 <View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>SplitAura v1.0.0</Text>
+                    <Text style={styles.footerText}>FairShare v1.0.0</Text>
                     <Text style={styles.footerSubText}>FairShare Expense Management</Text>
                 </View>
             </ScrollView>

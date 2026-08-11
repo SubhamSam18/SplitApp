@@ -12,6 +12,10 @@ const groupSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    groupAvatar: {
+      type: String,
+      default: 'travel',
+    },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,

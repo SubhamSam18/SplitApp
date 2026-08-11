@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
         gap: 14,
     },
     actionIcon: {
-        fontSize: 18,
-        width: 24,
+        height: 25,
+        width: 25,
         textAlign: "center",
     },
     actionLabel: {

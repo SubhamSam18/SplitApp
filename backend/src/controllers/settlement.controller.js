@@ -3,6 +3,7 @@ const Balance = require('../models/balance.model');
 const Settlement = require('../models/settlement.model');
 const User = require('../models/user.model');
 const Activity = require('../models/activity.model');
+const Group = require('../models/group.model');
 
 exports.settleGroupPayment = async (req, res) => {
   const session = await mongoose.startSession();
@@ -22,8 +23,15 @@ exports.settleGroupPayment = async (req, res) => {
       return res.status(400).json({ message: "Invalid amount!" });
     }
 
+    const group = await Group.findById(groupId).session(session);
+    if (!group || !group.members.includes(req.user.userId)) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
     const balance = await Balance.findOne({
-      groupId,
+      group: groupId,
       from,
       to,
     }).session(session);
@@ -96,7 +104,7 @@ exports.settleFriendsPayment = async (req, res) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    const { to } = req.body;
+    const { to, amount } = req.body;
     const from = req.user.userId;
     if (!from || !to) {
       await session.abortTransaction();
@@ -126,6 +134,13 @@ exports.settleFriendsPayment = async (req, res) => {
         netAmount += b.amount;
       }
     });
+
+    if (netAmount === 0) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ message: "No overall balance to settle!" });
+    }
+
     let sender, reciever;
     if (netAmount < 0) {
       sender = req.user.userId;
@@ -134,18 +149,59 @@ exports.settleFriendsPayment = async (req, res) => {
       sender = to;
       reciever = req.user.userId;
     }
+
+    const maxSettlementPossible = Math.abs(netAmount);
+    const settleAmount = amount ? Number(amount) : maxSettlementPossible;
+
+    if (settleAmount <= 0) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ message: "Invalid amount!" });
+    }
+
+    if (settleAmount > maxSettlementPossible) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ message: "Amount is greater than overall owed amount" });
+    }
+
     const recieversName = await User.findOne({ _id: reciever }).session(session);
     const sendersName = await User.findOne({ _id: sender }).session(session);
 
-    await Balance.deleteMany(
-      {
-        $or: [
-          { from, to },
-          { from: to, to: from },
-        ],
-      },
-      { session }
+    let remainingAmount = settleAmount;
+    
+    const senderOwesBalances = balances.filter(
+      (b) => b.from.toString() === sender.toString() && b.to.toString() === reciever.toString()
     );
+
+    for (let b of senderOwesBalances) {
+      if (remainingAmount <= 0) break;
+
+      const deduction = Math.min(b.amount, remainingAmount);
+      b.amount -= deduction;
+      remainingAmount -= deduction;
+
+      if (b.amount === 0) {
+        await b.deleteOne({ session });
+      } else {
+        await b.save({ session });
+      }
+
+      const descriptionContent = `${sendersName.name} settled ₹${deduction} with ${recieversName.name}`;
+      await Activity.create(
+        [
+          {
+            groupId: b.group,
+            description: descriptionContent,
+            amount: deduction,
+            paidBy: sender,
+            createdBy: req.user.userName,
+            splits: [{ user: reciever, name: recieversName.name, amount: deduction }],
+          },
+        ],
+        { session }
+      );
+    }
 
     await Settlement.create(
       [
@@ -155,38 +211,16 @@ exports.settleFriendsPayment = async (req, res) => {
           from: sender,
           sendersName: sendersName.name,
           to: reciever,
-          amount: Math.abs(netAmount),
+          amount: settleAmount,
           settledBy: req.user.userId,
         },
       ],
       { session }
     );
 
-    for (const b of balances) {
-      if (b.amount > 0) {
-        const fromUser = await User.findById(b.from).session(session);
-        const toUser = await User.findById(b.to).session(session);
-        const descriptionContent = `${fromUser.name} settled ₹${b.amount} with ${toUser.name}`;
-        
-        await Activity.create(
-          [
-            {
-              groupId: b.group,
-              description: descriptionContent,
-              amount: b.amount,
-              paidBy: b.from,
-              createdBy: req.user.userName,
-              splits: [{ user: b.to, name: toUser.name, amount: b.amount }],
-            },
-          ],
-          { session }
-        );
-      }
-    }
-
     await session.commitTransaction();
     session.endSession();
-    res.status(200).json({ message: "Payment Settled!", netAmount });
+    res.status(200).json({ message: "Payment Settled!", amount: settleAmount, remainingNetAmount: maxSettlementPossible - settleAmount });
   } catch (err) {
     await session.abortTransaction();
     session.endSession();

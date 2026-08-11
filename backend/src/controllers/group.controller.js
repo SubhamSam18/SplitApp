@@ -6,7 +6,7 @@ const User = require('../models/user.model');
 
 exports.createGroup = async (req, res) => {
   try {
-    const { name, members } = req.body;
+    const { name, members, groupAvatar } = req.body;
     if (!name.trim()) {
       return res.status(400).json({ message: "Group name required" });
     }
@@ -27,6 +27,7 @@ exports.createGroup = async (req, res) => {
     const group = await Group.create({
       name,
       createdBy: req.user.userId,
+      groupAvatar,
       members: uniqueMembers,
     });
     res.status(201).json(group);
@@ -36,17 +37,60 @@ exports.createGroup = async (req, res) => {
 };
 
 exports.getUserGroup = async (req, res) => {
-  // console.log(req.user);
   try {
+    const currentUserId = req.user.userId;
     const groups = await Group.find({
-      members: req.user.userId,
-    }).populate("members", "name email");
+      members: currentUserId,
+    }).populate("members", "name email").lean();
+
+    const groupIds = groups.map((g) => g._id);
+
+    const expenses = await Expense.find({
+      group: { $in: groupIds },
+      status: "active",
+    });
+
+    const balances = await Balance.find({
+      group: { $in: groupIds },
+      amount: { $gt: 0 },
+      $or: [{ from: currentUserId }, { to: currentUserId }],
+    });
+
+    const groupsWithSummary = groups.map((group) => {
+      const groupExpenses = expenses.filter(
+        (e) => e.group.toString() === group._id.toString()
+      );
+      const totalExpense = groupExpenses.reduce((acc, exp) => acc + exp.amount, 0);
+
+      const groupBalances = balances.filter(
+        (b) => b.group.toString() === group._id.toString()
+      );
+
+      let youOwe = 0;
+      let youReceive = 0;
+
+      groupBalances.forEach((b) => {
+        if (b.from.toString() === currentUserId.toString()) {
+          youOwe += b.amount;
+        } else if (b.to.toString() === currentUserId.toString()) {
+          youReceive += b.amount;
+        }
+      });
+
+      return {
+        ...group,
+        totalExpense,
+        youOwe,
+        youReceive,
+      };
+    });
 
     res.status(200).json({
-      groups,
+      groups: groupsWithSummary,
       user: req.user
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
   }
 };
@@ -141,6 +185,7 @@ exports.groupSummary = async (req, res) => {
       group: {
         id: group._id,
         name: group.name,
+        groupAvatar: group.groupAvatar,
       },
       totalExpense,
       balances,
@@ -151,6 +196,46 @@ exports.groupSummary = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.updateGroup = async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const { name, members, groupAvatar } = req.body;
+    
+    if (!name.trim()) {
+      return res.status(400).json({ message: "Group name required" });
+    }
+
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    const users = await User.find({ email: { $in: members } });
+    const foundEmails = users.map((u) => u.email);
+    const notFound = members.filter((email) => !foundEmails.includes(email));
+    
+    if (notFound.length > 0) {
+      return res.status(400).json({
+        message: "Some users do not exist",
+        invalidEmails: notFound,
+      });
+    }
+
+    const memberIds = users.map((u) => u._id);
+    const uniqueMembers = [...new Set([req.user.userId, ...memberIds])];
+
+    group.name = name;
+    group.groupAvatar = groupAvatar;
+    group.members = uniqueMembers;
+    await group.save();
+
+    res.status(200).json(group);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

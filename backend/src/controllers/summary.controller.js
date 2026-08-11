@@ -18,15 +18,21 @@ exports.getSummary = async (req, res) => {
     balancesFrom.forEach((user) => {
       balances[user.to.toString()] =
         (balances[user.to.toString()] || 0) - user.amount;
-      youOwe += user.amount;
     });
 
     // If someone owes me
     balancesTo.forEach((user) => {
       balances[user.from.toString()] =
         (balances[user.from.toString()] || 0) + user.amount;
-      youAreOwed += user.amount;
     });
+
+    for (const userId in balances) {
+      if (balances[userId] > 0) {
+        youAreOwed += balances[userId];
+      } else if (balances[userId] < 0) {
+        youOwe += Math.abs(balances[userId]);
+      }
+    }
 
     res.status(200).json({
       youAreOwed,

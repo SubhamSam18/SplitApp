@@ -5,19 +5,37 @@ import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/nativ
 import { Header } from '../../../component/Header';
 import API from '../../../services/api';
 import { styles } from './styles';
+import { useSelector } from 'react-redux';
 
 const ExpenseDetails = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { expenseId } = route.params;
+    const user = useSelector((state) => state.user.userData);
 
     const [loading, setLoading] = useState(true);
     const [expense, setExpense] = useState(null);
+    const [hasSettled, setHasSettled] = useState(false);
 
     const fetchExpenseDetails = async () => {
         try {
             const res = await API.get(`/expense/${expenseId}`);
             setExpense(res.data);
+            
+            const groupId = res.data.group?._id || res.data.group;
+            const payerId = res.data.paidBy?._id || res.data.paidBy;
+            
+            if (groupId && payerId && user?._id && payerId !== user._id) {
+                const summaryRes = await API.get(`/groups/${groupId}/summary`);
+                const balances = summaryRes.data?.balances || [];
+                const debt = balances.find(b => 
+                    (b.from._id === user._id || b.from === user._id) && 
+                    (b.to._id === payerId || b.to === payerId)
+                );
+                if (!debt || debt.amount <= 0) {
+                    setHasSettled(true);
+                }
+            }
         } catch (error) {
             console.log('Error fetching expense details:', error);
             Alert.alert('Error', 'Could not load expense details');
@@ -32,20 +50,39 @@ const ExpenseDetails = () => {
         }, [expenseId])
     );
 
-    const handleEditExpense = () => {
+    const handleEditExpense = async () => {
         if (!expense) return;
-        navigation.navigate('CreateExpense', {
-            expenseId,
-            expenseType: "Edit",
-            pageName: "Edit Expense",
-            groupName: expense.group?.name,
-            groupId: expense.group?._id || expense.group,
-            groupMembers: expense.splits?.map(m => ({
-                _id: m.user,
+        const groupId = expense.group?._id || expense.group;
+        try {
+            const res = await API.get(`/groups/${groupId}/summary`);
+            const members = res.data?.memberSummary?.map((m) => ({
+                _id: m.userId,
                 name: m.name,
                 email: m.email || ''
-            })) || []
-        });
+            })) || [];
+            navigation.navigate('CreateExpense', {
+                expenseId,
+                expenseType: "Edit",
+                pageName: "Edit Expense",
+                groupName: expense.group?.name,
+                groupId,
+                groupMembers: members
+            });
+        } catch (error) {
+            console.log('Error fetching group members for edit:', error);
+            navigation.navigate('CreateExpense', {
+                expenseId,
+                expenseType: "Edit",
+                pageName: "Edit Expense",
+                groupName: expense.group?.name,
+                groupId,
+                groupMembers: expense.splits?.map(m => ({
+                    _id: m.user,
+                    name: m.name,
+                    email: m.email || ''
+                })) || []
+            });
+        }
     }
 
     const handleDelete = () => {
@@ -119,6 +156,57 @@ const ExpenseDetails = () => {
                         <Text style={styles.memberAmount}>₹{split.amount}</Text>
                     </View>
                 ))}
+
+                {(!((expense.paidBy?._id || expense.paidBy) === user?._id) && expense.splits?.find(s => s.user === user?._id)) && (
+                    hasSettled ? (
+                        <View style={[styles.settleExpenseButton, { backgroundColor: '#e9ecef', borderColor: '#ced4da' }]}>
+                            <Text style={[styles.settleExpenseButtonText, { color: '#6c757d' }]}>
+                                Expense has been settled
+                            </Text>
+                        </View>
+                    ) : (
+                        <TouchableOpacity 
+                            style={styles.settleExpenseButton} 
+                            onPress={() => {
+                                const iOweAmount = expense.splits.find(s => s.user === user?._id).amount;
+                                Alert.alert(
+                                    'Settle Expense Share',
+                                    `Are you sure you want to settle your share of ₹${iOweAmount} with ${expense.paidBy?.name || expense.payerName}?`,
+                                    [
+                                        { text: 'Cancel', style: 'cancel' },
+                                        {
+                                            text: 'Settle',
+                                            style: 'default',
+                                            onPress: async () => {
+                                                try {
+                                                    setLoading(true);
+                                                    await API.post('/settle/group', {
+                                                        groupId: expense.group?._id || expense.group,
+                                                        from: user._id,
+                                                        to: expense.paidBy?._id || expense.paidBy,
+                                                        amount: iOweAmount
+                                                    });
+                                                    setHasSettled(true);
+                                                    Alert.alert('Success', 'Your share settled successfully!');
+                                                } catch (error) {
+                                                    console.log('Settle error:', error);
+                                                    Alert.alert('Error', 'Failed to settle payment');
+                                                } finally {
+                                                    setLoading(false);
+                                                }
+                                            }
+                                        }
+                                    ]
+                                );
+                            }}
+                        >
+                            <Text style={styles.settleExpenseButtonText}>
+                                Settle Your Share (₹{expense.splits.find(s => s.user === user?._id).amount})
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                )}
+
                 <TouchableOpacity style={styles.editButton} onPress={handleEditExpense}>
                     <Text style={styles.editButtonText}>Edit Expense</Text>
                 </TouchableOpacity>

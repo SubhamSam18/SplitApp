@@ -5,13 +5,19 @@ import {
     ScrollView,
     ActivityIndicator,
     RefreshControl,
-    Alert
+    Alert,
+    TouchableOpacity,
+    Modal,
+    Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../../navigator/types';
 import { Header } from '../../../component/Header';
 import API from '../../../services/api';
 import { styles } from './styles';
+import assets from '../../../assets/asset';
 
 interface Split {
     user: string;
@@ -22,6 +28,7 @@ interface Split {
 interface ActivityItem {
     _id: string;
     groupId: string;
+    expenseId?: string;
     description: string;
     amount: number;
     paidBy: string;
@@ -31,10 +38,13 @@ interface ActivityItem {
 }
 
 const Activity = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
     const [activities, setActivities] = useState<ActivityItem[]>([]);
     const [currentUserId, setCurrentUserId] = useState('');
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [settlementModalVisible, setSettlementModalVisible] = useState(false);
+    const [selectedSettlement, setSelectedSettlement] = useState<ActivityItem | null>(null);
 
     const fetchActivities = async () => {
         try {
@@ -97,8 +107,8 @@ const Activity = () => {
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <Header
-                title="Recent Activity"
-                avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png"
+                title="ACTIVITY"
+                showProfile={true}
             />
             {loading && !refreshing ? (
                 <ActivityIndicator size="large" color="#4361EE" style={styles.loader} />
@@ -108,44 +118,57 @@ const Activity = () => {
                         contentContainerStyle={styles.scrollContent}
                         refreshControl={
                             <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor="#4361EE"
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                tintColor="#4361EE"
                             />
                         }
                         showsVerticalScrollIndicator={false}
                     >
-                        <Text style={styles.sectionTitle}>Activity Log</Text>
+                        <Text style={styles.sectionTitle}>Recent Activity</Text>
                         {activities.length > 0 ? (
                             activities.map((activity) => {
                                 const isDeleted = activity.description.toLowerCase().includes('deleted');
-                                const mySplit = activity.splits?.find(s => s.user === currentUserId)?.amount || 0;
+                                const mySplit = Math.round(activity.splits?.find(s => s.user === currentUserId)?.amount ?? 0);
                                 const isPayer = activity.paidBy === currentUserId;
                                 let receivableAmount = activity.amount - mySplit;
                                 receivableAmount = Math.round(receivableAmount);
                                 const isSettlement = activity.description.toLowerCase().includes('settled');
                                 let avatarBg = '#F3F4F6';
-                                let avatarEmoji = '📝';
+                                let avatarEmoji = assets.expenseIcon;
 
                                 if (isDeleted) {
                                     avatarBg = '#F3F4F6';
-                                    avatarEmoji = '🗑️';
+                                    avatarEmoji = assets.deleteIcon;
                                 } else if (isSettlement) {
-                                    avatarBg = '#E8F8F0'; // Soft green for settlements
-                                    avatarEmoji = '🤝';
+                                    avatarBg = '#E8F8F0';
+                                    avatarEmoji = assets.settlementIcon;
                                 } else if (isPayer) {
-                                    avatarBg = '#E8F8F0'; // Soft green
-                                    avatarEmoji = '💸';
+                                    avatarBg = '#E8F8F0';
+                                    avatarEmoji = assets.expenseIcon;
                                 } else if (mySplit > 0) {
-                                    avatarBg = '#FDF2F2'; // Soft red
-                                    avatarEmoji = '🛍️';
+                                    avatarBg = '#FDF2F2';
+                                    avatarEmoji = assets.expenseIcon;
                                 }
 
                                 return (
-                                    <View key={activity._id} style={styles.activityCard}>
+                                    <TouchableOpacity
+                                        key={activity._id}
+                                        style={styles.activityCard}
+                                        activeOpacity={isDeleted ? 1 : 0.7}
+                                        onPress={() => {
+                                            if (isDeleted) return;
+                                            if (isSettlement) {
+                                                setSelectedSettlement(activity);
+                                                setSettlementModalVisible(true);
+                                            } else if (activity.expenseId) {
+                                                navigation.navigate('ExpenseDetails', { expenseId: activity.expenseId });
+                                            }
+                                        }}
+                                    >
                                         <View style={styles.leftSection}>
                                             <View style={[styles.avatarPlaceholder, { backgroundColor: avatarBg }]}>
-                                                <Text style={styles.avatarText}>{avatarEmoji}</Text>
+                                                <Image source={avatarEmoji} style={styles.avatarImage} />
                                             </View>
 
                                             <View style={styles.detailsContainer}>
@@ -199,7 +222,7 @@ const Activity = () => {
                                                 </View>
                                             )}
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 );
                             })
                         ) : (
@@ -208,6 +231,38 @@ const Activity = () => {
                             </Text>
                         )}
                     </ScrollView>
+
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={settlementModalVisible}
+                        onRequestClose={() => setSettlementModalVisible(false)}
+                    >
+                        <View style={styles.modalOverlay}>
+                            <View style={styles.modalContent}>
+                                <Text style={styles.modalTitle}>Settlement Details</Text>
+                                {selectedSettlement && (
+                                    <>
+                                        <Text style={styles.modalDetailText}>
+                                            {selectedSettlement.description}
+                                        </Text>
+                                        <Text style={styles.modalAmountText}>
+                                            ₹{selectedSettlement.amount}
+                                        </Text>
+                                        <Text style={styles.timeText}>
+                                            {formatRelativeTime(selectedSettlement.createdAt)}
+                                        </Text>
+                                    </>
+                                )}
+                                <TouchableOpacity
+                                    style={styles.closeButton}
+                                    onPress={() => setSettlementModalVisible(false)}
+                                >
+                                    <Text style={styles.closeButtonText}>Close</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </>
             )
             }

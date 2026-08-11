@@ -12,7 +12,6 @@ exports.addActivity = async (req, res) => {
             createdBy: req.user.userName,
             splits
         });
-        // console.log(activity);
         await activity.save();
         res.status(201).json({ message: "Activity added successfully" });
     } catch (error) {

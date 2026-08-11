@@ -7,12 +7,16 @@ import API from '../../../services/api';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigator/types';
-import Groups from '../Groups';
+import HomeGroups from '../HomeGroups';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../../../Redux/userSlice';
+import type { RootState } from '../../../../Redux/store';
 
 type HomeNavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const Home = () => {
     const navigation = useNavigation<HomeNavigationProp>();
+    const dispatch = useDispatch();
 
     const [youOwe, setYouOwe] = useState(0);
     const [youAreOwed, setYouAreOwed] = useState(0);
@@ -22,13 +26,20 @@ const Home = () => {
 
     const fetchData = async () => {
         try {
-            const [groupsRes, summaryRes] = await Promise.all([
+            const [groupsRes, summaryRes, avatarRes] = await Promise.all([
                 API.get('/groups/'),
-                API.get('/summary')
+                API.get('/summary'),
+                API.get('/auth/getAvatar')
             ]);
             setGroups(groupsRes.data.groups.reverse());
             setYouOwe(summaryRes.data.youOwe || 0);
             setYouAreOwed(summaryRes.data.youAreOwed || 0);
+            if (avatarRes?.data) {
+                dispatch(updateUser({
+                    name: avatarRes.data.name,
+                    avatarUpdatedAt: avatarRes.data.avatarUpdatedAt
+                }));
+            }
         } catch (error) {
             console.log('Error fetching home data:', error);
         } finally {
@@ -52,7 +63,7 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <Header title="SplitAura" avatar="https://cdn-icons-png.flaticon.com/512/3675/3675805.png" />
+            <Header title="FAIR SHARE" showProfile={true} />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
@@ -81,37 +92,7 @@ const Home = () => {
                                 </View>
                             </View>
                         </View>
-
-                        <View style={styles.groupsSection}>
-                            <View style={styles.groupsHeader}>
-                                <Text style={styles.groupsTitle}>Your Groups</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('GroupsTab' as never)}>
-                                    <Text style={styles.seeAllText}>See All</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.groupsGrid}>
-                                <TouchableOpacity style={styles.createGroupBox} onPress={() => navigation.navigate('CreateGroup')}>
-                                    <View style={styles.createIconContainer}>
-                                        <Text style={styles.createIcon}>+</Text>
-                                    </View>
-                                    <Text style={styles.groupName}>Create Group</Text>
-                                </TouchableOpacity>
-
-                                {groups.slice(0, 3).map((group) => (
-                                    <TouchableOpacity
-                                        key={group._id}
-                                        style={styles.groupBox}
-                                        onPress={() => navigation.navigate('GroupDetails', { groupId: group._id, groupName: group.name })}
-                                    >
-                                        <View style={styles.groupIconContainer}>
-                                            <Text style={styles.groupIcon}>✈️</Text>
-                                        </View>
-                                        <Text style={styles.groupName} numberOfLines={1}>{group.name}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </View>
+                        <HomeGroups showHeader={false} />
                     </>
                 )}
             </ScrollView>

@@ -52,8 +52,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: 12,
     },
-    avatarText: {
-        fontSize: 20,
+    avatarImage: {
+        height: 30,
+        width: 30,
     },
     detailsContainer: {
         flex: 1,
@@ -103,6 +104,55 @@ export const styles = StyleSheet.create({
     deletedText: {
         fontSize: 11,
         color: '#6B7280',
+        fontWeight: '600',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        backgroundColor: '#FFF',
+        borderRadius: 20,
+        padding: 24,
+        width: '80%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        elevation: 10,
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#1A1A1A',
+        marginBottom: 16,
+    },
+    modalDetailText: {
+        fontSize: 16,
+        color: '#4A4A4A',
+        marginBottom: 12,
+        textAlign: 'center',
+        lineHeight: 24,
+    },
+    modalAmountText: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: '#28a745',
+        marginVertical: 16,
+    },
+    closeButton: {
+        backgroundColor: '#4361EE',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 12,
+        marginTop: 8,
+    },
+    closeButtonText: {
+        color: '#FFF',
+        fontSize: 16,
         fontWeight: '600',
     },
 });

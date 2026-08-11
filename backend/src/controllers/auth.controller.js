@@ -37,13 +37,12 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
     const token = jwt.sign({ userId: user._id, userName: user.name }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "2d",
     });
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 2 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
       message: "Login successful",
@@ -64,7 +63,8 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     res.clearCookie("token", {
-      secure: true,
+      httpOnly: true,
+      secure: false,
       sameSite: "strict"
     });
     res.status(200).json({ message: "Logout successful" });
@@ -76,7 +76,6 @@ exports.logout = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    // console.log(req.user);
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -130,7 +129,7 @@ exports.updateProfile = async (req, res) => {
     }
 
     if (name) user.name = name;
-    await user.updateOne();
+    await user.save();
     res.status(200).json({
       message: "Profile updated successfully",
       user: {
@@ -144,3 +143,54 @@ exports.updateProfile = async (req, res) => {
     res.status(500).json({ message: "Failed to update profile!" });
   }
 }
+
+exports.uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image provided" });
+    }
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.avatar = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    };
+    await user.save();
+    res.status(200).json({ message: "Avatar uploaded successfully" });
+  } catch (error) {
+    console.log("Error uploading avatar: " + error);
+    res.status(500).json({ message: "Server error while uploading avatar" });
+  }
+};
+
+exports.getAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user || !user.avatar || !user.avatar.data) {
+      return res.status(404).json({ message: "Avatar not found" });
+    }
+    res.set("Content-Type", user.avatar.contentType);
+    res.send(user.avatar.data);
+  } catch (error) {
+    console.log("Error getting avatar: " + error);
+    res.status(500).json({ message: "Server error while getting avatar" });
+  }
+};
+
+exports.getAvatarInfo = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      name: user.name,
+      avatarUpdatedAt: user.updatedAt ? new Date(user.updatedAt).getTime().toString() : Date.now().toString()
+    });
+  } catch (error) {
+    console.error("Error getting avatar info:", error);
+    res.status(500).json({ message: "Server error while getting avatar info" });
+  }
+};

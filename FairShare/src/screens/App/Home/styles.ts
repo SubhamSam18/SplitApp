@@ -132,7 +132,9 @@ export const homeStyles = StyleSheet.create({
         marginBottom: 12,
     },
     groupIcon: {
-        fontSize: 24,
+        width: 32,
+        height: 32,
+        flexDirection: "row",
     },
     createIcon: {
         fontSize: 24,
